@@ -9,10 +9,11 @@ const app = express()
 app.use(express.json())
 
 // routes
-// const exampleRoute = require('./routes/exampleRoute')
-// app.use('/exampleRoute', exampleRoute)
+const circuitsRoute = require('./routes/circuits')
+app.use('/circuits', circuitsRoute)
 
-const port = process.env.PORT || 3000
+// server
+const port = process.env.PORT || 6969
 app.listen(port, () => {
   console.log(`Server listening on PORT ${port}`)
 })
