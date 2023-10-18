@@ -5,12 +5,15 @@ const express = require('express')
 
 const app = express()
 
-// middlewares
-app.use(express.json())
-
 // routes
 const circuitsRoute = require('./routes/circuits')
+const constructorsRoute = require('./routes/constructors')
+
 app.use('/circuits', circuitsRoute)
+app.use('/constructors', constructorsRoute)
+
+// middlewares
+app.use(express.json())
 
 // server
 const port = process.env.PORT || 6969
