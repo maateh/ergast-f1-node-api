@@ -6,11 +6,14 @@ const express = require('express')
 const app = express()
 
 // routes
-const circuitsRoute = require('./routes/circuits')
-const constructorsRoute = require('./routes/constructors')
+const circuitsRoute = require('./api/routes/circuits')
+const constructorsRoute = require('./api/routes/constructors')
+const driversRoute = require('./api/routes/drivers')
 
-app.use('/circuits', circuitsRoute)
-app.use('/constructors', constructorsRoute)
+const url = '/api/ergast/f1'
+app.use(`${url}/circuits`, circuitsRoute)
+app.use(`${url}/constructors`, constructorsRoute)
+app.use(`${url}/drivers`, driversRoute)
 
 // middlewares
 app.use(express.json())
