@@ -1,45 +1,19 @@
 const express = require('express')
 
+const controller = require('../controllers/drivers')
+
 const router = express.Router()
 
 // List of all drivers
-router.get('/', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/', controller.getAllDrivers)
 
 // Driver information
-router.get('/:id', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/:id', controller.getDriverInformation)
 
 // List of all drivers within a year
-router.get('/year/:year', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/year/:year', controller.getDriversWithinAYear)
 
 // List of all drivers within a race in a year
-router.get('/year/:year/round/:round', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/year/:year/round/:round', controller.getDriversWithinARace)
 
 module.exports = router
