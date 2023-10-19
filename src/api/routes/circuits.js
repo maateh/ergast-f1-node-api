@@ -1,45 +1,19 @@
 const express = require('express')
 
+const controller = require('../controllers/circuits')
+
 const router = express.Router()
 
 // List of all circuits
-router.get('/', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/', controller.getAllCircuits)
 
 // Circuit information
-router.get('/:id', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/:id', controller.getCircuitInformation)
 
 // List of all circuits within a year
-router.get('/year/:year', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/year/:year', controller.getCircuitsWithinAYear)
 
 // List of all circuits within a race in a year
-router.get('/year/:year/round/:round', (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    url: req.url,
-    method: req.method,
-    params: req.params
-  })
-})
+router.get('/year/:year/round/:round', controller.getCircuitsWithinARace)
 
 module.exports = router
