@@ -1,26 +1,31 @@
-class Circuit {
-  constructor({
-    circuitId,
-    circuitRef,
-    name,
-    location,
-    country,
-    lat,
-    lng,
-    alt,
-    url
-  }) {
-    this.dbId = circuitId
-    this.id = circuitRef
-    this.name = name
-    this.Location = {
-      country,
-      locality: location,
-      lat,
-      lng
-    }
-    this.wiki = url
+const { DataTypes } = require('sequelize')
+
+const sequelize = require('../database/database')
+
+const Circuit = sequelize.define('circuit', {
+  circuitId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  circuitRef: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  // TODO: create Location model
+  // location: {
+  //   type: DataTypes.STRING,
+  //   allowNull: true
+  // },
+  url: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
-}
+})
 
 module.exports = Circuit
