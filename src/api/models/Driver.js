@@ -1,25 +1,46 @@
-class Driver {
-  constructor({
-    driverId,
-    driverRef,
-    number,
-    code,
-    forename,
-    surname,
-    dob,
-    nationality,
-    url
-  }) {
-    this.dbId = driverId
-    this.id = driverRef
-    this.number = number
-    this.code = code
-    this.givenName = forename
-    this.familyName = surname
-    this.dateOfBirth = dob
-    this.nationality = nationality
-    this.wiki = url
+const { DataTypes } = require('sequelize')
+
+const sequelize = require('../database/database')
+
+const Driver = sequelize.define('driver', {
+  driverId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  driverRef: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  number: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  code: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  forename: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  surname: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  dob: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  nationality: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  url: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
-}
+})
 
 module.exports = Driver
