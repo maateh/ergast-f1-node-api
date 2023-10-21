@@ -32,7 +32,7 @@ const getCircuitsWithinASeason = (req, res, next) => {
   const { year } = req.params
 
   // TODO: create associations
-  // Season.findOne({ where: { year: req.params.year }})
+  // Season.findOne({ where: { year }})
   //   .then(season => {
   //     return season.getCircuits()
   //   })
@@ -44,6 +44,7 @@ const getCircuitsWithinASeason = (req, res, next) => {
   //     res.status(400).json({ success: false })
   //     console.log('err-getCircuitsWithinASeason: ', err)
   //   })
+  res.status(200).json({ success: true })
 }
 
 const getCircuitsWithinAWeekend = (req, res, next) => {
