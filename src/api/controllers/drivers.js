@@ -1,40 +1,16 @@
-const Driver = require('../models/Driver')
-
-const MOCK_DRIVER = new Driver({
-  driverId: 'driverId',
-  driverRef: 'driverRef',
-  number: 'number',
-  code: 'code',
-  forename: 'forename',
-  surname: 'surname',
-  dob: 'dob',
-  nationality: 'nationality',
-  url: 'url'
-})
+const Driver = require('../models/driver')
 
 module.exports = {
   getAllDrivers: (req, res, next) => {
-    res.status(200).json([
-      MOCK_DRIVER,
-      MOCK_DRIVER,
-      MOCK_DRIVER
-    ])
+    res.status(200).json({})
   },
   getDriverInformation: (req, res, next) => {
-    res.status(200).json(MOCK_DRIVER)
+    res.status(200).json({})
   },
   getDriversWithinAYear: (req, res, next) => {
-    res.status(200).json([
-      MOCK_DRIVER,
-      MOCK_DRIVER,
-      MOCK_DRIVER
-    ])
+    res.status(200).json({})
   },
   getDriversWithinARace: (req, res, next) => {
-    res.status(200).json([
-      MOCK_DRIVER,
-      MOCK_DRIVER,
-      MOCK_DRIVER
-    ])
+    res.status(200).json({})
   }
 }

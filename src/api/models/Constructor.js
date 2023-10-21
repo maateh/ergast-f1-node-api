@@ -2,29 +2,54 @@ const { DataTypes } = require('sequelize')
 
 const sequelize = require('../database/database')
 
-const Constructor = sequelize.define('constructor', {
-  constructorId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true
+const Constructor = sequelize.define(
+  'constructor',
+  {
+    constructorId: {
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+    },
+    constructorRef: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue: '',
+    },
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue: '',
+      unique: 'name',
+    },
+    nationality: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    url: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue: '',
+    },
   },
-  constructorRef: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  nationality: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: false
+  {
+    tableName: 'constructors',
+    timestamps: false,
+    indexes: [
+      {
+        name: 'PRIMARY',
+        unique: true,
+        using: 'BTREE',
+        fields: [{ name: 'constructorId' }],
+      },
+      {
+        name: 'name',
+        unique: true,
+        using: 'BTREE',
+        fields: [{ name: 'name' }],
+      },
+    ],
   }
-})
+)
 
 module.exports = Constructor
