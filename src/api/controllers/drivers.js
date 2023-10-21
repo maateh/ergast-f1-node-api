@@ -15,7 +15,9 @@ module.exports = {
       })
   },
   getDriverInformation: (req, res, next) => {
-    Driver.findOne({ where: { driverRef: req.params.id }})
+    const { id } = req.params
+
+    Driver.findOne({ where: { driverRef: id }})
       .then(driver => {
         res.status(200).json(driver)
       })
@@ -26,8 +28,10 @@ module.exports = {
       })
   },
   getDriversWithinAYear: (req, res, next) => {
+    const { year } = req.params
+
     // TODO: create associations
-    // Season.findOne({ where: { year: req.params.year }})
+    // Season.findOne({ where: { year }})
     //   .then(drivers => {
     //     res.status(200).json(drivers)
     //   })
@@ -38,8 +42,10 @@ module.exports = {
     res.status(200).json({ success: true })
   },
   getDriversWithinARace: (req, res, next) => {
+    const { year, round } = req.params
+
     // TODO: create associations
-    // Race.findOne({ where: { year: req.params.year, round: req.params.round }})
+    // Race.findOne({ where: { year, round }})
     //   .then(drivers => {
     //     res.status(200).json(drivers)
     //   })

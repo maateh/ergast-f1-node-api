@@ -15,7 +15,9 @@ module.exports = {
       })
   },
   getConstructorInformation: (req, res, next) => {
-    Constructor.findOne({ where: { constructorRef: req.params.id }})
+    const { id } = req.params
+
+    Constructor.findOne({ where: { constructorRef: id }})
       .then(constructor => {
         res.status(200).json(constructor)
       })
@@ -26,8 +28,10 @@ module.exports = {
       })
   },
   getConstructorsWithinAYear: (req, res, next) => {
+    const { year } = req.params
+
     // TODO: create associations
-    // Season.findOne({ where: { year: req.params.year }})
+    // Season.findOne({ where: { year }})
     //   .then(constructors => {
     //     res.status(200).json(constructors)
     //   })
@@ -38,8 +42,10 @@ module.exports = {
     res.status(200).json({ success: true })
   },
   getConstructorsWithinARace: (req, res, next) => {
+    const { year, round } = req.params
+
     // TODO: create associations
-    // Race.findOne({ where: { year: req.params.year, round: req.params.round }})
+    // Race.findOne({ where: { year, round }})
     //   .then(constructors => {
     //     res.status(200).json(constructors)
     //   })
