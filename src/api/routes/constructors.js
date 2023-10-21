@@ -10,10 +10,10 @@ router.get('/', controller.getAllConstructors)
 // Constructor information
 router.get('/:id', controller.getConstructorInformation)
 
-// List of all constructors within a year
-router.get('/year/:year', controller.getConstructorsWithinAYear)
+// List of all constructors within a season
+router.get('/year/:year', controller.getConstructorsWithinASeason)
 
-// List of all constructors within a race in a year
-router.get('/year/:year/round/:round', controller.getConstructorsWithinARace)
+// List of all constructors within a weekend in a season
+router.get('/year/:year/round/:round', controller.getConstructorsWithinAWeekend)
 
 module.exports = router

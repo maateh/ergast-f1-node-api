@@ -1,6 +1,6 @@
 const Constructor = require('../models/constructor')
 const Season = require('../models/season')
-const Race = require('../models/race')
+const Weekend = require('../models/weekend')
 
 const getAllConstructors = (req, res, next) => {
   Constructor.findAll()
@@ -28,7 +28,7 @@ const getConstructorInformation = (req, res, next) => {
     })
 }
 
-const getConstructorsWithinAYear = (req, res, next) => {
+const getConstructorsWithinASeason = (req, res, next) => {
   const { year } = req.params
 
   // TODO: create associations
@@ -38,22 +38,22 @@ const getConstructorsWithinAYear = (req, res, next) => {
   //   })
   //   .catch(err => {
   //     // TODO: error handling
-  //     console.log('getConstructorsWithinAYear: ', err)
+  //     console.log('getConstructorsWithinASeason: ', err)
   //   })
   res.status(200).json({ success: true })
 }
 
-const getConstructorsWithinARace = (req, res, next) => {
+const getConstructorsWithinAWeekend = (req, res, next) => {
   const { year, round } = req.params
 
   // TODO: create associations
-  // Race.findOne({ where: { year, round }})
+  // Weekend.findOne({ where: { year, round }})
   //   .then(constructors => {
   //     res.status(200).json(constructors)
   //   })
   //   .catch(err => {
   //     // TODO: error handling
-  //     console.log('getConstructorsWithinARace: ', err)
+  //     console.log('getConstructorsWithinAWeekend: ', err)
   //   })
   res.status(200).json({ success: true })
 }
@@ -61,6 +61,6 @@ const getConstructorsWithinARace = (req, res, next) => {
 module.exports = {
   getAllConstructors,
   getConstructorInformation,
-  getConstructorsWithinAYear,
-  getConstructorsWithinARace
+  getConstructorsWithinASeason,
+  getConstructorsWithinAWeekend
 }

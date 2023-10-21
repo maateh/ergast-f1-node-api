@@ -1,6 +1,6 @@
 const Driver = require('../models/driver')
 const Season = require('../models/season')
-const Race = require('../models/race')
+const Weekend = require('../models/weekend')
 
 const getAllDrivers = (req, res, next) => {
   Driver.findAll()
@@ -28,7 +28,7 @@ const getDriverInformation = (req, res, next) => {
     })
 }
 
-const getDriversWithinAYear = (req, res, next) => {
+const getDriversWithinASeason = (req, res, next) => {
   const { year } = req.params
 
   // TODO: create associations
@@ -38,22 +38,22 @@ const getDriversWithinAYear = (req, res, next) => {
   //   })
   //   .catch(err => {
   //     // TODO: error handling
-  //     console.log('getDriversWithinAYear: ', err)
+  //     console.log('getDriversWithinASeason: ', err)
   //   })
   res.status(200).json({ success: true })
 }
 
-const getDriversWithinARace = (req, res, next) => {
+const getDriversWithinAWeekend = (req, res, next) => {
   const { year, round } = req.params
 
   // TODO: create associations
-  // Race.findOne({ where: { year, round }})
+  // Weekend.findOne({ where: { year, round }})
   //   .then(drivers => {
   //     res.status(200).json(drivers)
   //   })
   //   .catch(err => {
   //     // TODO: error handling
-  //     console.log('getDriversWithinARace: ', err)
+  //     console.log('getDriversWithinAWeekend: ', err)
   //   })
   res.status(200).json({ success: true })
 }
@@ -61,6 +61,6 @@ const getDriversWithinARace = (req, res, next) => {
 module.exports = {
   getAllDrivers,
   getDriverInformation,
-  getDriversWithinAYear,
-  getDriversWithinARace
+  getDriversWithinASeason,
+  getDriversWithinAWeekend
 }

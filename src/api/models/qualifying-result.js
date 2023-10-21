@@ -2,8 +2,8 @@ const { DataTypes } = require('sequelize')
 
 const sequelize = require('../database/database')
 
-const Qualifying = sequelize.define(
-  'qualifying',
+const QualifyingResult = sequelize.define(
+  'qualifyingResult',
   {
     qualifyId: {
       autoIncrement: true,
@@ -62,4 +62,4 @@ const Qualifying = sequelize.define(
   }
 )
 
-module.exports = Qualifying
+module.exports = QualifyingResult

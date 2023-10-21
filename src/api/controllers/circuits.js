@@ -1,6 +1,6 @@
 const Circuit = require('../models/circuit')
 const Season = require('../models/season')
-const Race = require('../models/race')
+const Weekend = require('../models/weekend')
 
 const getAllCircuits = (req, res, next) => {
   Circuit.findAll()
@@ -28,7 +28,7 @@ const getCircuitInformation = (req, res, next) => {
     })
 }
 
-const getCircuitsWithinAYear = (req, res, next) => {
+const getCircuitsWithinASeason = (req, res, next) => {
   const { year } = req.params
 
   // TODO: create associations
@@ -42,21 +42,21 @@ const getCircuitsWithinAYear = (req, res, next) => {
   //   .catch(err => {
   //     // TODO: error handling
   //     res.status(400).json({ success: false })
-  //     console.log('err-getCircuitsWithinAYear: ', err)
+  //     console.log('err-getCircuitsWithinASeason: ', err)
   //   })
 }
 
-const getCircuitsWithinARace = (req, res, next) => {
+const getCircuitsWithinAWeekend = (req, res, next) => {
   const { year, round } = req.params
 
   // TODO: create associations
-  // Race.findOne({ where: { year, round }})
+  // Weekend.findOne({ where: { year, round }})
   //   .then(circuits => {
   //     res.status(200).json(circuits)
   //   })
   //   .catch(err => {
   //     // TODO: error handling
-  //     console.log('err-getCircuitsWithinARace: ', err)
+  //     console.log('err-getCircuitsWithinAWeekend: ', err)
   //   })
   res.status(200).json({ success: true })
 }
@@ -64,6 +64,6 @@ const getCircuitsWithinARace = (req, res, next) => {
 module.exports = {
   getAllCircuits,
   getCircuitInformation,
-  getCircuitsWithinAYear,
-  getCircuitsWithinARace
+  getCircuitsWithinASeason,
+  getCircuitsWithinAWeekend
 }

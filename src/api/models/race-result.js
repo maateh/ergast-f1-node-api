@@ -2,8 +2,8 @@ const { DataTypes } = require('sequelize')
 
 const sequelize = require('../database/database')
 
-const Result = sequelize.define(
-  'result',
+const RaceResult = sequelize.define(
+  'raceResult',
   {
     resultId: {
       autoIncrement: true,
@@ -104,4 +104,4 @@ const Result = sequelize.define(
   }
 )
 
-module.exports = Result
+module.exports = RaceResult
