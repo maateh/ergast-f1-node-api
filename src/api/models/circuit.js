@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose')
 
 const circuitSchema = new Schema({
-  // circuitId: {
+  // circuitId: { -> _id
   //   type: Number,
   //   required: true
   // },
-  ref: { // circuitRef
+  ref: { // <- circuitRef
     type: String,
     required: true
   },
@@ -38,7 +38,7 @@ const circuitSchema = new Schema({
     },
     required: false,
   },
-  url: {
+  wiki: { // <- url
     type: String,
     required: true
   },

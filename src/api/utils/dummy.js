@@ -4,7 +4,7 @@ const createCircuit = () => {
   Circuit.create({
     ref: 'dummy_circuit_id',
     name: 'DUMMY CIRCUIT',
-    url: 'dummy.url.com',
+    wiki: 'dummy.url.com',
     location: {
       country: 'DUMMY COUNTRY',
       locality: 'DUMMY CITY',

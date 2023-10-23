@@ -1,7 +1,15 @@
 const Circuit = require('../models/circuit')
 
 const getAllCircuits = (req, res, next) => {
-  res.status(200).json({ success: true })
+  Circuit.find()
+    .then(circuits => {
+      res.status(200).json(circuits)
+    })
+    .catch(err => {
+      // TODO: error handling
+      res.status(400).json({ success: false })
+      console.log('getAllCircuits: ', err)
+    })
 
   // Circuit.findAll()
   //   .then(circuits => {
