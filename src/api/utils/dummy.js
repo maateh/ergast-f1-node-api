@@ -1,6 +1,8 @@
 const Circuit = require('../models/circuit')
+const Season = require('../models/season')
+// const Weekend = require('../models/weekend')
 
-const createCircuit = () => {
+const createDummyCircuit = () => {
   Circuit.create({
     ref: 'dummy_circuit_id',
     name: 'DUMMY CIRCUIT',
@@ -15,6 +17,30 @@ const createCircuit = () => {
   })
 }
 
+const createDummySeason = () => {
+  Season.create({
+    year: '6969',
+    wiki: 'dummy.url.com',
+    weekends: [
+      // new Weekend({}),
+      // new Weekend({}),
+    ]
+  })
+}
+
+// const createDummyWeekend = () => {
+//   Weekend.create({
+//     year: '6969',
+//     wiki: 'dummy.url.com',
+//     weekends: [
+//       {},
+//       {}
+//     ]
+//   })
+// }
+
 module.exports = {
-  createCircuit
+  createDummyCircuit,
+  createDummySeason,
+  // createDummyWeekend
 }
