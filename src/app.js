@@ -3,9 +3,6 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 const express = require('express')
 
-const sequelize = require('./api/database/database')
-const Circuit = require('./api/models/circuit')
-const Weekend = require('./api/models/weekend')
 const circuitsRoute = require('./api/routes/circuits')
 const constructorsRoute = require('./api/routes/constructors')
 const driversRoute = require('./api/routes/drivers')
