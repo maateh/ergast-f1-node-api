@@ -1,35 +1,35 @@
-const Constructor = require('../models/constructor')
-const Season = require('../models/season')
-const Weekend = require('../models/weekend')
-
 const getAllConstructors = (req, res, next) => {
-  Constructor.findAll()
-    .then(constructors => {
-      res.status(200).json(constructors)
-    })
-    .catch(err => {
-      // TODO: error handling
-      res.status(400).json({ success: false })
-      console.log('getAllConstructors: ', err)
-    })
+  res.status(200).json({ success: true })
+
+  // Constructor.findAll()
+  //   .then(constructors => {
+  //     res.status(200).json(constructors)
+  //   })
+  //   .catch(err => {
+  //     // TODO: error handling
+  //     res.status(400).json({ success: false })
+  //     console.log('getAllConstructors: ', err)
+  //   })
 }
 
 const getConstructorInformation = (req, res, next) => {
   const { id } = req.params
+  res.status(200).json({ success: true })
 
-  Constructor.findOne({ where: { constructorRef: id }})
-    .then(constructor => {
-      res.status(200).json(constructor)
-    })
-    .catch(err => {
-      // TODO: error handling
-      res.status(400).json({ success: false })
-      console.log('getConstructorInformation: ', err)
-    })
+  // Constructor.findOne({ where: { constructorRef: id }})
+  //   .then(constructor => {
+  //     res.status(200).json(constructor)
+  //   })
+  //   .catch(err => {
+  //     // TODO: error handling
+  //     res.status(400).json({ success: false })
+  //     console.log('getConstructorInformation: ', err)
+  //   })
 }
 
 const getConstructorsWithinASeason = (req, res, next) => {
   const { year } = req.params
+  res.status(200).json({ success: true })
 
   // TODO: create associations
   // Season.findOne({ where: { year }})
@@ -40,11 +40,11 @@ const getConstructorsWithinASeason = (req, res, next) => {
   //     // TODO: error handling
   //     console.log('getConstructorsWithinASeason: ', err)
   //   })
-  res.status(200).json({ success: true })
 }
 
 const getConstructorsWithinAWeekend = (req, res, next) => {
   const { year, round } = req.params
+  res.status(200).json({ success: true })
 
   // TODO: create associations
   // Weekend.findOne({ where: { year, round }})
@@ -55,7 +55,6 @@ const getConstructorsWithinAWeekend = (req, res, next) => {
   //     // TODO: error handling
   //     console.log('getConstructorsWithinAWeekend: ', err)
   //   })
-  res.status(200).json({ success: true })
 }
 
 module.exports = {

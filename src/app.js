@@ -19,14 +19,7 @@ app.use(`${BASE_URL}/constructors`, constructorsRoute)
 app.use(`${BASE_URL}/drivers`, driversRoute)
 
 // Initialize app
-sequelize.sync()
-  .then(() => {
-    const port = process.env.PORT || 6969
-    app.listen(port, () => {
-      console.log(`Server listening on PORT ${port}`)
-    })
-  })
-  .catch(err => {
-    // TODO: error handling
-    console.log('DB-error: ', err)
-  })
+const port = process.env.PORT || 6969
+app.listen(port, () => {
+  console.log(`Server listening on PORT ${port}`)
+})
