@@ -27,6 +27,9 @@ mongoose.connect(uri)
   .then(() => {
     console.log('Connected successfully to MongoDB')
     // createCircuit()
+
+    const port = process.env.PORT || 3000
+    app.listen(port, () => console.log(`Server listening on port ${port}`))
   })
   .catch(err => {
     console.error('Database connection failed: ', err)
