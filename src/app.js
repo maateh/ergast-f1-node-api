@@ -29,7 +29,9 @@ mongoose.connect(uri)
     // createCircuit()
 
     const port = process.env.PORT || 3000
-    app.listen(port, () => console.log(`Server listening on port ${port}`))
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}`)
+    })
   })
   .catch(err => {
     console.error('Database connection failed: ', err)
