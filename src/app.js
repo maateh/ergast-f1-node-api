@@ -6,7 +6,8 @@ const mongoose = require('mongoose')
 
 const {
   createDummyCircuit,
-  createDummySeason
+  createDummySeason,
+  createDummyWeekend
 } = require('./api/utils/dummy')
 
 const circuitsRoute = require('./api/routes/circuits')
@@ -31,6 +32,7 @@ mongoose.connect(uri)
     console.log('Connected successfully to MongoDB')
     // createDummyCircuit()
     // createDummySeason()
+    // createDummyWeekend()
 
     const port = process.env.PORT || 3000
     app.listen(port, () => {
