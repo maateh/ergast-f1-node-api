@@ -1,8 +1,14 @@
-const { Sequelize } = require('sequelize')
+const mongoose = require('mongoose')
 
-const sequelize = new Sequelize('f1db', 'ergast_f1', 'ergast_f1', {
-  host: 'localhost',
-  dialect: 'mysql'
-})
+const createConnection = async () => {
+  const uri = process.env.DATABASE_URI
+  return mongoose.connect(uri)
+    .then(() => {
+      console.log('Connected successfully to MongoDB')
+    })
+    .catch(err => {
+      console.error('Database connection failed: ', err)
+    })
+}
 
-module.exports = sequelize
+module.exports = { createConnection }

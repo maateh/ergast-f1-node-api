@@ -2,13 +2,14 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 const express = require('express')
-const mongoose = require('mongoose')
 
 const {
   createDummyCircuit,
   createDummySeason,
   createDummyWeekend
 } = require('./api/utils/dummy')
+
+const { createConnection } = require('./api/database/database')
 
 const circuitsRoute = require('./api/routes/circuits')
 const constructorsRoute = require('./api/routes/constructors')
@@ -26,19 +27,13 @@ app.use(`${BASE_URL}/constructors`, constructorsRoute)
 app.use(`${BASE_URL}/drivers`, driversRoute)
 
 // Initialize app
-const uri = process.env.DATABASE_URI
-mongoose.connect(uri)
+createConnection()
   .then(() => {
-    console.log('Connected successfully to MongoDB')
-    // createDummyCircuit()
-    // createDummySeason()
-    // createDummyWeekend()
-
     const port = process.env.PORT || 3000
     app.listen(port, () => {
-      console.log(`Server listening on port ${port}`)
+      console.log(`API listening on port ${port}`)
     })
   })
   .catch(err => {
-    console.error('Database connection failed: ', err)
+    console.error('Error on application start: ', err)
   })
