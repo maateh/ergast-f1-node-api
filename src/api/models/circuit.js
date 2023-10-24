@@ -15,11 +15,11 @@ const circuitSchema = new Schema({
   },
   location: {
     type: {
-      locality: {
+      country: {
         type: String,
         required: true
       },
-      country: {
+      locality: {
         type: String,
         required: true
       },

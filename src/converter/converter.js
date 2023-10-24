@@ -1,14 +1,21 @@
 require('dotenv').config()
 
 const { createConnection } = require('../api/database/database')
-const { getAllCircuits } = require('./queries')
 
-const convertMySQLToMongo = async () => {
+// converters
+const circuitConverter = require('./converters/circuit')
+
+const startConversion = async () => {
+  try {
+    await circuitConverter()
+  } catch (err) {
+    console.error('An error occured during conversion: ', err)
+  }
+}
+
+const convertMySQLToMongo = () => {
   return createConnection()
-    .then(() => getAllCircuits())
-    .then(circuits => {
-      console.log('circuits: ', circuits)
-    })
+    .then(() => startConversion())
     .catch(err => {
       console.error('Initialize failed: ', err)
     })

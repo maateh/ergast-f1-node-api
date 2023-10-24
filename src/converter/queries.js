@@ -1,6 +1,6 @@
 const db = require('./database/mysql')
 
-const getAllCircuits = async () => {
+const getAllCircuits = () => {
   const query = 'SELECT * FROM circuits'
 
   return db.execute(query)
