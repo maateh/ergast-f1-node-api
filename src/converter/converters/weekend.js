@@ -4,6 +4,9 @@ const db = require('../database/mysql')
 const Weekend = require('../../api/models/weekend')
 const Circuit = require('../../api/models/circuit')
 
+// constants
+const { SESSIONS } = require('../../api/models/schemas/session')
+
 const getAllWeekends = () => {
   const query = 'SELECT * FROM races'
 
@@ -18,30 +21,21 @@ const conversion = () => {
   return Promise.all([getAllWeekends(), Circuit.find()])
     .then(([races, circuits]) => {
       return races.map(race => {
-        const date = race.time
-          ? new Date(`${race.date.toISOString().split('T')[0]}T${race.time}Z`)
-          : new Date(race.date)
-
         return new Weekend({
           ergastId: race.raceId,
           year: race.year,
           round: race.round,
           name: race.name,
           date: {
-            full: date,
+            full: race.time
+              ? new Date(`${race.date.toISOString().split('T')[0]}T${race.time}Z`)
+              : new Date(race.date),
             time: race.time || '00:00:00',
             exact: !!race.time
           },
           wiki: race.url,
           circuit: circuits.find(c => c.ergastId === race.circuitId)._id,
-          // sessions: [
-          //   {
-          //     key: Weekend.SESSIONS.FP1.key,
-          //     name: Weekend.SESSIONS.FP1.name,
-          //     date: race.fp1_date,
-          //     time: race.fp1_time
-          //   }
-          // ]
+          sessions: parseSessions(race)
         })
       })
     })
@@ -51,6 +45,96 @@ const conversion = () => {
     .catch(err => {
       console.error('Conversion error: ', err)
     })
+}
+
+const parseSessions = race => {
+  const sessions = []
+
+  if (race.fp1_date) {
+    sessions.push({
+      key: SESSIONS.FP1.key,
+      name: SESSIONS.FP1.name,
+      date: {
+        full: race.fp1_time
+          ? new Date(`${race.fp1_date.toISOString().split('T')[0]}T${race.fp1_time}Z`)
+          : new Date(race.fp1_date),
+        time: race.fp1_time || '00:00:00',
+        exact: !!race.fp1_time
+      }
+    })
+  }
+
+  if (race.fp2_date) {
+    sessions.push({
+      key: race.sprint_date && race.year >= 2023 ? SESSIONS.SPRINT_QUALIFYING.key : SESSIONS.FP2.key,
+      name: race.sprint_date && race.year >= 2023 ? SESSIONS.SPRINT_QUALIFYING.name : SESSIONS.FP2.name,
+      date: {
+        full: race.fp2_time
+          ? new Date(`${race.fp2_date.toISOString().split('T')[0]}T${race.fp2_time}Z`)
+          : new Date(race.fp2_date),
+        time: race.fp2_time || '00:00:00',
+        exact: !!race.fp2_time
+      }
+    })
+  }
+
+  if (race.fp3_date) {
+    sessions.push({
+      key: SESSIONS.FP3.key,
+      name: SESSIONS.FP3.name,
+      date: {
+        full: race.fp3_time
+          ? new Date(`${race.fp3_date.toISOString().split('T')[0]}T${race.fp3_time}Z`)
+          : new Date(race.fp3_date),
+        time: race.fp3_time || '00:00:00',
+        exact: !!race.fp3_time
+      }
+    })
+  }
+
+  if (race.sprint_date) {
+    sessions.push({
+      key: SESSIONS.SPRINT_RACE.key,
+      name: SESSIONS.SPRINT_RACE.name,
+      date: {
+        full: race.sprint_time
+          ? new Date(`${race.sprint_date.toISOString().split('T')[0]}T${race.sprint_time}Z`)
+          : new Date(race.sprint_date),
+        time: race.sprint_time || '00:00:00',
+        exact: !!race.sprint_time
+      }
+    })
+  }
+
+  if (race.quali_date) {
+    sessions.push({
+      key: SESSIONS.QUALIFYING.key,
+      name: SESSIONS.QUALIFYING.name,
+      date: {
+        full: race.quali_time
+          ? new Date(`${race.quali_date.toISOString().split('T')[0]}T${race.quali_time}Z`)
+          : new Date(race.quali_date),
+        time: race.quali_time || '00:00:00',
+        exact: !!race.quali_time
+      }
+    })
+  }
+
+  if (race.date) {
+    sessions.push({
+      key: SESSIONS.RACE.key,
+      name: SESSIONS.RACE.name,
+      date: {
+        full: race.time
+          ? new Date(`${race.date.toISOString().split('T')[0]}T${race.time}Z`)
+          : new Date(race.date),
+        time: race.time || '00:00:00',
+        exact: !!race.time
+      }
+    })
+  }
+
+  return sessions
 }
 
 module.exports = conversion
