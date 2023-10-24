@@ -76,11 +76,11 @@ const raceSchema = new Schema({
     ref: 'Weekend',
     required: true
   },
-  // driver: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Driver',
-  //   required: true
-  // },
+  driver: {
+    type: Schema.Types.ObjectId,
+    ref: 'Driver',
+    required: true
+  },
   // constructor: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'Constructor',
