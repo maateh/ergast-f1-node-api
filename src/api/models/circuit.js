@@ -1,10 +1,10 @@
 const { Schema, model } = require('mongoose')
 
 const circuitSchema = new Schema({
-  // circuitId: { -> _id
-  //   type: Number,
-  //   required: true
-  // },
+  ergastId: { // <- circuitId
+    type: Number,
+    required: true
+  },
   ref: { // <- circuitRef
     type: String,
     required: true

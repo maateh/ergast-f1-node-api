@@ -1,11 +1,10 @@
 const { Schema, model } = require('mongoose')
 
 const qualifyingSchema = new Schema({
-  // qualifyId -> _id
-  // number: { - unnecessary
-  //   type: Number,
-  //   required: true
-  // },
+  ergastId: { // <- qualifyId
+    type: Number,
+    required: true
+  },
   position: {
     type: Number,
     required: true

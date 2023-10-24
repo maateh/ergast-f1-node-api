@@ -1,7 +1,10 @@
 const { Schema, model } = require('mongoose')
 
 const raceSchema = new Schema({
-  // raceId -> _id
+  ergastId: { // <- resultId
+    type: Number,
+    required: true
+  },
   // number: { - unnecessary
   //   type: Number,
   //   required: true

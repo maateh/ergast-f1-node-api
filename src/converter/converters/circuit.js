@@ -1,12 +1,24 @@
-const { getAllCircuits } = require('../queries')
+const db = require('../database/mysql')
 
+// models
 const Circuit = require('../../api/models/circuit')
+
+const getAllCircuits = () => {
+  const query = 'SELECT * FROM circuits'
+
+  return db.execute(query)
+    .then(([circuits]) => circuits)
+    .catch(err => {
+      console.error('Query error: ', err)
+    })
+}
 
 const conversion = () => {
   return getAllCircuits()
     .then(circuits => {
       const convertedCircuits = circuits.map(circuit => {
         return new Circuit({
+          ergastId: circuit.circuitId,
           name: circuit.name,
           ref: circuit.circuitRef,
           wiki: circuit.url,
@@ -19,7 +31,7 @@ const conversion = () => {
           }
         })
       })
-      console.log('convertedCircuits: ', convertedCircuits)
+      // console.log('convertedCircuits: ', convertedCircuits)
 
       return Circuit.insertMany(convertedCircuits)
     })
