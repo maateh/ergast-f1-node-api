@@ -34,27 +34,37 @@ const weekendSchema = new Schema({
     ref: 'Circuit',
     required: true
   },
-  sessions: {
-    type: [{
-      key: {
-        type: String,
-        required: true
-      },
-      name: {
-        type: String,
-        required: true
-      },
-      date: {
-        type: Date,
-        required: true
-      },
-      time: {
-        type: Date,
-        required: false
-      }
+  sessions: [{
+    key: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    date: {
+      type: Date,
+      required: true
+    },
+    time: {
+      type: Date,
+      required: false
+    }
+  }],
+  results: {
+    qualifying: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Qualifying'
     }],
-    required: false
-  }
+    race: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Race'
+    }],
+    sprint: [{}]
+  },
+  pits: [{}],
+  laps: [{}]
 })
 
 module.exports = model('Weekend', weekendSchema)
