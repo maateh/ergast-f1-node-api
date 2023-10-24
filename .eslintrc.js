@@ -21,6 +21,6 @@ module.exports = {
   },
   rules: {
     'space-before-function-paren': 'off',
-    'comma-dangle': ['only-multiline'],
+    'comma-dangle': [1, 'only-multiline'],
   },
 }
