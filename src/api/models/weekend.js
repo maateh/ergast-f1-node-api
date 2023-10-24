@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose')
 
+const dateSchema = require('./schemas/date')
+
 const SESSIONS = {
   FP1: {
     key: 'fp1',
@@ -49,21 +51,7 @@ const weekendSchema = new Schema({
     required: true
   },
   date: { // <- date, time
-    type: {
-      full: {
-        type: Date,
-        required: true
-      },
-      time: {
-        type: String,
-        required: true
-      },
-      exact: {
-        type: Boolean,
-        required: true,
-        default: true
-      }
-    },
+    type: dateSchema,
     required: true
   },
   wiki: { // <- url
