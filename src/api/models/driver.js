@@ -31,7 +31,7 @@ const driverSchema = new Schema({
     required: true,
   },
   dateOfBirth: { // <- dob
-    type: String,
+    type: Date,
     required: true
   },
   nationality: {
@@ -44,11 +44,11 @@ const driverSchema = new Schema({
   },
   // TODO
   // team: {
-  //   current: {
+  //   last: {
   //     type: Schema.Types.ObjectId,
   //     ref: 'Constructor',
   //   },
-  //   list: {
+  //   history: {
   //     type: [{
   //       type: Schema.Types.ObjectId,
   //       ref: 'Constructor'
