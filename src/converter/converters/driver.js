@@ -29,7 +29,9 @@ const conversion = () => {
           },
           dateOfBirth: driver.dob,
           nationality: driver.nationality,
-          wiki: driver.url
+          wiki: driver.url,
+          // seasons: ,
+          // _circuits: ,
         })
       })
     })

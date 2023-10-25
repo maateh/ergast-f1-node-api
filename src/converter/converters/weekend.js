@@ -19,7 +19,10 @@ const getAllWeekends = () => {
 
 const conversion = () => {
   console.info('Weekends conversion started...')
-  return Promise.all([getAllWeekends(), Circuit.find()])
+  return Promise.all([
+    getAllWeekends(),
+    Circuit.find()
+  ])
     .then(([races, circuits]) => {
       return races.map(race => {
         return new Weekend({
@@ -34,8 +37,11 @@ const conversion = () => {
             time: race.time || '00:00:00',
             exact: !!race.time
           },
-          sessions: parseSessions(race),
           wiki: race.url,
+          sessions: parseSessions(race),
+          // results: ,
+          // _drivers: ,
+          // _constructors: ,
           _circuit: circuits.find(c => c.ergastId === race.circuitId)._id
         })
       })

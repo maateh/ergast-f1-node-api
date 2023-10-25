@@ -25,7 +25,9 @@ const conversion = () => {
         return new Season({
           year: season.year,
           wiki: season.url,
-          _weekends: weekends.filter(w => w.year === +season.year)
+          _weekends: weekends.filter(w => w.year === +season.year),
+          // _drivers: ,
+          // _constructors: ,
         })
       })
     })

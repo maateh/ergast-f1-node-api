@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose')
 
 const dateSchema = require('./schemas/date')
 const sessionSchema = require('./schemas/session')
+const resultsSchema = require('./schemas/results')
 
 const weekendSchema = new Schema({
   ergastId: { // <- raceId
@@ -24,11 +25,12 @@ const weekendSchema = new Schema({
     type: dateSchema,
     required: true
   },
-  sessions: [sessionSchema],
   wiki: { // <- url
     type: String,
     required: true
   },
+  sessions: [sessionSchema],
+  results: resultsSchema,
   _circuit: {
     type: Schema.Types.ObjectId,
     ref: 'Circuit',
@@ -42,17 +44,6 @@ const weekendSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Constructor'
   }],
-  // results: {
-  //   qualifying: [{
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Qualifying'
-  //   }],
-  //   race: [{
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Race'
-  //   }],
-  //   sprint: [{}]
-  // },
   // pits: [{}],
   // laps: [{}]
 })

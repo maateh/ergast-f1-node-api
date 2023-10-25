@@ -23,7 +23,9 @@ const conversion = () => {
           ref: constructor.constructorRef,
           name: constructor.name,
           nationality: constructor.nationality,
-          wiki: constructor.url
+          wiki: constructor.url,
+          // seasons: ,
+          // _circuits: ,
         })
       })
     })
