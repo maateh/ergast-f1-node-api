@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const qualifyingSchema = new Schema({
+const qualifyingResultSchema = new Schema({
   ergastId: { // <- qualifyId
     type: Number,
     required: true
@@ -38,4 +38,4 @@ const qualifyingSchema = new Schema({
   }
 })
 
-module.exports = model('Qualifying', qualifyingSchema)
+module.exports = model('QualifyingResult', qualifyingResultSchema)

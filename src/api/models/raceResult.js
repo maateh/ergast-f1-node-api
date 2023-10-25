@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const raceSchema = new Schema({
+const raceResultSchema = new Schema({
   ergastId: { // <- resultId
     type: Number,
     required: true
@@ -88,4 +88,4 @@ const raceSchema = new Schema({
   // }
 })
 
-module.exports = model('Race', raceSchema)
+module.exports = model('RaceResult', raceResultSchema)
