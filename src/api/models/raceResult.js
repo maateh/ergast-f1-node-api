@@ -5,10 +5,6 @@ const raceResultSchema = new Schema({
     type: Number,
     required: true
   },
-  // number: { - unnecessary
-  //   type: Number,
-  //   required: true
-  // },
   grid: {
     type: Number,
     required: true

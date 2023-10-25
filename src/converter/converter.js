@@ -13,13 +13,13 @@ const qualifyingResultConverter = require('./converters/qualifyingResult')
 
 const startConversion = async () => {
   try {
-    await circuitConverter()
+    await circuitConverter() // DONE
     await driverConverter()
     await constructorConverter()
     await weekendConverter()
     await seasonConverter()
-    await raceResultConverter()
-    await qualifyingResultConverter()
+    await raceResultConverter() // DONE
+    await qualifyingResultConverter() // DONE
   } catch (err) {
     console.error('An error occured during conversion: ', err)
   }
