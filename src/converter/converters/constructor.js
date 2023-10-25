@@ -13,28 +13,17 @@ const getAllConstructors = () => {
     })
 }
 
-const getConstructorRaces = () => {
-  const query = 'SELECT * FROM results'
-
-  return db.execute(query)
-    .then(([constructors]) => constructors)
-    .catch(err => {
-      console.error('Query error: ', err)
-    })
-}
-
 const conversion = () => {
   console.info('Constructors conversion started...')
-  return Promise.all([getAllConstructors(), getConstructorRaces()])
-    .then(([constructors, constructorRaces]) => {
+  return getAllConstructors()
+    .then(constructors => {
       return constructors.map(constructor => {
         return new Constructor({
           ergastId: constructor.constructorId,
           ref: constructor.constructorRef,
           name: constructor.name,
           nationality: constructor.nationality,
-          wiki: constructor.url,
-          seasons: parseSeasons(constructorRaces)
+          wiki: constructor.url
         })
       })
     })
@@ -45,10 +34,6 @@ const conversion = () => {
     .catch(err => {
       console.error('Conversion error: ', err)
     })
-}
-
-const parseSeasons = constructorRaces => {
-
 }
 
 module.exports = conversion
