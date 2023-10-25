@@ -2,6 +2,9 @@ const db = require('../database/mysql')
 
 // models
 const QualifyingResult = require('../../api/models/qualifyingResult')
+const Weekend = require('../../api/models/weekend')
+const Driver = require('../../api/models/driver')
+const Constructor = require('../../api/models/constructor')
 
 const getAllQualifyingResults = () => {
   const query = `
@@ -22,18 +25,23 @@ const getAllQualifyingResults = () => {
 
 const conversion = () => {
   console.info('QualifyingResults conversion started...')
-  return getAllQualifyingResults()
-    .then(qualifyingResults => {
+  return Promise.all([
+    getAllQualifyingResults(),
+    Weekend.find(),
+    Driver.find(),
+    Constructor.find()
+  ])
+    .then(([qualifyingResults, weekends, drivers, constructors]) => {
       return qualifyingResults.map(result => {
         return new QualifyingResult({
           ergastId: result.qualifyId,
           position: result.position,
-          q1: result.q1,
-          q2: result.q2,
-          q3: result.q3,
-          // _weekend: ,
-          // _driver: ,
-          // _constructor: ,
+          q1: result.q1 || undefined,
+          q2: result.q2 || undefined,
+          q3: result.q3 || undefined,
+          _weekend: weekends.find(w => w.ergastId === result.raceId),
+          _driver: drivers.find(d => d.ref === result.driverRef),
+          _constructor: constructors.find(c => c.ref === result.constructorRef)
         })
       })
     })

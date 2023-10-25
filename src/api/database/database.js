@@ -8,6 +8,7 @@ const createConnection = () => {
     })
     .catch(err => {
       console.error('Database connection failed: ', err)
+      process.exit()
     })
 }
 

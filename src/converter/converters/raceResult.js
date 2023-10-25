@@ -2,6 +2,9 @@ const db = require('../database/mysql')
 
 // models
 const RaceResult = require('../../api/models/raceResult')
+const Weekend = require('../../api/models/weekend')
+const Driver = require('../../api/models/driver')
+const Constructor = require('../../api/models/constructor')
 
 const getAllRaceResults = () => {
   const query = `
@@ -21,10 +24,16 @@ const getAllRaceResults = () => {
 }
 
 const conversion = () => {
-  console.info('Circuits conversion started...')
-  return getAllRaceResults()
-    .then(raceResults => {
+  console.info('RaceResults conversion started...')
+  return Promise.all([
+    getAllRaceResults(),
+    Weekend.find(),
+    Driver.find(),
+    Constructor.find()
+  ])
+    .then(([raceResults, weekends, drivers, constructors]) => {
       return raceResults.map(result => {
+        console.log(`Creating #${result.resultId} race result...`)
         return new RaceResult({
           ergastId: result.resultId,
           grid: result.grid,
@@ -36,18 +45,18 @@ const conversion = () => {
           points: result.points,
           laps: result.laps,
           duration: {
-            gap: result.time,
-            ms: result.milliseconds
+            gap: result.time || undefined,
+            ms: result.milliseconds || undefined
           },
           fastest: {
-            rank: result.rank,
-            lap: result.fastestLap,
-            time: result.fastestLapTime,
-            speed: result.fastestLapSpeed
+            rank: result.rank || undefined,
+            lap: result.fastestLap || undefined,
+            time: result.fastestLapTime || undefined,
+            speed: result.fastestLapSpeed || undefined
           },
-          // _weekend: ,
-          // _driver: ,
-          // _constructor: ,
+          _weekend: weekends.find(w => w.ergastId === result.raceId),
+          _driver: drivers.find(d => d.ref === result.driverRef),
+          _constructor: constructors.find(c => c.ref === result.constructorRef)
         })
       })
     })

@@ -14,21 +14,18 @@ const raceResultSchema = new Schema({
     required: true
   },
   position: {
-    type: {
-      number: { // <- position
-        type: Number,
-        required: false
-      },
-      text: { // <- positionText
-        type: String,
-        required: true
-      },
-      order: { // <- positionOrder
-        type: Number,
-        required: true
-      }
+    number: { // <- position
+      type: Number,
+      required: false
     },
-    required: true
+    text: { // <- positionText
+      type: String,
+      required: true
+    },
+    order: { // <- positionOrder
+      type: Number,
+      required: true
+    }
   },
   points: {
     type: Number,
