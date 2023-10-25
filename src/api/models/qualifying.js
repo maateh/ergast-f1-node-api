@@ -21,21 +21,21 @@ const qualifyingSchema = new Schema({
     type: String,
     required: false
   },
-  weekend: {
+  _weekend: {
     type: Schema.Types.ObjectId,
     ref: 'Weekend',
     required: true
   },
-  // driver: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Driver',
-  //   required: true
-  // },
-  // constructor: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Constructor',
-  //   required: true
-  // }
+  _driver: {
+    type: Schema.Types.ObjectId,
+    ref: 'Driver',
+    required: true
+  },
+  _constructor: {
+    type: Schema.Types.ObjectId,
+    ref: 'Constructor',
+    required: true
+  }
 })
 
 module.exports = model('Qualifying', qualifyingSchema)

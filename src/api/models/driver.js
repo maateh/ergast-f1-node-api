@@ -44,7 +44,7 @@ const driverSchema = new Schema({
   },
   seasons: [{
     year: {
-      type: String,
+      type: Number,
       required: true
     },
     _season: {
@@ -64,7 +64,8 @@ const driverSchema = new Schema({
       },
       _constructor: {
         type: Schema.Types.ObjectId,
-        ref: 'Constructor'
+        ref: 'Constructor',
+        required: true
       },
       // _results: [{
       //   type: Schema.Types.ObjectId,
@@ -74,8 +75,9 @@ const driverSchema = new Schema({
   }],
   _circuits: [{
     type: Schema.Types.ObjectId,
-    ref: 'Circuit'
-  }],
+    ref: 'Circuit',
+    unique: true
+  }]
 })
 
 module.exports = model('Driver', driverSchema)

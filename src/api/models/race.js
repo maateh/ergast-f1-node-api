@@ -66,24 +66,24 @@ const raceSchema = new Schema({
       required: false
     }
   },
-  // status: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Status',
-  //   required: true
-  // },
-  weekend: {
+  _weekend: {
     type: Schema.Types.ObjectId,
     ref: 'Weekend',
     required: true
   },
-  driver: {
+  _driver: {
     type: Schema.Types.ObjectId,
     ref: 'Driver',
     required: true
   },
-  // constructor: {
+  _constructor: {
+    type: Schema.Types.ObjectId,
+    ref: 'Constructor',
+    required: true
+  },
+  // status: {
   //   type: Schema.Types.ObjectId,
-  //   ref: 'Constructor',
+  //   ref: 'Status',
   //   required: true
   // }
 })

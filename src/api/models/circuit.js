@@ -14,29 +14,26 @@ const circuitSchema = new Schema({
     required: true
   },
   location: {
-    type: {
-      country: {
-        type: String,
-        required: true
-      },
-      locality: {
-        type: String,
-        required: true
-      },
-      lat: {
-        type: Number,
-        required: true
-      },
-      lng: {
-        type: Number,
-        required: true
-      },
-      alt: {
-        type: Number,
-        required: true
-      }
+    country: {
+      type: String,
+      required: true
     },
-    required: false,
+    locality: {
+      type: String,
+      required: true
+    },
+    lat: {
+      type: Number,
+      required: true
+    },
+    lng: {
+      type: Number,
+      required: true
+    },
+    alt: {
+      type: Number,
+      required: true
+    }
   },
   wiki: { // <- url
     type: String,
