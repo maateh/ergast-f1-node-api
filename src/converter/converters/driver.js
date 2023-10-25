@@ -18,9 +18,11 @@ const conversion = () => {
   return getAllDrivers()
     .then(drivers => {
       return drivers.map(driver => {
-        const convertedDriver = new Driver({
+        return new Driver({
           ergastId: driver.driverId,
           ref: driver.driverRef,
+          number: driver.number || undefined,
+          code: driver.code || undefined,
           name: {
             firstName: driver.forename,
             lastName: driver.surname
@@ -29,14 +31,6 @@ const conversion = () => {
           nationality: driver.nationality,
           wiki: driver.url
         })
-
-        if (driver.number) {
-          convertedDriver.number = driver.number
-        }
-        if (driver.code) {
-          convertedDriver.code = driver.code
-        }
-        return convertedDriver
       })
     })
     .then(convertedDrivers => {

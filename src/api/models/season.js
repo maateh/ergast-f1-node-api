@@ -11,18 +11,15 @@ const seasonSchema = new Schema({
   },
   _weekends: [{
     type: Schema.Types.ObjectId,
-    ref: 'Weekend',
-    unique: true
+    ref: 'Weekend'
   }],
   _drivers: [{
     type: Schema.Types.ObjectId,
-    ref: 'Driver',
-    unique: true
+    ref: 'Driver'
   }],
   _constructors: [{
     type: Schema.Types.ObjectId,
-    ref: 'Constructor',
-    unique: true
+    ref: 'Constructor'
   }]
 })
 

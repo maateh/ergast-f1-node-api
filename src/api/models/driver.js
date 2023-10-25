@@ -75,8 +75,7 @@ const driverSchema = new Schema({
   }],
   _circuits: [{
     type: Schema.Types.ObjectId,
-    ref: 'Circuit',
-    unique: true
+    ref: 'Circuit'
   }]
 })
 

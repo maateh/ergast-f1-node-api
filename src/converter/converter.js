@@ -31,7 +31,7 @@ const convertMySQLToMongo = () => {
 
 convertMySQLToMongo()
   .then(() => {
-    console.log('Success!')
+    console.info('Conversion success!')
     process.exit()
   })
   .catch(err => {
