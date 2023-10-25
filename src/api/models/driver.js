@@ -42,19 +42,40 @@ const driverSchema = new Schema({
     type: String,
     required: true
   },
-  // TODO
-  // team: {
-  //   last: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Constructor',
-  //   },
-  //   history: {
-  //     type: [{
-  //       type: Schema.Types.ObjectId,
-  //       ref: 'Constructor'
-  //     }]
-  //   }
-  // }
+  seasons: [{
+    year: {
+      type: String,
+      required: true
+    },
+    _season: {
+      type: Schema.Types.ObjectId,
+      ref: 'Season',
+      required: true
+    },
+    weekends: [{
+      round: {
+        type: Number,
+        required: true
+      },
+      _weekend: {
+        type: Schema.Types.ObjectId,
+        ref: 'Weekend',
+        required: true
+      },
+      _constructor: {
+        type: Schema.Types.ObjectId,
+        ref: 'Constructor'
+      },
+      // _results: [{
+      //   type: Schema.Types.ObjectId,
+      //   ref: 'Result'
+      // }]
+    }]
+  }],
+  _circuits: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Circuit'
+  }],
 })
 
 module.exports = model('Driver', driverSchema)

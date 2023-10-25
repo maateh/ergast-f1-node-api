@@ -9,10 +9,9 @@ const seasonSchema = new Schema({
     type: String,
     required: true
   },
-  weekends: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Weekend'
-  }]
+  drivers: [{}],
+  constructors: [{}],
+  weekends: [{}]
 })
 
 module.exports = model('Season', seasonSchema)

@@ -46,7 +46,9 @@ const weekendSchema = new Schema({
     sprint: [{}]
   },
   pits: [{}],
-  laps: [{}]
+  laps: [{}],
+  drivers: [{}],
+  constructors: [{}],
 })
 
 module.exports = model('Weekend', weekendSchema)

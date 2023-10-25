@@ -48,12 +48,12 @@ const raceSchema = new Schema({
       required: false
     }
   },
-  fastestLap: {
-    number: { // <- fastestLap
+  fastest: {
+    rank: { // <- rank
       type: Number,
       required: false
     },
-    rank: { // <- rank
+    lap: { // <- fastestLap
       type: Number,
       required: false
     },
