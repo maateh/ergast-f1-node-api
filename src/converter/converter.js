@@ -11,11 +11,11 @@ const constructorConverter = require('./converters/constructor')
 
 const startConversion = async () => {
   try {
-    // await circuitConverter()
-    // await seasonConverter()
-    // await weekendConverter()
-    // await driverConverter()
+    await circuitConverter()
+    await driverConverter()
     await constructorConverter()
+    await weekendConverter()
+    await seasonConverter()
   } catch (err) {
     console.error('An error occured during conversion: ', err)
   }

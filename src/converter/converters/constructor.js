@@ -13,25 +13,42 @@ const getAllConstructors = () => {
     })
 }
 
+const getConstructorRaces = () => {
+  const query = 'SELECT * FROM results'
+
+  return db.execute(query)
+    .then(([constructors]) => constructors)
+    .catch(err => {
+      console.error('Query error: ', err)
+    })
+}
+
 const conversion = () => {
-  return getAllConstructors()
-    .then(constructors => {
-      const convertedConstructors = constructors.map(constructor => {
+  console.info('Constructors conversion started...')
+  return Promise.all([getAllConstructors(), getConstructorRaces()])
+    .then(([constructors, constructorRaces]) => {
+      return constructors.map(constructor => {
         return new Constructor({
           ergastId: constructor.constructorId,
           ref: constructor.constructorRef,
           name: constructor.name,
           nationality: constructor.nationality,
-          wiki: constructor.url
+          wiki: constructor.url,
+          seasons: parseSeasons(constructorRaces)
         })
       })
-      // console.log('convertedConstructors: ', convertedConstructors)
-
+    })
+    .then(convertedConstructors => {
       return Constructor.insertMany(convertedConstructors)
     })
+    .then(() => console.info('Constructors conversion done!'))
     .catch(err => {
       console.error('Conversion error: ', err)
     })
+}
+
+const parseSeasons = constructorRaces => {
+
 }
 
 module.exports = conversion

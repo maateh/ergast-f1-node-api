@@ -14,9 +14,10 @@ const getAllCircuits = () => {
 }
 
 const conversion = () => {
+  console.info('Circuits conversion started...')
   return getAllCircuits()
     .then(circuits => {
-      const convertedCircuits = circuits.map(circuit => {
+      return circuits.map(circuit => {
         return new Circuit({
           ergastId: circuit.circuitId,
           name: circuit.name,
@@ -31,9 +32,12 @@ const conversion = () => {
           }
         })
       })
-      // console.log('convertedCircuits: ', convertedCircuits)
-
+    })
+    .then(convertedCircuits => {
       return Circuit.insertMany(convertedCircuits)
+    })
+    .then(() => {
+      console.info('Circuits conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

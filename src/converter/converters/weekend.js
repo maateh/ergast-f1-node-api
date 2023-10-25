@@ -18,6 +18,7 @@ const getAllWeekends = () => {
 }
 
 const conversion = () => {
+  console.info('Weekends conversion started...')
   return Promise.all([getAllWeekends(), Circuit.find()])
     .then(([races, circuits]) => {
       return races.map(race => {
@@ -33,14 +34,17 @@ const conversion = () => {
             time: race.time || '00:00:00',
             exact: !!race.time
           },
+          sessions: parseSessions(race),
           wiki: race.url,
-          circuit: circuits.find(c => c.ergastId === race.circuitId)._id,
-          sessions: parseSessions(race)
+          _circuit: circuits.find(c => c.ergastId === race.circuitId)._id
         })
       })
     })
     .then(convertedWeekends => {
       return Weekend.insertMany(convertedWeekends)
+    })
+    .then(() => {
+      console.info('Weekends conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

@@ -24,6 +24,7 @@ const weekendSchema = new Schema({
     type: dateSchema,
     required: true
   },
+  sessions: [sessionSchema],
   wiki: { // <- url
     type: String,
     required: true
@@ -33,7 +34,6 @@ const weekendSchema = new Schema({
     ref: 'Circuit',
     required: true
   },
-  sessions: [sessionSchema],
   _drivers: [{
     type: Schema.Types.ObjectId,
     ref: 'Driver'

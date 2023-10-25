@@ -14,9 +14,10 @@ const getAllDrivers = () => {
 }
 
 const conversion = () => {
+  console.info('Drivers conversion started...')
   return getAllDrivers()
     .then(drivers => {
-      const convertedDrivers = drivers.map(driver => {
+      return drivers.map(driver => {
         const convertedDriver = new Driver({
           ergastId: driver.driverId,
           ref: driver.driverRef,
@@ -28,18 +29,21 @@ const conversion = () => {
           nationality: driver.nationality,
           wiki: driver.url
         })
+
         if (driver.number) {
           convertedDriver.number = driver.number
         }
         if (driver.code) {
           convertedDriver.code = driver.code
         }
-
         return convertedDriver
       })
-      // console.log('convertedDrivers: ', convertedDrivers)
-
+    })
+    .then(convertedDrivers => {
       return Driver.insertMany(convertedDrivers)
+    })
+    .then(() => {
+      console.info('Drivers conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

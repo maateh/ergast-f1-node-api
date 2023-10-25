@@ -14,19 +14,21 @@ const getAllSeasons = () => {
 }
 
 const conversion = () => {
+  console.info('Seasons conversion started...')
   return getAllSeasons()
     .then(seasons => {
-      const convertedSeasons = seasons.map(season => {
+      return seasons.map(season => {
         return new Season({
           year: season.year,
           wiki: season.url,
           // weekends:
         })
       })
-      // console.log('convertedSeasons: ', convertedSeasons)
-
+    })
+    .then(convertedSeasons => {
       return Season.insertMany(convertedSeasons)
     })
+    .then(() => console.info('Seasons conversion done!'))
     .catch(err => {
       console.error('Conversion error: ', err)
     })
