@@ -11,6 +11,7 @@ const { SESSIONS } = require('../../api/models/schemas/session')
 const getAllWeekends = () => {
   const query = 'SELECT * FROM races'
 
+  console.info('Get circuits from the SQL Database...')
   return db.execute(query)
     .then(([races]) => races)
     .catch(err => {
@@ -45,10 +46,11 @@ const conversion = () => {
       })
     })
     .then(convertedWeekends => {
+      console.info('Inserting weekends...')
       return Weekend.insertMany(convertedWeekends)
     })
     .then(() => {
-      console.info('Weekends conversion done!')
+      console.info('Weekends conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)
@@ -77,9 +79,12 @@ const createAssociations = () => {
         return weekend
       })
     })
-    .then(updatedWeekends => Weekend.bulkSave(updatedWeekends))
+    .then(updatedWeekends => {
+      console.info('Saving weekends...')
+      return Weekend.bulkSave(updatedWeekends)
+    })
     .then(() => {
-      console.info('Associations is created successfully for the Weekend model!')
+      console.info('Associations is created successfully for the Weekend model!\n')
     })
     .catch(err => {
       console.error('Association creation error: ', err)

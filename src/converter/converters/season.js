@@ -8,6 +8,7 @@ const RaceResult = require('../../api/models/raceResult')
 const getAllSeasons = () => {
   const query = 'SELECT * FROM seasons'
 
+  console.info('Get seasons from the SQL Database...')
   return db.execute(query)
     .then(([seasons]) => seasons)
     .catch(err => {
@@ -17,7 +18,6 @@ const getAllSeasons = () => {
 
 const conversion = () => {
   console.info('Seasons conversion started...')
-
   return Promise.all([
     getAllSeasons(),
     Weekend.find()
@@ -32,9 +32,10 @@ const conversion = () => {
       })
     })
     .then(convertedSeasons => {
+      console.info('Inserting seasons...')
       return Season.insertMany(convertedSeasons)
     })
-    .then(() => console.info('Seasons conversion done!'))
+    .then(() => console.info('Seasons conversion done!\n'))
     .catch(err => {
       console.error('Conversion error: ', err)
     })
@@ -42,7 +43,6 @@ const conversion = () => {
 
 const createAssociations = () => {
   console.info('Creating associations to the Season model...')
-
   return Promise.all([
     Season.find(),
     RaceResult.find().populate(['_weekend', '_driver', '_constructor']),
@@ -59,9 +59,12 @@ const createAssociations = () => {
         return season
       })
     })
-    .then(updatedSeasons => Season.bulkSave(updatedSeasons))
+    .then(updatedSeasons => {
+      console.info('Saving seasons...')
+      return Season.bulkSave(updatedSeasons)
+    })
     .then(() => {
-      console.info('Associations is created successfully for the Season model!')
+      console.info('Associations is created successfully for the Season model!\n')
     })
     .catch(err => {
       console.error('Association creation error: ', err)

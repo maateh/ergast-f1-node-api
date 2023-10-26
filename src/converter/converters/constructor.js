@@ -8,6 +8,7 @@ const RaceResult = require('../../api/models/raceResult')
 const getAllConstructors = () => {
   const query = 'SELECT * FROM constructors'
 
+  console.info('Get constructors from the MySQL Database...')
   return db.execute(query)
     .then(([constructors]) => constructors)
     .catch(err => {
@@ -25,16 +26,15 @@ const conversion = () => {
           ref: constructor.constructorRef,
           name: constructor.name,
           nationality: constructor.nationality,
-          wiki: constructor.url,
-          // seasons: ,
-          // _circuits: ,
+          wiki: constructor.url
         })
       })
     })
     .then(convertedConstructors => {
+      console.info('Inserting constructors...')
       return Constructor.insertMany(convertedConstructors)
     })
-    .then(() => console.info('Constructors conversion done!'))
+    .then(() => console.info('Constructors conversion done!\n'))
     .catch(err => {
       console.error('Conversion error: ', err)
     })
@@ -84,7 +84,7 @@ const createAssociations = () => {
       return Constructor.bulkSave(updatedConstructors)
     })
     .then(() => {
-      console.info('Associations is created successfully for the Constructor model!')
+      console.info('Associations is created successfully for the Constructor model!\n')
     })
     .catch(err => {
       console.error('Association creation error: ', err)

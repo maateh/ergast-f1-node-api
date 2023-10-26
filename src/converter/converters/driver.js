@@ -8,6 +8,7 @@ const RaceResult = require('../../api/models/raceResult')
 const getAllDrivers = () => {
   const query = 'SELECT * FROM drivers'
 
+  console.info('Get drivers from the MySQL Database...')
   return db.execute(query)
     .then(([drivers]) => drivers)
     .catch(err => {
@@ -42,7 +43,7 @@ const conversion = () => {
       return Driver.insertMany(convertedDrivers)
     })
     .then(() => {
-      console.info('Drivers conversion done!')
+      console.info('Drivers conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)
@@ -91,7 +92,7 @@ const createAssociations = () => {
       return Driver.bulkSave(updatedDrivers)
     })
     .then(() => {
-      console.info('Associations is created successfully for the Driver model!')
+      console.info('Associations is created successfully for the Driver model!\n')
     })
     .catch(err => {
       console.error('Association creation error: ', err)

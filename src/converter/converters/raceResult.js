@@ -16,6 +16,7 @@ const getAllRaceResults = () => {
     WHERE ra.raceId=re.raceId AND re.driverId=dr.driverId AND re.constructorId=co.constructorId AND re.statusId=st.statusId ORDER BY ra.year, ra.round, re.positionOrder
   `
 
+  console.info('Get race results from the SQL Database...')
   return db.execute(query)
     .then(([raceResults]) => raceResults)
     .catch(err => {
@@ -60,10 +61,11 @@ const conversion = () => {
       })
     })
     .then(convertedRaceResults => {
+      console.info('Inserting race results...')
       return RaceResult.insertMany(convertedRaceResults)
     })
     .then(() => {
-      console.info('RaceResults conversion done!')
+      console.info('RaceResults conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

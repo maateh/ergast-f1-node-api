@@ -6,6 +6,7 @@ const Circuit = require('../../api/models/circuit')
 const getAllCircuits = () => {
   const query = 'SELECT * FROM circuits'
 
+  console.info('Get circuits from the MySQL Database...')
   return db.execute(query)
     .then(([circuits]) => circuits)
     .catch(err => {
@@ -34,10 +35,11 @@ const conversion = () => {
       })
     })
     .then(convertedCircuits => {
+      console.info('Inserting circuits...')
       return Circuit.insertMany(convertedCircuits)
     })
     .then(() => {
-      console.info('Circuits conversion done!')
+      console.info('Circuits conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

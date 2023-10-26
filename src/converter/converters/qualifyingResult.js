@@ -16,6 +16,7 @@ const getAllQualifyingResults = () => {
     ORDER BY ra.year, ra.round, qu.position 
   `
 
+  console.info('Get qualifying results from the SQL Database...')
   return db.execute(query)
     .then(([qualifyingResults]) => qualifyingResults)
     .catch(err => {
@@ -46,10 +47,11 @@ const conversion = () => {
       })
     })
     .then(convertedQualifyingResults => {
+      console.info('Inserting qualifying results...')
       return QualifyingResult.insertMany(convertedQualifyingResults)
     })
     .then(() => {
-      console.info('QualifyingResults conversion done!')
+      console.info('QualifyingResults conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)
