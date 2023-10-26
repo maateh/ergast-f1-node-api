@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose')
 
+const resultsSchema = require('./schemas/results')
+
 const constructorSchema = new Schema({
   ergastId: { // <- constructorId
     type: Number,
@@ -45,10 +47,7 @@ const constructorSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Driver'
       }],
-      // _results: [{
-      //   type: Schema.Types.ObjectId,
-      //   ref: 'Result'
-      // }]
+      results: resultsSchema
     }]
   }],
   _circuits: [{
