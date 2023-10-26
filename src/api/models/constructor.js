@@ -5,11 +5,13 @@ const resultsSchema = require('./schemas/results')
 const constructorSchema = new Schema({
   ergastId: { // <- constructorId
     type: Number,
-    required: true
+    required: false,
+    unique: true
   },
   ref: { // <- constructorRef
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   name: {
     type: String,

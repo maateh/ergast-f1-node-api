@@ -3,7 +3,8 @@ const { Schema, model } = require('mongoose')
 const seasonSchema = new Schema({
   year: {
     type: Number,
-    required: true
+    required: true,
+    unique: true
   },
   wiki: { // <- url
     type: String,

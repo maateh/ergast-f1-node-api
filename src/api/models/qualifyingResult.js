@@ -3,7 +3,8 @@ const { Schema, model } = require('mongoose')
 const qualifyingResultSchema = new Schema({
   ergastId: { // <- qualifyId
     type: Number,
-    required: true
+    required: false,
+    unique: true
   },
   position: {
     type: Number,

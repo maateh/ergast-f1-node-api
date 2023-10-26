@@ -3,11 +3,13 @@ const { Schema, model } = require('mongoose')
 const circuitSchema = new Schema({
   ergastId: { // <- circuitId
     type: Number,
-    required: true
+    required: false,
+    unique: true
   },
   ref: { // <- circuitRef
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   name: {
     type: String,

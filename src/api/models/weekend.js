@@ -7,7 +7,8 @@ const resultsSchema = require('./schemas/results')
 const weekendSchema = new Schema({
   ergastId: { // <- raceId
     type: Number,
-    required: true
+    required: false,
+    unique: true
   },
   year: {
     type: Number,

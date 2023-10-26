@@ -5,11 +5,13 @@ const resultsSchema = require('./schemas/results')
 const driverSchema = new Schema({
   ergastId: { // <- driverId
     type: Number,
-    required: true
+    required: false,
+    unique: true
   },
   ref: { // <- driverRef
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   number: {
     type: Number,
@@ -20,17 +22,14 @@ const driverSchema = new Schema({
     required: false
   },
   name: {
-    type: {
-      firstName: {
-        type: String,
-        required: true
-      },
-      lastName: {
-        type: String,
-        required: true
-      }
+    firstName: {
+      type: String,
+      required: true
     },
-    required: true,
+    lastName: {
+      type: String,
+      required: true
+    }
   },
   dateOfBirth: { // <- dob
     type: Date,

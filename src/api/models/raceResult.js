@@ -3,7 +3,8 @@ const { Schema, model } = require('mongoose')
 const raceResultSchema = new Schema({
   ergastId: { // <- resultId
     type: Number,
-    required: true
+    required: false,
+    unique: true
   },
   grid: {
     type: Number,
