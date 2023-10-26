@@ -11,23 +11,36 @@ const constructorConverter = require('./converters/constructor')
 const raceResultConverter = require('./converters/raceResult')
 const qualifyingResultConverter = require('./converters/qualifyingResult')
 
-const startConversion = async () => {
-  try {
-    await circuitConverter() // DONE
-    await driverConverter()
-    await constructorConverter()
-    await weekendConverter()
-    await seasonConverter()
-    await raceResultConverter() // DONE
-    await qualifyingResultConverter() // DONE
-  } catch (err) {
-    console.error('An error occured during conversion: ', err)
-  }
+// associations
+const { createSeasonAssociations } = require('./converters/season')
+
+const startConversion = () => {
+  return circuitConverter() // DONE
+    .then(() => driverConverter())
+    .then(() => constructorConverter())
+    .then(() => weekendConverter())
+    .then(() => seasonConverter()) // DONE
+    .then(() => raceResultConverter()) // DONE
+    .then(() => qualifyingResultConverter()) // DONE
+    .catch(err => {
+      console.error('An error occurred during conversion: ', err)
+    })
+}
+
+const createAssociations = () => {
+  return createSeasonAssociations()
+    .then(() => {
+
+    })
+    .catch(err => {
+      console.error('An error occurred during creating associations: ', err)
+    })
 }
 
 const convertMySQLToMongo = () => {
   return createConnection()
     .then(() => startConversion())
+    .then(() => createAssociations())
     .catch(err => {
       console.error('Initialize failed: ', err)
     })

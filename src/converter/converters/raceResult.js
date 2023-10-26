@@ -33,7 +33,6 @@ const conversion = () => {
   ])
     .then(([raceResults, weekends, drivers, constructors]) => {
       return raceResults.map(result => {
-        console.log(`Creating #${result.resultId} race result...`)
         return new RaceResult({
           ergastId: result.resultId,
           grid: result.grid,
