@@ -3,6 +3,7 @@ const db = require('../database/mysql')
 // models
 const Weekend = require('../../api/models/weekend')
 const Circuit = require('../../api/models/circuit')
+const RaceResult = require('../../api/models/raceResult')
 
 // constants
 const { SESSIONS } = require('../../api/models/schemas/session')
@@ -39,9 +40,6 @@ const conversion = () => {
           },
           wiki: race.url,
           sessions: parseSessions(race),
-          // results: ,
-          // _drivers: ,
-          // _constructors: ,
           _circuit: circuits.find(c => c.ergastId === race.circuitId)._id
         })
       })
@@ -54,6 +52,37 @@ const conversion = () => {
     })
     .catch(err => {
       console.error('Conversion error: ', err)
+    })
+}
+
+const createAssociations = () => {
+  console.info('Creating associations to the Weekend model...')
+
+  return Promise.all([
+    Weekend.find(),
+    RaceResult.find().populate(['_driver', '_constructor']),
+  ])
+    .then(([weekends, results]) => {
+      return weekends.map(weekend => {
+        const weekendResults = results.filter(r => r._weekend.equals(weekend._id))
+
+        const drivers = new Set(weekendResults.map(r => r._driver._id))
+        const constructors = new Set(weekendResults.map(r => r._constructor._id))
+
+        weekend._drivers = Array.from(drivers)
+        weekend._constructors = Array.from(constructors)
+        // weekend.results = {
+        //   race: weekendResults
+        // }
+        return weekend
+      })
+    })
+    .then(updatedWeekends => Weekend.bulkSave(updatedWeekends))
+    .then(() => {
+      console.info('Associations is created successfully for the Weekend model!')
+    })
+    .catch(err => {
+      console.error('Association creation error: ', err)
     })
 }
 
@@ -148,3 +177,4 @@ const parseSessions = race => {
 }
 
 module.exports = conversion
+module.exports.createWeekendAssociations = createAssociations

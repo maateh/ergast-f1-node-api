@@ -13,6 +13,7 @@ const qualifyingResultConverter = require('./converters/qualifyingResult')
 
 // associations
 const { createSeasonAssociations } = require('./converters/season')
+const { createWeekendAssociations } = require('./converters/weekend')
 
 const startConversion = () => {
   return circuitConverter() // DONE
@@ -29,9 +30,7 @@ const startConversion = () => {
 
 const createAssociations = () => {
   return createSeasonAssociations()
-    .then(() => {
-
-    })
+    .then(() => createWeekendAssociations())
     .catch(err => {
       console.error('An error occurred during creating associations: ', err)
     })
