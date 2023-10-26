@@ -14,10 +14,11 @@ const qualifyingResultConverter = require('./converters/qualifyingResult')
 // associations
 const { createSeasonAssociations } = require('./converters/season')
 const { createWeekendAssociations } = require('./converters/weekend')
+const { createDriverAssociations } = require('./converters/driver')
 
 const startConversion = () => {
   return circuitConverter() // DONE
-    .then(() => driverConverter())
+    .then(() => driverConverter()) // DONE
     .then(() => constructorConverter())
     .then(() => weekendConverter())
     .then(() => seasonConverter()) // DONE
@@ -31,6 +32,7 @@ const startConversion = () => {
 const createAssociations = () => {
   return createSeasonAssociations()
     .then(() => createWeekendAssociations())
+    .then(() => createDriverAssociations())
     .catch(err => {
       console.error('An error occurred during creating associations: ', err)
     })
@@ -47,7 +49,7 @@ const convertMySQLToMongo = () => {
 
 convertMySQLToMongo()
   .then(() => {
-    console.info('Conversion success!')
+    console.info('Conversion done!')
     process.exit()
   })
   .catch(err => {
