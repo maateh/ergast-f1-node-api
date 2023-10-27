@@ -61,9 +61,9 @@ const conversion = () => {
         })
       })
     })
-    .then(updatedResults => {
-      console.info('Saving QualifyingResults...')
-      return QualifyingResult.bulkSave(updatedResults)
+    .then(convertedQualifyingResults => {
+      console.info('Inserting QualifyingResults...')
+      return QualifyingResult.bulkSave(convertedQualifyingResults)
     })
     .then(() => {
       console.info('QualifyingResults conversion done!\n')

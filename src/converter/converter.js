@@ -32,8 +32,8 @@ const startConversion = () => {
 
 const createAssociations = () => {
   return createWeekendAssociations()
-    .then(() => createDriverAssociations()) // circuits - ?
-    .then(() => createConstructorAssociations()) // circuits - ?
+    // .then(() => createDriverAssociations()) // circuits - ?
+    // .then(() => createConstructorAssociations()) // circuits - ?
     .catch(err => {
       console.error('An error occurred during creating associations: ', err)
     })
@@ -42,7 +42,7 @@ const createAssociations = () => {
 const convertMySQLToMongo = () => {
   return createConnection()
     .then(() => startConversion())
-    // .then(() => createAssociations())
+    .then(() => createAssociations())
     .catch(err => {
       console.error('Initialize failed: ', err)
     })

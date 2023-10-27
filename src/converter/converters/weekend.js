@@ -69,7 +69,7 @@ const createAssociations = () => {
   ])
     .then(([weekends, results]) => {
       return weekends.map(weekend => {
-        const weekendResults = results.filter(r => r._weekend.equals(weekend._id))
+        const weekendResults = results.filter(r => r.weekend._weekend.equals(weekend._id))
 
         const drivers = new Set(weekendResults.map(r => r.driver._driver))
         const constructors = new Set(weekendResults.map(r => r.constructor._constructor))

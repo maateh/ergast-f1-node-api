@@ -80,7 +80,7 @@ const conversion = () => {
       return RaceResult.insertMany(convertedRaceResults)
     })
     .then(() => {
-      console.info('Results (+race) conversion done!\n')
+      console.info('RaceResults conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)
