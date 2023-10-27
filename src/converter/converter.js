@@ -15,29 +15,31 @@ const sprintResultConverter = require('./converters/sprintResult')
 // associations
 const { createWeekendAssociations } = require('./converters/weekend')
 
-const startConversion = () => {
-  return circuitConverter()
-    .then(() => seasonConverter())
-    .then(() => driverConverter())
-    .then(() => teamConverter())
-    .then(() => weekendConverter())
-    .then(() => raceResultConverter())
-    .then(() => qualifyingResultConverter())
-    .then(() => sprintResultConverter())
-    .catch(err => {
-      console.error('An error occurred during conversion: ', err)
-    })
+const startConversion = async () => {
+  try {
+    await circuitConverter()
+    await seasonConverter()
+    await driverConverter()
+    await teamConverter()
+    await weekendConverter()
+    await raceResultConverter()
+    await qualifyingResultConverter()
+    await sprintResultConverter()
+  } catch (err) {
+    console.error('An error occurred during conversion: ', err)
+  }
 }
 
-const createAssociations = () => {
-  return createWeekendAssociations()
-    .catch(err => {
-      console.error('An error occurred during creating associations: ', err)
-    })
+const createAssociations = async () => {
+  try {
+    await createWeekendAssociations()
+  } catch (err) {
+    console.error('An error occurred during creating associations: ', err)
+  }
 }
 
-const convertMySQLToMongo = () => {
-  return createConnection()
+const convertMySQLToMongo = async () => {
+  await createConnection()
     .then(() => startConversion())
     .then(() => createAssociations())
     .catch(err => {

@@ -22,11 +22,7 @@ const teamSchema = new Schema({
   wiki: { // <- url
     type: String,
     required: true
-  },
-  _circuits: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Circuit'
-  }]
+  }
 })
 
 module.exports = model('Team', teamSchema)
