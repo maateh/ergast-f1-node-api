@@ -63,9 +63,9 @@ const driverSchema = new Schema({
   //       ref: 'Weekend',
   //       required: true
   //     },
-  //     _constructor: {
+  //     _team: {
   //       type: Schema.Types.ObjectId,
-  //       ref: 'Constructor',
+  //       ref: 'Team',
   //       required: true
   //     },
   //     results: resultsSchema

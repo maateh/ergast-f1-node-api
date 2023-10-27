@@ -2,10 +2,10 @@ const { DataTypes } = require('sequelize')
 
 const sequelize = require('../database/database')
 
-const ConstructorStandings = sequelize.define(
-  'constructorStandings',
+const TeamStandings = sequelize.define(
+  'teamStandings',
   {
-    constructorStandingsId: {
+    teamStandingsId: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -41,17 +41,17 @@ const ConstructorStandings = sequelize.define(
     },
   },
   {
-    tableName: 'constructorstandings',
+    tableName: 'teamstandings',
     timestamps: false,
     indexes: [
       {
         name: 'PRIMARY',
         unique: true,
         using: 'BTREE',
-        fields: [{ name: 'constructorStandingsId' }],
+        fields: [{ name: 'teamStandingsId' }],
       },
     ],
   }
 )
 
-module.exports = ConstructorStandings
+module.exports = TeamStandings

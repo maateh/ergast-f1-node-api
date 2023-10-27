@@ -2,8 +2,8 @@ const { DataTypes } = require('sequelize')
 
 const sequelize = require('../database/database')
 
-const Constructor = sequelize.define(
-  'constructor',
+const Team = sequelize.define(
+  'team',
   {
     constructorId: {
       autoIncrement: true,
@@ -33,7 +33,7 @@ const Constructor = sequelize.define(
     },
   },
   {
-    tableName: 'constructors',
+    tableName: 'teams',
     timestamps: false,
     indexes: [
       {
@@ -52,4 +52,4 @@ const Constructor = sequelize.define(
   }
 )
 
-module.exports = Constructor
+module.exports = Team

@@ -12,7 +12,7 @@ const {
 const { createConnection } = require('./api/database/database')
 
 const circuitsRoute = require('./api/routes/circuits')
-const constructorsRoute = require('./api/routes/constructors')
+const teamsRoute = require('./api/routes/teams')
 const driversRoute = require('./api/routes/drivers')
 
 const BASE_URL = process.env.BASE_URL
@@ -23,7 +23,7 @@ const app = express()
 app.use(express.json())
 
 app.use(`${BASE_URL}/circuits`, circuitsRoute)
-app.use(`${BASE_URL}/constructors`, constructorsRoute)
+app.use(`${BASE_URL}/teams`, teamsRoute)
 app.use(`${BASE_URL}/drivers`, driversRoute)
 
 // Initialize app

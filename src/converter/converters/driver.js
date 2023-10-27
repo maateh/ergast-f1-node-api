@@ -71,9 +71,9 @@ const createAssociations = () => {
         //       return {
         //         round: w.round,
         //         _weekend: w._id,
-        //         _constructor: driverResults.find(r => {
+        //         _team: driverResults.find(r => {
         //           return r._weekend._id.equals(w._id) && r._driver.equals(driver._id)
-        //         })._constructor
+        //         })._team
         //       }
         //     })
         //   }

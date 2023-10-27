@@ -40,17 +40,17 @@ const conversion = () => {
 //   console.info('Creating associations to the Season model...')
 //   return Promise.all([
 //     Season.find(),
-//     RaceResult.find().populate(['_weekend', '_driver', '_constructor']),
+//     RaceResult.find().populate(['_weekend', '_driver', '_team']),
 //   ])
 //     .then(([seasons, results]) => {
 //       return seasons.map(season => {
 //         const seasonResults = results.filter(r => r._weekend.year === season.year)
 
 //         const drivers = new Set(seasonResults.map(r => r._driver._id))
-//         const constructors = new Set(seasonResults.map(r => r._constructor._id))
+//         const teams = new Set(seasonResults.map(r => r._team._id))
 
 //         season._drivers = Array.from(drivers)
-//         season._constructors = Array.from(constructors)
+//         season._teams = Array.from(teams)
 //         return season
 //       })
 //     })

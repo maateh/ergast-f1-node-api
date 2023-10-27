@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose')
 
 // const resultsSchema = require('./schemas/results')
 
-const constructorSchema = new Schema({
+const teamSchema = new Schema({
   ergastId: { // <- constructorId
     type: Number,
     required: false,
@@ -58,4 +58,4 @@ const constructorSchema = new Schema({
   }]
 })
 
-module.exports = model('Constructor', constructorSchema)
+module.exports = model('Team', teamSchema)

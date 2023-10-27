@@ -6,7 +6,7 @@ const { createConnection } = require('../api/database/database')
 const circuitConverter = require('./converters/circuit')
 const seasonConverter = require('./converters/season')
 const driverConverter = require('./converters/driver')
-const constructorConverter = require('./converters/constructor')
+const teamConverter = require('./converters/team')
 const weekendConverter = require('./converters/weekend')
 const raceResultConverter = require('./converters/raceResult')
 const qualifyingResultConverter = require('./converters/qualifyingResult')
@@ -15,13 +15,13 @@ const qualifyingResultConverter = require('./converters/qualifyingResult')
 // const { createSeasonAssociations } = require('./converters/season')
 const { createWeekendAssociations } = require('./converters/weekend')
 const { createDriverAssociations } = require('./converters/driver')
-const { createConstructorAssociations } = require('./converters/constructor')
+const { createTeamAssociations } = require('./converters/team')
 
 const startConversion = () => {
   return circuitConverter()
     .then(() => seasonConverter())
     .then(() => driverConverter())
-    .then(() => constructorConverter())
+    .then(() => teamConverter())
     .then(() => weekendConverter())
     .then(() => raceResultConverter())
     .then(() => qualifyingResultConverter())
@@ -33,7 +33,7 @@ const startConversion = () => {
 const createAssociations = () => {
   return createWeekendAssociations()
     // .then(() => createDriverAssociations()) // circuits - ?
-    // .then(() => createConstructorAssociations()) // circuits - ?
+    // .then(() => createTeamAssociations()) // circuits - ?
     .catch(err => {
       console.error('An error occurred during creating associations: ', err)
     })

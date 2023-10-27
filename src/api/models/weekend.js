@@ -45,9 +45,9 @@ const weekendSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Driver'
   }],
-  _constructors: [{
+  _teams: [{
     type: Schema.Types.ObjectId,
-    ref: 'Constructor'
+    ref: 'Team'
   }],
   // pits: [{}],
   // laps: [{}]

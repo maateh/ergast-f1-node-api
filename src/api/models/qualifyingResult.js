@@ -37,14 +37,14 @@ const qualifyingResultSchema = new Schema({
       required: true
     }
   },
-  constructor: {
+  team: {
     ref: {
       type: String,
       required: true
     },
-    _constructor: {
+    _team: {
       type: Schema.Types.ObjectId,
-      ref: 'Constructor',
+      ref: 'Team',
       required: true
     }
   },

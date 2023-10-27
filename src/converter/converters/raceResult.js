@@ -4,7 +4,7 @@ const db = require('../database/mysql')
 const RaceResult = require('../../api/models/raceResult')
 const Weekend = require('../../api/models/weekend')
 const Driver = require('../../api/models/driver')
-const Constructor = require('../../api/models/constructor')
+const Team = require('../../api/models/team')
 
 const getAllRaceResults = () => {
   const query = `
@@ -30,13 +30,13 @@ const conversion = () => {
     getAllRaceResults(),
     Weekend.find(),
     Driver.find(),
-    Constructor.find()
+    Team.find()
   ])
-    .then(([raceResults, weekends, drivers, constructors]) => {
+    .then(([raceResults, weekends, drivers, teams]) => {
       return raceResults.map(result => {
         const weekend = weekends.find(w => w.ergastId === result.raceId)
         const driver = drivers.find(d => d.ref === result.driverRef)
-        const constructor = constructors.find(c => c.ref === result.constructorRef)
+        const team = teams.find(c => c.ref === result.constructorRef)
 
         return new RaceResult({
           weekend: {
@@ -49,9 +49,9 @@ const conversion = () => {
             ref: driver.ref,
             _driver: driver._id
           },
-          constructor: {
-            ref: constructor.ref,
-            _constructor: constructor._id
+          team: {
+            ref: team.ref,
+            _team: team._id
           },
           ergastId: result.resultId,
           grid: result.grid,

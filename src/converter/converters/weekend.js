@@ -72,10 +72,10 @@ const createAssociations = () => {
         const weekendResults = results.filter(r => r.weekend._weekend.equals(weekend._id))
 
         const drivers = new Set(weekendResults.map(r => r.driver._driver))
-        const constructors = new Set(weekendResults.map(r => r.constructor._constructor))
+        const teams = new Set(weekendResults.map(r => r.team._team))
 
         weekend._drivers = Array.from(drivers)
-        weekend._constructors = Array.from(constructors)
+        weekend._teams = Array.from(teams)
         return weekend
       })
     })
