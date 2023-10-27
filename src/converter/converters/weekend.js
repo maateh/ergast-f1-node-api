@@ -66,27 +66,41 @@ const conversion = () => {
 }
 
 const createAssociations = () => {
-  console.info('Creating associations to the Weekend model...')
+  console.info('Create associations to the Weekend model...')
 
   return Promise.all([
     Weekend.find(),
     RaceResult.find(),
   ])
     .then(([weekends, results]) => {
-      return weekends.map(weekend => {
-        const weekendResults = results.filter(r => r.weekend._weekend.equals(weekend._id))
+      const resultsMap = results.reduce((results, result) => {
+        const key = result.weekend._weekend.toString()
+        const values = results.get(key) || []
+        results.set(key, [...values, result])
 
-        const drivers = new Set(weekendResults.map(r => ({
+        return results
+      }, new Map())
+
+      return weekends.map(weekend => {
+        // INFO: There are no results for weekends that
+        // haven't yet taken place in the actual year.
+        const weekendResults = resultsMap.get(weekend._id.toString()) || []
+
+        const drivers = weekendResults.map(r => ({
           ref: r.driver.ref,
           _driver: r.driver._driver.toString()
-        })))
-        const teams = new Set(weekendResults.map(r => ({
+        }))
+        const teams = weekendResults.map(r => ({
           ref: r.team.ref,
           _team: r.team._team.toString()
-        })))
+        }))
 
-        weekend.drivers = Array.from(drivers)
-        weekend.teams = Array.from(teams)
+        // INFO: Because drivers and constructors is given by
+        // the 'raceresults' collection, so the team will be
+        // duplicated if we don't filter them.
+        // On drivers... just as a precaution.
+        weekend.drivers = [...new Map(drivers.map(d => [d._driver, d])).values()]
+        weekend.teams = [...new Map(teams.map(t => [t._team, t])).values()]
         return weekend
       })
     })
