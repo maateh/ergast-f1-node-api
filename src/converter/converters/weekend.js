@@ -71,8 +71,8 @@ const createAssociations = () => {
       return weekends.map(weekend => {
         const weekendResults = results.filter(r => r.weekend._weekend.equals(weekend._id))
 
-        const drivers = new Set(weekendResults.map(r => r.driver._driver))
-        const teams = new Set(weekendResults.map(r => r.team._team))
+        const drivers = new Set(weekendResults.map(r => r.driver._driver.toString()))
+        const teams = new Set(weekendResults.map(r => r.team._team.toString()))
 
         weekend._drivers = Array.from(drivers)
         weekend._teams = Array.from(teams)
