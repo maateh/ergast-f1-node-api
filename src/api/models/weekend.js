@@ -36,18 +36,38 @@ const weekendSchema = new Schema({
   },
   sessions: [sessionSchema],
   // results: resultsSchema,
-  _circuit: {
-    type: Schema.Types.ObjectId,
-    ref: 'Circuit',
-    required: true
+  circuit: {
+    ref: {
+      type: String,
+      required: true
+    },
+    _circuit: {
+      type: Schema.Types.ObjectId,
+      ref: 'Circuit',
+      required: true
+    }
   },
-  _drivers: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Driver'
+  drivers: [{
+    ref: {
+      type: String,
+      required: true
+    },
+    _driver: {
+      type: Schema.Types.ObjectId,
+      ref: 'Driver',
+      required: true
+    }
   }],
-  _teams: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Team'
+  teams: [{
+    ref: {
+      type: String,
+      required: true
+    },
+    _team: {
+      type: Schema.Types.ObjectId,
+      ref: 'Team',
+      required: true
+    }
   }],
   // pits: [{}],
   // laps: [{}]

@@ -29,6 +29,8 @@ const conversion = () => {
   ])
     .then(([races, seasons, circuits]) => {
       return races.map(race => {
+        const circuit = circuits.find(c => c.ergastId === race.circuitId)
+
         return new Weekend({
           ergastId: race.raceId,
           year: race.year,
@@ -44,7 +46,10 @@ const conversion = () => {
           },
           wiki: race.url,
           sessions: parseSessions(race),
-          _circuit: circuits.find(c => c.ergastId === race.circuitId)._id
+          circuit: {
+            ref: circuit.ref,
+            _circuit: circuit._id
+          }
         })
       })
     })
@@ -71,11 +76,17 @@ const createAssociations = () => {
       return weekends.map(weekend => {
         const weekendResults = results.filter(r => r.weekend._weekend.equals(weekend._id))
 
-        const drivers = new Set(weekendResults.map(r => r.driver._driver.toString()))
-        const teams = new Set(weekendResults.map(r => r.team._team.toString()))
+        const drivers = new Set(weekendResults.map(r => ({
+          ref: r.driver.ref,
+          _driver: r.driver._driver.toString()
+        })))
+        const teams = new Set(weekendResults.map(r => ({
+          ref: r.team.ref,
+          _team: r.team._team.toString()
+        })))
 
-        weekend._drivers = Array.from(drivers)
-        weekend._teams = Array.from(teams)
+        weekend.drivers = Array.from(drivers)
+        weekend.teams = Array.from(teams)
         return weekend
       })
     })
