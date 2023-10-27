@@ -6,6 +6,48 @@ const raceResultSchema = new Schema({
     required: false,
     unique: true
   },
+  weekend: {
+    year: {
+      type: Number,
+      required: true
+    },
+    round: {
+      type: Number,
+      required: true
+    },
+    _season: {
+      type: Schema.Types.ObjectId,
+      ref: 'Season',
+      required: true
+    },
+    _weekend: {
+      type: Schema.Types.ObjectId,
+      ref: 'Weekend',
+      required: true
+    }
+  },
+  driver: {
+    ref: {
+      type: String,
+      required: true
+    },
+    _driver: {
+      type: Schema.Types.ObjectId,
+      ref: 'Driver',
+      required: true
+    }
+  },
+  constructor: {
+    ref: {
+      type: String,
+      required: true
+    },
+    _constructor: {
+      type: Schema.Types.ObjectId,
+      ref: 'Constructor',
+      required: true
+    }
+  },
   grid: {
     type: Number,
     required: true
@@ -59,27 +101,7 @@ const raceResultSchema = new Schema({
       type: String,
       required: false
     }
-  },
-  _weekend: {
-    type: Schema.Types.ObjectId,
-    ref: 'Weekend',
-    required: true
-  },
-  _driver: {
-    type: Schema.Types.ObjectId,
-    ref: 'Driver',
-    required: true
-  },
-  _constructor: {
-    type: Schema.Types.ObjectId,
-    ref: 'Constructor',
-    required: true
-  },
-  // status: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Status',
-  //   required: true
-  // }
+  }
 })
 
 module.exports = model('RaceResult', raceResultSchema)

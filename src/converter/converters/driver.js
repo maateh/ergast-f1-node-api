@@ -33,7 +33,6 @@ const conversion = () => {
           dateOfBirth: driver.dob,
           nationality: driver.nationality,
           wiki: driver.url,
-          // seasons: ,
           // _circuits: ,
         })
       })
@@ -60,29 +59,29 @@ const createAssociations = () => {
   ])
     .then(([drivers, seasons, results]) => {
       return drivers.map(driver => {
-        const driverSeasons = seasons.filter(s => s._drivers.includes(driver._id))
+        // const driverSeasons = seasons.filter(s => s._drivers.includes(driver._id))
         const driverResults = results.filter(r => r._driver.equals(driver._id))
 
-        const parsedSeasons = driverSeasons.map(s => {
-          const driverWeekends = s._weekends.filter(w => w._drivers.includes(driver._id))
-          return {
-            year: s.year,
-            _season: s._id,
-            weekends: driverWeekends.map(w => {
-              return {
-                round: w.round,
-                _weekend: w._id,
-                _constructor: driverResults.find(r => {
-                  return r._weekend._id.equals(w._id) && r._driver.equals(driver._id)
-                })._constructor
-              }
-            })
-          }
-        })
+        // const parsedSeasons = driverSeasons.map(s => {
+        //   const driverWeekends = s._weekends.filter(w => w._drivers.includes(driver._id))
+        //   return {
+        //     year: s.year,
+        //     _season: s._id,
+        //     weekends: driverWeekends.map(w => {
+        //       return {
+        //         round: w.round,
+        //         _weekend: w._id,
+        //         _constructor: driverResults.find(r => {
+        //           return r._weekend._id.equals(w._id) && r._driver.equals(driver._id)
+        //         })._constructor
+        //       }
+        //     })
+        //   }
+        // })
 
         const circuits = new Set(driverResults.map(r => r._weekend._circuit.toString()))
 
-        driver.seasons = parsedSeasons
+        // driver.seasons = parsedSeasons
         driver._circuits = Array.from(circuits)
         return driver
       })

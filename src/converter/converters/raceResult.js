@@ -34,7 +34,25 @@ const conversion = () => {
   ])
     .then(([raceResults, weekends, drivers, constructors]) => {
       return raceResults.map(result => {
+        const weekend = weekends.find(w => w.ergastId === result.raceId)
+        const driver = drivers.find(d => d.ref === result.driverRef)
+        const constructor = constructors.find(c => c.ref === result.constructorRef)
+
         return new RaceResult({
+          weekend: {
+            year: weekend.year,
+            round: weekend.round,
+            _weekend: weekend._id,
+            _season: weekend._season
+          },
+          driver: {
+            ref: driver.ref,
+            _driver: driver._id
+          },
+          constructor: {
+            ref: constructor.ref,
+            _constructor: constructor._id
+          },
           ergastId: result.resultId,
           grid: result.grid,
           position: {
@@ -53,19 +71,16 @@ const conversion = () => {
             lap: result.fastestLap || undefined,
             time: result.fastestLapTime || undefined,
             speed: result.fastestLapSpeed || undefined
-          },
-          _weekend: weekends.find(w => w.ergastId === result.raceId),
-          _driver: drivers.find(d => d.ref === result.driverRef),
-          _constructor: constructors.find(c => c.ref === result.constructorRef)
+          }
         })
       })
     })
     .then(convertedRaceResults => {
-      console.info('Inserting race results...')
+      console.info('Inserting RaceResults...')
       return RaceResult.insertMany(convertedRaceResults)
     })
     .then(() => {
-      console.info('RaceResults conversion done!\n')
+      console.info('Results (+race) conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

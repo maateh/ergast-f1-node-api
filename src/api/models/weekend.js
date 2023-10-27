@@ -2,13 +2,17 @@ const { Schema, model } = require('mongoose')
 
 const dateSchema = require('./schemas/date')
 const sessionSchema = require('./schemas/session')
-const resultsSchema = require('./schemas/results')
+// const resultsSchema = require('./schemas/results')
 
 const weekendSchema = new Schema({
   ergastId: { // <- raceId
     type: Number,
     required: false,
     unique: true
+  },
+  _season: {
+    type: Schema.Types.ObjectId,
+    required: true
   },
   year: {
     type: Number,
@@ -31,7 +35,7 @@ const weekendSchema = new Schema({
     required: true
   },
   sessions: [sessionSchema],
-  results: resultsSchema,
+  // results: resultsSchema,
   _circuit: {
     type: Schema.Types.ObjectId,
     ref: 'Circuit',

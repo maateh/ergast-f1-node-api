@@ -2,6 +2,7 @@ const db = require('../database/mysql')
 
 // models
 const Weekend = require('../../api/models/weekend')
+const Season = require('../../api/models/season')
 const Circuit = require('../../api/models/circuit')
 const RaceResult = require('../../api/models/raceResult')
 
@@ -23,14 +24,16 @@ const conversion = () => {
   console.info('Weekends conversion started...')
   return Promise.all([
     getAllWeekends(),
+    Season.find(),
     Circuit.find()
   ])
-    .then(([races, circuits]) => {
+    .then(([races, seasons, circuits]) => {
       return races.map(race => {
         return new Weekend({
           ergastId: race.raceId,
           year: race.year,
           round: race.round,
+          _season: seasons.find(s => s.year === +race.year),
           name: race.name,
           date: {
             full: race.time
@@ -62,20 +65,17 @@ const createAssociations = () => {
 
   return Promise.all([
     Weekend.find(),
-    RaceResult.find().populate(['_driver', '_constructor']),
+    RaceResult.find(),
   ])
     .then(([weekends, results]) => {
       return weekends.map(weekend => {
         const weekendResults = results.filter(r => r._weekend.equals(weekend._id))
 
-        const drivers = new Set(weekendResults.map(r => r._driver._id))
-        const constructors = new Set(weekendResults.map(r => r._constructor._id))
+        const drivers = new Set(weekendResults.map(r => r.driver._driver))
+        const constructors = new Set(weekendResults.map(r => r.constructor._constructor))
 
         weekend._drivers = Array.from(drivers)
         weekend._constructors = Array.from(constructors)
-        // weekend.results = {
-        //   race: weekendResults
-        // }
         return weekend
       })
     })

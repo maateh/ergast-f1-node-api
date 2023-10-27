@@ -26,7 +26,8 @@ const conversion = () => {
           ref: constructor.constructorRef,
           name: constructor.name,
           nationality: constructor.nationality,
-          wiki: constructor.url
+          wiki: constructor.url,
+          // _circuits: ,
         })
       })
     })
@@ -50,31 +51,31 @@ const createAssociations = () => {
   ])
     .then(([constructors, seasons, results]) => {
       return constructors.map(constructor => {
-        const constructorSeasons = seasons.filter(s => s._constructors.includes(constructor._id))
+        // const constructorSeasons = seasons.filter(s => s._constructors.includes(constructor._id))
         const constructorResults = results.filter(r => r._constructor.equals(constructor._id))
 
-        const parsedSeasons = constructorSeasons.map(s => {
-          const constructorWeekends = s._weekends.filter(w => w._constructors.includes(constructor._id))
-          return {
-            year: s.year,
-            _season: s._id,
-            weekends: constructorWeekends.map(w => {
-              return {
-                round: w.round,
-                _weekend: w._id,
-                _drivers: constructorResults
-                  .filter(r => {
-                    return r._weekend._id.equals(w._id) && r._constructor.equals(constructor._id)
-                  })
-                  .map(r => r._driver)
-              }
-            })
-          }
-        })
+        // const parsedSeasons = constructorSeasons.map(s => {
+        //   const constructorWeekends = s._weekends.filter(w => w._constructors.includes(constructor._id))
+        //   return {
+        //     year: s.year,
+        //     _season: s._id,
+        //     weekends: constructorWeekends.map(w => {
+        //       return {
+        //         round: w.round,
+        //         _weekend: w._id,
+        //         _drivers: constructorResults
+        //           .filter(r => {
+        //             return r._weekend._id.equals(w._id) && r._constructor.equals(constructor._id)
+        //           })
+        //           .map(r => r._driver)
+        //       }
+        //     })
+        //   }
+        // })
 
         const circuits = new Set(constructorResults.map(r => r._weekend._circuit.toString()))
 
-        constructor.seasons = parsedSeasons
+        // constructor.seasons = parsedSeasons
         constructor._circuits = Array.from(circuits)
         return constructor
       })

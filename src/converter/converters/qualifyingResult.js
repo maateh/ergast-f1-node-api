@@ -34,21 +34,36 @@ const conversion = () => {
   ])
     .then(([qualifyingResults, weekends, drivers, constructors]) => {
       return qualifyingResults.map(result => {
+        const weekend = weekends.find(w => w.ergastId === result.raceId)
+        const driver = drivers.find(d => d.ref === result.driverRef)
+        const constructor = constructors.find(c => c.ref === result.constructorRef)
+
         return new QualifyingResult({
+          weekend: {
+            year: weekend.year,
+            round: weekend.round,
+            _weekend: weekend._id,
+            _season: weekend._season
+          },
+          driver: {
+            ref: driver.ref,
+            _driver: driver._id
+          },
+          constructor: {
+            ref: constructor.ref,
+            _constructor: constructor._id
+          },
           ergastId: result.qualifyId,
           position: result.position,
           q1: result.q1 || undefined,
           q2: result.q2 || undefined,
-          q3: result.q3 || undefined,
-          _weekend: weekends.find(w => w.ergastId === result.raceId),
-          _driver: drivers.find(d => d.ref === result.driverRef),
-          _constructor: constructors.find(c => c.ref === result.constructorRef)
+          q3: result.q3 || undefined
         })
       })
     })
-    .then(convertedQualifyingResults => {
-      console.info('Inserting qualifying results...')
-      return QualifyingResult.insertMany(convertedQualifyingResults)
+    .then(updatedResults => {
+      console.info('Saving QualifyingResults...')
+      return QualifyingResult.bulkSave(updatedResults)
     })
     .then(() => {
       console.info('QualifyingResults conversion done!\n')
