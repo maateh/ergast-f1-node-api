@@ -1,43 +1,43 @@
 const db = require('../database/mysql')
 
 // models
-const RaceResult = require('../../api/models/raceResult')
+const SprintResult = require('../../api/models/sprintResult')
 const Weekend = require('../../api/models/weekend')
 const Driver = require('../../api/models/driver')
 const Team = require('../../api/models/team')
 
-const getAllRaceResults = () => {
+const getAllSprintResults = () => {
   const query = `
-    SELECT re.resultId, re.grid, re.position, re.positionText, re.positionOrder, re.points, re.laps, re.time, re.milliseconds, re.rank, re.fastestLap, re.fastestLapTime, re.fastestLapSpeed,
+    SELECT re.sprintResultId, re.grid, re.position, re.positionText, re.positionOrder, re.points, re.laps, re.time, re.milliseconds, re.fastestLap, re.fastestLapTime,
       ra.raceId, dr.driverRef, co.constructorRef,
       st.statusId, st.status
-    FROM races ra, results re, drivers dr, constructors co, status st 
+    FROM races ra, sprintresults re, drivers dr, constructors co, status st 
     WHERE ra.raceId=re.raceId AND re.driverId=dr.driverId AND re.constructorId=co.constructorId AND re.statusId=st.statusId ORDER BY ra.year, ra.round, re.positionOrder
   `
 
-  console.info('Get race results from the SQL Database...')
+  console.info('Get sprint results from the SQL Database...')
   return db.execute(query)
-    .then(([raceResults]) => raceResults)
+    .then(([sprintResults]) => sprintResults)
     .catch(err => {
       console.error('Query error: ', err)
     })
 }
 
 const conversion = () => {
-  console.info('RaceResults conversion started...')
+  console.info('SprintResults conversion started...')
   return Promise.all([
-    getAllRaceResults(),
+    getAllSprintResults(),
     Weekend.find(),
     Driver.find(),
     Team.find()
   ])
-    .then(([raceResults, weekends, drivers, teams]) => {
-      return raceResults.map(result => {
+    .then(([sprintResults, weekends, drivers, teams]) => {
+      return sprintResults.map(result => {
         const weekend = weekends.find(w => w.ergastId === result.raceId)
         const driver = drivers.find(d => d.ref === result.driverRef)
         const team = teams.find(c => c.ref === result.constructorRef)
 
-        return new RaceResult({
+        return new SprintResult({
           weekend: {
             year: weekend.year,
             round: weekend.round,
@@ -52,7 +52,7 @@ const conversion = () => {
             ref: team.ref,
             _team: team._id
           },
-          ergastId: result.resultId,
+          ergastId: result.sprintResultId,
           grid: result.grid,
           position: {
             number: result.position,
@@ -74,12 +74,12 @@ const conversion = () => {
         })
       })
     })
-    .then(convertedRaceResults => {
-      console.info('Inserting RaceResults...')
-      return RaceResult.insertMany(convertedRaceResults)
+    .then(convertedSprintResults => {
+      console.info('Inserting SprintResults...')
+      return SprintResult.insertMany(convertedSprintResults)
     })
     .then(() => {
-      console.info('RaceResults conversion done!\n')
+      console.info('SprintResults conversion done!\n')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

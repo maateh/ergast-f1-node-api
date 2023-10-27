@@ -8,9 +8,7 @@ const Team = require('../../api/models/team')
 
 const getAllQualifyingResults = () => {
   const query = `
-    SELECT SQL_CALC_FOUND_ROWS
-      qu.qualifyId, qu.position, qu.q1, qu.q2, qu.q3, 
-      ra.raceId, dr.driverRef, co.constructorRef 
+    SELECT qu.qualifyId, qu.position, qu.q1, qu.q2, qu.q3, ra.raceId, dr.driverRef, co.constructorRef 
     FROM races ra, qualifying qu, drivers dr, constructors co
     WHERE qu.raceId=ra.raceId AND qu.driverId=dr.driverId AND qu.constructorId=co.constructorId
     ORDER BY ra.year, ra.round, qu.position 

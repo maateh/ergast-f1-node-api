@@ -10,6 +10,7 @@ const teamConverter = require('./converters/team')
 const weekendConverter = require('./converters/weekend')
 const raceResultConverter = require('./converters/raceResult')
 const qualifyingResultConverter = require('./converters/qualifyingResult')
+const sprintResultConverter = require('./converters/sprintResult')
 
 // associations
 const { createWeekendAssociations } = require('./converters/weekend')
@@ -22,6 +23,7 @@ const startConversion = () => {
     .then(() => weekendConverter())
     .then(() => raceResultConverter())
     .then(() => qualifyingResultConverter())
+    .then(() => sprintResultConverter())
     .catch(err => {
       console.error('An error occurred during conversion: ', err)
     })
