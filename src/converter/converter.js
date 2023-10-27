@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+const { performance } = require('perf_hooks')
+
 const { createConnection } = require('../api/database/database')
 
 // converters
@@ -39,9 +41,23 @@ const createAssociations = async () => {
 }
 
 const convertMySQLToMongo = async () => {
+  let startTime = performance.now()
+
   await createConnection()
     .then(() => startConversion())
+    .then(() => {
+      const endTime = performance.now()
+      const duration = (endTime - startTime).toFixed(2)
+      console.info(`Conversion finished! (${duration} ms)\n`)
+
+      startTime = performance.now()
+    })
     .then(() => createAssociations())
+    .then(() => {
+      const endTime = performance.now()
+      const duration = (endTime - startTime).toFixed(2)
+      console.info(`Associations created! (${duration} ms)`)
+    })
     .catch(err => {
       console.error('Initialize failed: ', err)
     })
@@ -49,7 +65,7 @@ const convertMySQLToMongo = async () => {
 
 convertMySQLToMongo()
   .then(() => {
-    console.info('Conversion done!')
+    console.info('Done!')
     process.exit()
   })
   .catch(err => {

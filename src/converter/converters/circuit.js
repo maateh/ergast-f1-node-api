@@ -18,9 +18,9 @@ const conversion = () => {
   console.info('Circuits conversion started...')
   return getAllCircuits()
     .then(circuits => {
-      return circuits.map(circuit => {
-        console.info('Converting circuits...')
+      console.info('Converting circuits...')
 
+      return circuits.map(circuit => {
         return new Circuit({
           ergastId: circuit.circuitId,
           name: circuit.name,
