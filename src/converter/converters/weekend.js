@@ -6,6 +6,9 @@ const Season = require('../../api/models/season')
 const Circuit = require('../../api/models/circuit')
 const RaceResult = require('../../api/models/raceResult')
 
+// utils
+const mapper = require('../utils/mapper')
+
 // constants
 const { SESSIONS } = require('../../api/models/schemas/session')
 
@@ -30,8 +33,10 @@ const conversion = () => {
     .then(([races, seasons, circuits]) => {
       console.info('Converting weekends...')
 
+      const circuitsMap = mapper(circuits, 'ergastId')
+
       return races.map(race => {
-        const circuit = circuits.find(c => c.ergastId === race.circuitId)
+        const circuit = circuitsMap.get(race.circuitId)
 
         return new Weekend({
           ergastId: race.raceId,

@@ -6,6 +6,9 @@ const Weekend = require('../../api/models/weekend')
 const Driver = require('../../api/models/driver')
 const Team = require('../../api/models/team')
 
+// utils
+const mapper = require('../utils/mapper')
+
 const getAllRaceResults = () => {
   const query = `
     SELECT re.resultId, re.grid, re.position, re.positionText, re.positionOrder, re.points, re.laps, re.time, re.milliseconds, re.rank, re.fastestLap, re.fastestLapTime, re.fastestLapSpeed,
@@ -34,10 +37,14 @@ const conversion = () => {
     .then(([raceResults, weekends, drivers, teams]) => {
       console.info('Converting race results...')
 
+      const weekendsMap = mapper(weekends, 'ergastId')
+      const driversMap = mapper(drivers, 'ref')
+      const teamsMap = mapper(teams, 'ref')
+
       return raceResults.map(result => {
-        const weekend = weekends.find(w => w.ergastId === result.raceId)
-        const driver = drivers.find(d => d.ref === result.driverRef)
-        const team = teams.find(c => c.ref === result.constructorRef)
+        const weekend = weekendsMap.get(result.raceId)
+        const driver = driversMap.get(result.driverRef)
+        const team = teamsMap.get(result.constructorRef)
 
         return new RaceResult({
           weekend: {

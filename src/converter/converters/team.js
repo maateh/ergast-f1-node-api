@@ -34,7 +34,9 @@ const conversion = () => {
       console.info('Inserting teams...')
       return Team.insertMany(convertedTeams)
     })
-    .then(() => console.info('Teams conversion done!\n'))
+    .then(() => {
+      console.info('Teams conversion done!\n')
+    })
     .catch(err => {
       console.error('Conversion error: ', err)
     })

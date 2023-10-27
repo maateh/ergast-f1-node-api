@@ -6,6 +6,9 @@ const Weekend = require('../../api/models/weekend')
 const Driver = require('../../api/models/driver')
 const Team = require('../../api/models/team')
 
+// utils
+const mapper = require('../utils/mapper')
+
 const getAllQualifyingResults = () => {
   const query = `
     SELECT qu.qualifyId, qu.position, qu.q1, qu.q2, qu.q3, ra.raceId, dr.driverRef, co.constructorRef 
@@ -33,10 +36,14 @@ const conversion = () => {
     .then(([qualifyingResults, weekends, drivers, teams]) => {
       console.info('Converting qualifying results...')
 
+      const weekendsMap = mapper(weekends, 'ergastId')
+      const driversMap = mapper(drivers, 'ref')
+      const teamsMap = mapper(teams, 'ref')
+
       return qualifyingResults.map(result => {
-        const weekend = weekends.find(w => w.ergastId === result.raceId)
-        const driver = drivers.find(d => d.ref === result.driverRef)
-        const team = teams.find(c => c.ref === result.constructorRef)
+        const weekend = weekendsMap.get(result.raceId)
+        const driver = driversMap.get(result.driverRef)
+        const team = teamsMap.get(result.constructorRef)
 
         return new QualifyingResult({
           weekend: {

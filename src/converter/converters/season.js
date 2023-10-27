@@ -32,7 +32,9 @@ const conversion = () => {
       console.info('Inserting seasons...')
       return Season.insertMany(convertedSeasons)
     })
-    .then(() => console.info('Seasons conversion done!\n'))
+    .then(() => {
+      console.info('Seasons conversion done!\n')
+    })
     .catch(err => {
       console.error('Conversion error: ', err)
     })
