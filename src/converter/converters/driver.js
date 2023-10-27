@@ -41,7 +41,7 @@ const conversion = () => {
       return Driver.insertMany(convertedDrivers)
     })
     .then(() => {
-      console.info('Drivers conversion done!\n')
+      console.info('Drivers conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

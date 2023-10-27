@@ -19,14 +19,20 @@ const { createWeekendAssociations } = require('./converters/weekend')
 
 const startConversion = async () => {
   try {
-    await circuitConverter()
-    await seasonConverter()
-    await driverConverter()
-    await teamConverter()
-    await weekendConverter()
-    await raceResultConverter()
-    await qualifyingResultConverter()
-    await sprintResultConverter()
+    await Promise.all([
+      circuitConverter(),
+      seasonConverter(),
+      driverConverter(),
+      teamConverter()
+    ]).then(() => {
+      return weekendConverter()
+    })
+
+    await Promise.all([
+      raceResultConverter(),
+      qualifyingResultConverter(),
+      sprintResultConverter()
+    ])
   } catch (err) {
     console.error('An error occurred during conversion: ', err)
   }

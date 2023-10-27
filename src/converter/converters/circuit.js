@@ -41,7 +41,7 @@ const conversion = () => {
       return Circuit.insertMany(convertedCircuits)
     })
     .then(() => {
-      console.info('Circuits conversion done!\n')
+      console.info('Circuits conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

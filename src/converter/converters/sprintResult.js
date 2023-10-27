@@ -88,7 +88,7 @@ const conversion = () => {
       return SprintResult.insertMany(convertedSprintResults)
     })
     .then(() => {
-      console.info('SprintResults conversion done!\n')
+      console.info('SprintResults conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

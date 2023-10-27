@@ -73,7 +73,7 @@ const conversion = () => {
       return QualifyingResult.bulkSave(convertedQualifyingResults)
     })
     .then(() => {
-      console.info('QualifyingResults conversion done!\n')
+      console.info('QualifyingResults conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

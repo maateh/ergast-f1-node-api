@@ -33,16 +33,18 @@ const conversion = () => {
     .then(([races, seasons, circuits]) => {
       console.info('Converting weekends...')
 
+      const seasonsMap = mapper(seasons, 'year')
       const circuitsMap = mapper(circuits, 'ergastId')
 
       return races.map(race => {
+        const season = seasonsMap.get(race.year)
         const circuit = circuitsMap.get(race.circuitId)
 
         return new Weekend({
           ergastId: race.raceId,
           year: race.year,
           round: race.round,
-          _season: seasons.find(s => s.year === +race.year),
+          _season: season._id,
           name: race.name,
           date: {
             full: race.time
@@ -65,7 +67,7 @@ const conversion = () => {
       return Weekend.insertMany(convertedWeekends)
     })
     .then(() => {
-      console.info('Weekends conversion done!\n')
+      console.info('Weekends conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)
@@ -116,7 +118,7 @@ const createAssociations = () => {
       return Weekend.bulkSave(updatedWeekends)
     })
     .then(() => {
-      console.info('Associations is created successfully for the Weekend model!\n')
+      console.info('Associations is created successfully for the Weekend model!')
     })
     .catch(err => {
       console.error('Association creation error: ', err)
