@@ -12,10 +12,7 @@ const raceResultConverter = require('./converters/raceResult')
 const qualifyingResultConverter = require('./converters/qualifyingResult')
 
 // associations
-// const { createSeasonAssociations } = require('./converters/season')
 const { createWeekendAssociations } = require('./converters/weekend')
-const { createDriverAssociations } = require('./converters/driver')
-const { createTeamAssociations } = require('./converters/team')
 
 const startConversion = () => {
   return circuitConverter()
@@ -32,8 +29,6 @@ const startConversion = () => {
 
 const createAssociations = () => {
   return createWeekendAssociations()
-    // .then(() => createDriverAssociations()) // circuits - ?
-    // .then(() => createTeamAssociations()) // circuits - ?
     .catch(err => {
       console.error('An error occurred during creating associations: ', err)
     })

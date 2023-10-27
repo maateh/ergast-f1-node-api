@@ -1,7 +1,5 @@
 const { Schema, model } = require('mongoose')
 
-// const resultsSchema = require('./schemas/results')
-
 const driverSchema = new Schema({
   ergastId: { // <- driverId
     type: Number,
@@ -43,34 +41,6 @@ const driverSchema = new Schema({
     type: String,
     required: true
   },
-  // seasons: [{
-  //   year: {
-  //     type: Number,
-  //     required: true
-  //   },
-  //   _season: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Season',
-  //     required: true
-  //   },
-  //   weekends: [{
-  //     round: {
-  //       type: Number,
-  //       required: true
-  //     },
-  //     _weekend: {
-  //       type: Schema.Types.ObjectId,
-  //       ref: 'Weekend',
-  //       required: true
-  //     },
-  //     _team: {
-  //       type: Schema.Types.ObjectId,
-  //       ref: 'Team',
-  //       required: true
-  //     },
-  //     results: resultsSchema
-  //   }]
-  // }],
   _circuits: [{
     type: Schema.Types.ObjectId,
     ref: 'Circuit'

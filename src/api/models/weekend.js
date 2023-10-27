@@ -2,7 +2,6 @@ const { Schema, model } = require('mongoose')
 
 const dateSchema = require('./schemas/date')
 const sessionSchema = require('./schemas/session')
-// const resultsSchema = require('./schemas/results')
 
 const weekendSchema = new Schema({
   ergastId: { // <- raceId
@@ -35,7 +34,6 @@ const weekendSchema = new Schema({
     required: true
   },
   sessions: [sessionSchema],
-  // results: resultsSchema,
   circuit: {
     ref: {
       type: String,
