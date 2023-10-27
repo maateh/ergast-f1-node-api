@@ -18,6 +18,8 @@ const conversion = () => {
   console.info('Drivers conversion started...')
   return getAllDrivers()
     .then(drivers => {
+      console.info('Converting drivers...')
+
       return drivers.map(driver => {
         return new Driver({
           ergastId: driver.driverId,

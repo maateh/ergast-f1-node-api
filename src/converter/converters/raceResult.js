@@ -32,6 +32,8 @@ const conversion = () => {
     Team.find()
   ])
     .then(([raceResults, weekends, drivers, teams]) => {
+      console.info('Converting race results...')
+
       return raceResults.map(result => {
         const weekend = weekends.find(w => w.ergastId === result.raceId)
         const driver = drivers.find(d => d.ref === result.driverRef)

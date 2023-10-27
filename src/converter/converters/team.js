@@ -18,6 +18,8 @@ const conversion = () => {
   console.info('Teams conversion started...')
   return getAllConstructors()
     .then(constructors => {
+      console.info('Converting teams...')
+
       return constructors.map(constructor => {
         return new Team({
           ergastId: constructor.constructorId,

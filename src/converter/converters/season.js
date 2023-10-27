@@ -19,6 +19,8 @@ const conversion = () => {
   console.info('Seasons conversion started...')
   return getAllSeasons()
     .then(seasons => {
+      console.info('Converting seasons...')
+
       return seasons.map(season => {
         return new Season({
           year: season.year,

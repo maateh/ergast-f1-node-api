@@ -28,6 +28,8 @@ const conversion = () => {
     Circuit.find()
   ])
     .then(([races, seasons, circuits]) => {
+      console.info('Converting weekends...')
+
       return races.map(race => {
         const circuit = circuits.find(c => c.ergastId === race.circuitId)
 
