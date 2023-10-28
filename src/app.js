@@ -11,16 +11,17 @@ const circuitsRoute = require('./api/routes/circuits')
 const teamsRoute = require('./api/routes/teams')
 const driversRoute = require('./api/routes/drivers')
 
-// utils
-const queryParams = require('./api/utils/queryParams')
+// middlewares
+const getQueryParams = require('./api/middlewares/get-query-params')
+const addResponseMetadata = require('./api/middlewares/add-response-metadata')
 
 const BASE_URL = process.env.BASE_URL
 
 const app = express()
 
-// Middlewares
 app.use(express.json())
-app.use(queryParams)
+app.use(getQueryParams)
+app.use(addResponseMetadata)
 
 app.use(`${BASE_URL}/circuits`, circuitsRoute)
 app.use(`${BASE_URL}/teams`, teamsRoute)

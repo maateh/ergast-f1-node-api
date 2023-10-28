@@ -19,20 +19,6 @@ const getAllCircuits = (req, res, next) => {
     })
 }
 
-const getCircuitInformation = (req, res, next) => {
-  const { id } = req.params
-
-  Circuit.findOne({ ref: id })
-    .then(circuit => {
-      res.status(200).json(circuit)
-    })
-    .catch(err => {
-      // TODO: error handling
-      res.status(400).json({ success: false })
-      console.log('getCircuitInformation: ', err)
-    })
-}
-
 const getCircuitsWithinASeason = (req, res, next) => {
   const { year } = req.params
 
@@ -64,9 +50,23 @@ const getCircuitsWithinAWeekend = (req, res, next) => {
     })
 }
 
+const getCircuitInformation = (req, res, next) => {
+  const { id } = req.params
+
+  Circuit.findOne({ ref: id })
+    .then(circuit => {
+      res.status(200).json(circuit)
+    })
+    .catch(err => {
+      // TODO: error handling
+      res.status(400).json({ success: false })
+      console.log('getCircuitInformation: ', err)
+    })
+}
+
 module.exports = {
   getAllCircuits,
-  getCircuitInformation,
   getCircuitsWithinASeason,
-  getCircuitsWithinAWeekend
+  getCircuitsWithinAWeekend,
+  getCircuitInformation
 }
