@@ -1,13 +1,18 @@
-// Ergast F1 Database NodeJS API
+// F1 API (created with Node & Express) based on the Ergast F1 Database dumps
 if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 const express = require('express')
 
+// database
 const { createConnection } = require('./api/database/database')
 
+// models
 const circuitsRoute = require('./api/routes/circuits')
 const teamsRoute = require('./api/routes/teams')
 const driversRoute = require('./api/routes/drivers')
+
+// utils
+const queryParams = require('./api/utils/queryParams')
 
 const BASE_URL = process.env.BASE_URL
 
@@ -15,6 +20,7 @@ const app = express()
 
 // Middlewares
 app.use(express.json())
+app.use(queryParams)
 
 app.use(`${BASE_URL}/circuits`, circuitsRoute)
 app.use(`${BASE_URL}/teams`, teamsRoute)

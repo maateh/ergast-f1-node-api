@@ -3,7 +3,12 @@ const Circuit = require('../models/circuit')
 const Weekend = require('../models/weekend')
 
 const getAllCircuits = (req, res, next) => {
+  const { limit, offset } = req.query
+
   Circuit.find()
+    .sort({ name: 1 })
+    .skip(offset)
+    .limit(limit)
     .then(circuits => {
       res.status(200).json(circuits)
     })

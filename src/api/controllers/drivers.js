@@ -4,7 +4,12 @@ const Season = require('../models/season')
 const Weekend = require('../models/weekend')
 
 const getAllDrivers = (req, res, next) => {
+  const { limit, offset } = req.query
+
   Driver.find()
+    .sort({ 'name.lastName': 1 })
+    .skip(offset)
+    .limit(limit)
     .then(drivers => {
       // TODO: don't return the whole driver document
       res.status(200).json(drivers)

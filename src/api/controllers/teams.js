@@ -4,7 +4,12 @@ const Season = require('../models/season')
 const Weekend = require('../models/weekend')
 
 const getAllTeams = (req, res, next) => {
+  const { limit, offset } = req.query
+
   Team.find()
+    .sort({ name: 1 })
+    .skip(offset)
+    .limit(limit)
     .then(teams => {
       res.status(200).json(teams)
     })
