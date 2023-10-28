@@ -7,7 +7,7 @@ const Driver = require('../../api/models/driver')
 const Team = require('../../api/models/team')
 
 // utils
-const mapper = require('../utils/mapper')
+const { mapper } = require('../utils/mapper')
 
 const getAllRaceResults = () => {
   const query = `

@@ -7,7 +7,7 @@ const Circuit = require('../../api/models/circuit')
 const RaceResult = require('../../api/models/raceResult')
 
 // utils
-const mapper = require('../utils/mapper')
+const { mapper, arrayMapper } = require('../utils/mapper')
 
 // constants
 const { SESSIONS } = require('../../api/models/schemas/session')
@@ -79,16 +79,10 @@ const createAssociations = () => {
 
   return Promise.all([
     Weekend.find(),
-    RaceResult.find(),
+    RaceResult.find()
   ])
     .then(([weekends, results]) => {
-      const resultsMap = results.reduce((results, result) => {
-        const key = result.weekend._weekend.toString()
-        const values = results.get(key) || []
-        results.set(key, [...values, result])
-
-        return results
-      }, new Map())
+      const resultsMap = arrayMapper(results, ['weekend', '_weekend'])
 
       return weekends.map(weekend => {
         // INFO: There are no results for weekends that

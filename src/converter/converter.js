@@ -16,6 +16,7 @@ const sprintResultConverter = require('./converters/sprintResult')
 
 // associations
 const { createWeekendAssociations } = require('./converters/weekend')
+const { createSeasonAssociations } = require('./converters/season')
 
 const startConversion = async () => {
   try {
@@ -40,7 +41,10 @@ const startConversion = async () => {
 
 const createAssociations = async () => {
   try {
-    await createWeekendAssociations()
+    await Promise.all([
+      createWeekendAssociations(),
+      createSeasonAssociations()
+    ])
   } catch (err) {
     console.error('An error occurred during creating associations: ', err)
   }

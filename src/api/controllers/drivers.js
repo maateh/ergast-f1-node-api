@@ -6,6 +6,7 @@ const Weekend = require('../models/weekend')
 const getAllDrivers = (req, res, next) => {
   Driver.find()
     .then(drivers => {
+      // TODO: don't return the whole driver document
       res.status(200).json(drivers)
     })
     .catch(err => {
@@ -20,6 +21,7 @@ const getDriverInformation = (req, res, next) => {
 
   Driver.findOne({ ref: id })
     .then(driver => {
+      // TODO: don't return the whole driver document
       res.status(200).json(driver)
     })
     .catch(err => {
@@ -36,6 +38,7 @@ const getDriversWithinASeason = (req, res, next) => {
   // separately on the Season model
   Season.findOne({ year }).populate('drivers._driver')
     .then(season => {
+      // TODO: don't return the whole driver document
       const drivers = season.drivers.map(d => d._driver)
       res.status(200).json(drivers)
     })
@@ -50,6 +53,7 @@ const getDriversWithinAWeekend = (req, res, next) => {
 
   Weekend.findOne({ year, round }).populate('drivers._driver')
     .then(weekend => {
+      // TODO: don't return the whole driver document
       const drivers = weekend.drivers.map(d => d._driver)
       res.status(200).json(drivers)
     })
