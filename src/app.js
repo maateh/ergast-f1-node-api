@@ -3,12 +3,6 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 const express = require('express')
 
-const {
-  createDummyCircuit,
-  createDummySeason,
-  createDummyWeekend
-} = require('./api/utils/dummy')
-
 const { createConnection } = require('./api/database/database')
 
 const circuitsRoute = require('./api/routes/circuits')
