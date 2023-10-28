@@ -34,8 +34,6 @@ const getDriverInformation = (req, res, next) => {
 const getDriversWithinASeason = (req, res, next) => {
   const { year } = req.params
 
-  // TODO: save drivers (+teams)
-  // separately on the Season model
   Season.findOne({ year }).populate('drivers._driver')
     .then(season => {
       // TODO: don't return the whole driver document

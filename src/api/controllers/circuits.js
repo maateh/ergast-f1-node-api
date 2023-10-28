@@ -1,4 +1,6 @@
+// models
 const Circuit = require('../models/circuit')
+const Weekend = require('../models/weekend')
 
 const getAllCircuits = (req, res, next) => {
   Circuit.find()
@@ -28,33 +30,33 @@ const getCircuitInformation = (req, res, next) => {
 
 const getCircuitsWithinASeason = (req, res, next) => {
   const { year } = req.params
-  res.status(200).json({ success: true })
 
-  // Season.findOne({ year })
-  //   .populate('circuits')
-  //   .then(season => {
-  //     res.status(200).json(season.circuits)
-  //   })
-  //   .catch(err => {
-  //     // TODO: error handling
-  //     res.status(400).json({ success: false })
-  //     console.log('getCircuitsWithinASeason: ', err)
-  //   })
+  Weekend.find({ year }).populate('circuit._circuit')
+    .then(weekends => {
+      const circuits = weekends.map(w => w.circuit._circuit)
+
+      res.status(200).json(circuits)
+    })
+    .catch(err => {
+      // TODO: error handling
+      res.status(400).json({ success: false })
+      console.log('getCircuitsWithinASeason: ', err)
+    })
 }
 
 const getCircuitsWithinAWeekend = (req, res, next) => {
   const { year, round } = req.params
-  res.status(200).json({ success: true })
 
-  // Weekend.findOne({ where: { year, round }})
-  //   .populate('circuit')
-  //   .then(circuits => {
-  //     res.status(200).json(circuits)
-  //   })
-  //   .catch(err => {
-  //     // TODO: error handling
-  //     console.log('getCircuitsWithinAWeekend: ', err)
-  //   })
+  Weekend.findOne({ year, round }).populate('circuit._circuit')
+    .then(weekend => {
+      const circuit = weekend.circuit._circuit
+
+      res.status(200).json(circuit)
+    })
+    .catch(err => {
+      // TODO: error handling
+      console.log('getCircuitsWithinAWeekend: ', err)
+    })
 }
 
 module.exports = {
