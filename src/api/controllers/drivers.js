@@ -3,22 +3,28 @@ const Driver = require('../models/driver')
 const Season = require('../models/season')
 const Weekend = require('../models/weekend')
 
-const getAllDrivers = (req, res, next) => {
-  const { limit, offset } = req.query
+const getAllDrivers = async (req, res, next) => {
+  const { limit, offset } = res.locals.pagination
 
-  Driver.find()
-    .sort({ 'name.lastName': 1 })
-    .skip(offset)
-    .limit(limit)
-    .then(drivers => {
-      // TODO: don't return the whole driver document
-      res.status(200).json({ ...res.body, drivers })
+  try {
+    const drivers = await Driver.find()
+      .sort({ 'name.lastName': 1 })
+      .skip(offset)
+      .limit(limit)
+
+    const total = await Driver.countDocuments()
+
+    // TODO: don't return the whole driver document
+    res.json({
+      metadata: res.locals.metadata,
+      pagination: { ...res.locals.pagination, total },
+      drivers
     })
-    .catch(err => {
-      // TODO: error handling
-      res.status(400).json({ success: false })
-      console.log('getAllDrivers: ', err)
-    })
+  } catch (err) {
+    // TODO: error handling
+    res.status(500).json({ error: err })
+    console.log('getAllDrivers: ', err)
+  }
 }
 
 const getDriversWithinASeason = (req, res, next) => {
@@ -33,6 +39,7 @@ const getDriversWithinASeason = (req, res, next) => {
     })
     .catch(err => {
       // TODO: error handling
+      res.status(500).json({ error: err })
       console.log('getDriversWithinASeason: ', err)
     })
 }
@@ -49,6 +56,7 @@ const getDriversWithinAWeekend = (req, res, next) => {
     })
     .catch(err => {
       // TODO: error handling
+      res.status(500).json({ error: err })
       console.log('getDriversWithinAWeekend: ', err)
     })
 }
@@ -63,7 +71,7 @@ const getDriverInformation = (req, res, next) => {
     })
     .catch(err => {
       // TODO: error handling
-      res.status(400).json({ success: false })
+      res.status(500).json({ error: err })
       console.log('getDriverInformation: ', err)
     })
 }
