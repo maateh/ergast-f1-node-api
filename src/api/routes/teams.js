@@ -1,7 +1,10 @@
 const express = require('express')
 
 // controllers
-const controller = require('../controllers/teams')
+const getAllTeams = require('../controllers/teams/getAllTeams')
+const getTeamsWithinASeason = require('../controllers/teams/getTeamsWithinASeason')
+const getTeamsWithinAWeekend = require('../controllers/teams/getTeamsWithinAWeekend')
+const getTeamInformation = require('../controllers/teams/getTeamInformation')
 
 // middlewares
 const responsePagination = require('../middlewares/responsePagination')
@@ -9,15 +12,15 @@ const responsePagination = require('../middlewares/responsePagination')
 const router = express.Router()
 
 // List of all teams
-router.get('/', responsePagination, controller.getAllTeams)
+router.get('/', responsePagination, getAllTeams)
 
 // List of all teams within a season
-router.get('/year/:year', responsePagination, controller.getTeamsWithinASeason)
+router.get('/year/:year', responsePagination, getTeamsWithinASeason)
 
 // List of all teams within a weekend in a season
-router.get('/year/:year/round/:round', responsePagination, controller.getTeamsWithinAWeekend)
+router.get('/year/:year/round/:round', responsePagination, getTeamsWithinAWeekend)
 
 // Team information
-router.get('/:id', controller.getTeamInformation)
+router.get('/:id', getTeamInformation)
 
 module.exports = router
