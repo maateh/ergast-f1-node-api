@@ -1,19 +1,22 @@
 // models
 const Driver = require('../../models/driver')
 
-const getDriverInformation = (req, res, next) => {
+const getDriverInformation = async (req, res, next) => {
   const { id } = req.params
 
-  Driver.findOne({ ref: id })
-    .then(driver => {
-      // TODO: don't return the whole driver document
-      res.status(200).json(driver)
+  try {
+    const driver = await Driver.findOne({ ref: id })
+
+    // TODO: don't return the whole driver document
+    res.json({
+      metadata: res.locals.metadata,
+      driver
     })
-    .catch(err => {
-      // TODO: error handling
-      res.status(500).json({ error: err })
-      console.log('getDriverInformation: ', err)
-    })
+  } catch (err) {
+    // TODO: error handling
+    res.status(500).json({ error: err })
+    console.log('getDriverInformation: ', err)
+  }
 }
 
 module.exports = getDriverInformation

@@ -14,7 +14,10 @@ const getAllDrivers = async (req, res, next) => {
     // TODO: don't return the whole driver document
     res.json({
       metadata: res.locals.metadata,
-      pagination: { ...res.locals.pagination, total },
+      pagination: {
+        ...res.locals.pagination,
+        total
+      },
       drivers
     })
   } catch (err) {
