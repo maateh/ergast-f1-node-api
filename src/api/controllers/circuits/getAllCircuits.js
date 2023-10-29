@@ -2,7 +2,7 @@
 const Circuit = require('../../models/circuit')
 
 const getAllCircuits = async (req, res, next) => {
-  const { limit, offset } = req.query
+  const { limit, offset } = req.locals.pagination
 
   try {
     const total = await Circuit.countDocuments()

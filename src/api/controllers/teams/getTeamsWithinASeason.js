@@ -1,19 +1,35 @@
 // models
 const Season = require('../../models/season')
 
-const getTeamsWithinASeason = (req, res, next) => {
+const getTeamsWithinASeason = async (req, res, next) => {
   const { year } = req.params
+  const { limit, offset } = res.locals.pagination
 
-  Season.findOne({ year }).populate('teams._team')
-    .then(season => {
-      const teams = season.teams.map(t => t._team)
+  try {
+    const season = Season.findOne({ year }, {
+      'teams._team': true
+    })
+      .populate('teams._team')
+      // TODO
+      // .sort()
+      // .skip(offset)
+      // .limit(limit)
+    const teams = season.teams.map(t => t._team)
 
-      res.status(200).json(teams)
+    // TODO: don't return the whole driver document
+    res.json({
+      metadata: res.locals.metadata,
+      pagination: {
+        ...res.locals.pagination,
+        total: teams.length
+      },
+      teams
     })
-    .catch(err => {
-      // TODO: error handling
-      console.log('getTeamsWithinASeason: ', err)
-    })
+  } catch (err) {
+    // TODO: error handling
+    res.status(500).json({ error: err.message })
+    console.log('getTeamsWithinASeason: ', err)
+  }
 }
 
 module.exports = getTeamsWithinASeason

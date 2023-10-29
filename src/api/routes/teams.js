@@ -20,7 +20,7 @@ router.get('/year/:year', responsePagination, getTeamsWithinASeason)
 // List of all teams within a weekend in a season
 router.get('/year/:year/round/:round', responsePagination, getTeamsWithinAWeekend)
 
-// Team information
+// Get team information
 router.get('/:id', getTeamInformation)
 
 module.exports = router

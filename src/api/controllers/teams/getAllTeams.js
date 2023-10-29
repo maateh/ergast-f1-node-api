@@ -1,21 +1,30 @@
 // models
 const Team = require('../../models/team')
 
-const getAllTeams = (req, res, next) => {
-  const { limit, offset } = req.query
+const getAllTeams = async (req, res, next) => {
+  const { limit, offset } = req.locals.pagination
 
-  Team.find()
-    .sort({ name: 1 })
-    .skip(offset)
-    .limit(limit)
-    .then(teams => {
-      res.status(200).json(teams)
+  try {
+    const total = await Team.countDocuments()
+    const teams = await Team.find()
+      .sort({ name: 1 })
+      .skip(offset)
+      .limit(limit)
+
+    // TODO: don't return the whole team document
+    res.json({
+      metadata: res.locals.metadata,
+      pagination: {
+        ...res.locals.pagination,
+        total
+      },
+      teams
     })
-    .catch(err => {
-      // TODO: error handling
-      res.status(400).json({ success: false })
-      console.log('getAllTeams: ', err)
-    })
+  } catch (err) {
+    // TODO: error handling
+    res.status(500).json({ error: err.message })
+    console.log('getAllTeams: ', err)
+  }
 }
 
 module.exports = getAllTeams
