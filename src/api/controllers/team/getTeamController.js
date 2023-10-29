@@ -1,7 +1,7 @@
 // models
 const Team = require('../../models/team')
 
-const getTeamInformation = async (req, res, next) => {
+const getTeamController = async (req, res, next) => {
   const { id } = req.params
 
   try {
@@ -15,8 +15,8 @@ const getTeamInformation = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getTeamInformation: ', err)
+    console.log('getTeamController: ', err)
   }
 }
 
-module.exports = getTeamInformation
+module.exports = getTeamController

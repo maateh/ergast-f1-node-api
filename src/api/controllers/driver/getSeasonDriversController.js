@@ -1,7 +1,7 @@
 // model
 const Season = require('../../models/season')
 
-const getDriversWithinASeason = async (req, res, next) => {
+const getSeasonDriversController = async (req, res, next) => {
   const { year } = req.params
   const { limit, offset } = res.locals.pagination
 
@@ -28,8 +28,8 @@ const getDriversWithinASeason = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getDriversWithinASeason: ', err)
+    console.log('getSeasonDriversController: ', err)
   }
 }
 
-module.exports = getDriversWithinASeason
+module.exports = getSeasonDriversController

@@ -1,7 +1,7 @@
 // models
 const Weekend = require('../../models/weekend')
 
-const getCircuitsWithinASeason = async (req, res, next) => {
+const getWeekendCircuitController = async (req, res, next) => {
   const { year, round } = req.params
 
   try {
@@ -17,8 +17,8 @@ const getCircuitsWithinASeason = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getCircuitsWithinAWeekend: ', err)
+    console.log('getWeekendCircuitController: ', err)
   }
 }
 
-module.exports = getCircuitsWithinASeason
+module.exports = getWeekendCircuitController

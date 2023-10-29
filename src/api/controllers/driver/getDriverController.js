@@ -1,7 +1,7 @@
 // models
 const Driver = require('../../models/driver')
 
-const getDriverInformation = async (req, res, next) => {
+const getDriverController = async (req, res, next) => {
   const { id } = req.params
 
   try {
@@ -15,8 +15,8 @@ const getDriverInformation = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getDriverInformation: ', err)
+    console.log('getDriverController: ', err)
   }
 }
 
-module.exports = getDriverInformation
+module.exports = getDriverController

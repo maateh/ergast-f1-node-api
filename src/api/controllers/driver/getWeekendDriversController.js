@@ -1,7 +1,7 @@
 // models
 const Weekend = require('../../models/weekend')
 
-const getDriversWithinAWeekend = async (req, res, next) => {
+const getWeekendDriversController = async (req, res, next) => {
   const { year, round } = req.params
   const { limit, offset } = res.locals.pagination
 
@@ -28,8 +28,8 @@ const getDriversWithinAWeekend = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getDriversWithinAWeekend: ', err)
+    console.log('getWeekendDriversController: ', err)
   }
 }
 
-module.exports = getDriversWithinAWeekend
+module.exports = getWeekendDriversController

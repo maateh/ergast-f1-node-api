@@ -10,9 +10,9 @@ const { createConnection } = require('./api/database/database')
 const responseMetadata = require('./api/middlewares/responseMetadata')
 
 // routes
-const circuitsRoute = require('./api/routes/circuits')
-const driversRoute = require('./api/routes/drivers')
-const teamsRoute = require('./api/routes/teams')
+const circuitRoutes = require('./api/routes/circuitRoutes')
+const driverRoutes = require('./api/routes/driverRoutes')
+const teamRoutes = require('./api/routes/teamRoutes')
 
 const BASE_URL = process.env.BASE_URL
 
@@ -21,9 +21,9 @@ const app = express()
 app.use(express.json())
 app.use(responseMetadata)
 
-app.use(`${BASE_URL}/circuits`, circuitsRoute)
-app.use(`${BASE_URL}/drivers`, driversRoute)
-app.use(`${BASE_URL}/teams`, teamsRoute)
+app.use(`${BASE_URL}/circuits`, circuitRoutes)
+app.use(`${BASE_URL}/drivers`, driverRoutes)
+app.use(`${BASE_URL}/teams`, teamRoutes)
 
 // Initialize app
 createConnection()

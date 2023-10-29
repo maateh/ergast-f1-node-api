@@ -1,7 +1,7 @@
 // models
 const Circuit = require('../../models/circuit')
 
-const getCircuitInformation = async (req, res, next) => {
+const getCircuitController = async (req, res, next) => {
   const { id } = req.params
 
   try {
@@ -15,8 +15,8 @@ const getCircuitInformation = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getCircuitInformation: ', err)
+    console.log('getCircuitController: ', err)
   }
 }
 
-module.exports = getCircuitInformation
+module.exports = getCircuitController

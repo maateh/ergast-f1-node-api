@@ -1,7 +1,7 @@
 // models
 const Weekend = require('../../models/weekend')
 
-const getTeamsWithinAWeekend = async (req, res, next) => {
+const getWeekendTeamsController = async (req, res, next) => {
   const { year, round } = req.params
   const { limit, offset } = res.locals.pagination
 
@@ -28,8 +28,8 @@ const getTeamsWithinAWeekend = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getTeamsWithinAWeekend: ', err)
+    console.log('getWeekendTeamsController: ', err)
   }
 }
 
-module.exports = getTeamsWithinAWeekend
+module.exports = getWeekendTeamsController

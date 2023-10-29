@@ -1,8 +1,8 @@
 // models
 const Circuit = require('../../models/circuit')
 
-const getAllCircuits = async (req, res, next) => {
-  const { limit, offset } = req.locals.pagination
+const getCircuitsController = async (req, res, next) => {
+  const { limit, offset } = res.locals.pagination
 
   try {
     const total = await Circuit.countDocuments()
@@ -23,8 +23,8 @@ const getAllCircuits = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getAllCircuits: ', err)
+    console.log('getCircuitsController: ', err)
   }
 }
 
-module.exports = getAllCircuits
+module.exports = getCircuitsController

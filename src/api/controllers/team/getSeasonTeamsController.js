@@ -1,12 +1,12 @@
 // models
 const Season = require('../../models/season')
 
-const getTeamsWithinASeason = async (req, res, next) => {
+const getSeasonTeamsController = async (req, res, next) => {
   const { year } = req.params
   const { limit, offset } = res.locals.pagination
 
   try {
-    const season = Season.findOne({ year }, {
+    const season = await Season.findOne({ year }, {
       'teams._team': true
     })
       .populate('teams._team')
@@ -28,8 +28,8 @@ const getTeamsWithinASeason = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getTeamsWithinASeason: ', err)
+    console.log('getSeasonTeamsController: ', err)
   }
 }
 
-module.exports = getTeamsWithinASeason
+module.exports = getSeasonTeamsController

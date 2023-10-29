@@ -1,7 +1,7 @@
 // models
 const Driver = require('../../models/driver')
 
-const getAllDrivers = async (req, res, next) => {
+const getDriversController = async (req, res, next) => {
   const { limit, offset } = res.locals.pagination
 
   try {
@@ -23,8 +23,8 @@ const getAllDrivers = async (req, res, next) => {
   } catch (err) {
     // TODO: error handling
     res.status(500).json({ error: err.message })
-    console.log('getAllDrivers: ', err)
+    console.log('getDriversController: ', err)
   }
 }
 
-module.exports = getAllDrivers
+module.exports = getDriversController
