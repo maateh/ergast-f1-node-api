@@ -3,9 +3,7 @@ const Weekend = require('../../models/weekend')
 
 const getDriversWithinAWeekend = async (req, res, next) => {
   const { year, round } = req.params
-
-  // TODO
-  // const { limit, offset } = res.locals.pagination
+  const { limit, offset } = res.locals.pagination
 
   try {
     const weekend = await Weekend.findOne({ year, round }, {
@@ -29,7 +27,7 @@ const getDriversWithinAWeekend = async (req, res, next) => {
     })
   } catch (err) {
     // TODO: error handling
-    res.status(500).json({ error: err })
+    res.status(500).json({ error: err.message })
     console.log('getDriversWithinAWeekend: ', err)
   }
 }

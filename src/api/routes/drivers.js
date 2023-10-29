@@ -20,7 +20,7 @@ router.get('/year/:year', responsePagination, getDriversWithinASeason)
 // List of all drivers within a weekend in a season
 router.get('/year/:year/round/:round', responsePagination, getDriversWithinAWeekend)
 
-// Driver information
+// Get driver information
 router.get('/:id', getDriverInformation)
 
 module.exports = router

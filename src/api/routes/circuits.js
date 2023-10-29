@@ -17,10 +17,10 @@ router.get('/', responsePagination, getAllCircuits)
 // List of all circuits within a season
 router.get('/year/:year', responsePagination, getCircuitsWithinASeason)
 
-// List of all circuits within a weekend in a season
-router.get('/year/:year/round/:round', responsePagination, getCircuitsWithinAWeekend)
+// Get circuit which was used on a weekend
+router.get('/year/:year/round/:round', getCircuitsWithinAWeekend)
 
-// Circuit information
+// Get circuit information
 router.get('/:id', getCircuitInformation)
 
 module.exports = router

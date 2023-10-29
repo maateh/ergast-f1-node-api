@@ -3,9 +3,7 @@ const Season = require('../../models/season')
 
 const getDriversWithinASeason = async (req, res, next) => {
   const { year } = req.params
-
-  // TODO
-  // const { limit, offset } = res.locals.pagination
+  const { limit, offset } = res.locals.pagination
 
   try {
     const season = await Season.findOne({ year }, {
@@ -29,7 +27,7 @@ const getDriversWithinASeason = async (req, res, next) => {
     })
   } catch (err) {
     // TODO: error handling
-    res.status(500).json({ error: err })
+    res.status(500).json({ error: err.message })
     console.log('getDriversWithinASeason: ', err)
   }
 }

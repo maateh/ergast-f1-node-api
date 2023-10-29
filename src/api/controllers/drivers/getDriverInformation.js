@@ -14,7 +14,7 @@ const getDriverInformation = async (req, res, next) => {
     })
   } catch (err) {
     // TODO: error handling
-    res.status(500).json({ error: err })
+    res.status(500).json({ error: err.message })
     console.log('getDriverInformation: ', err)
   }
 }

@@ -1,20 +1,24 @@
 // models
 const Weekend = require('../../models/weekend')
 
-const getCircuitsWithinASeason = (req, res, next) => {
-  const { year } = req.params
+const getCircuitsWithinASeason = async (req, res, next) => {
+  const { year, round } = req.params
 
-  Weekend.find({ year }).populate('circuit._circuit')
-    .then(weekends => {
-      const circuits = weekends.map(w => w.circuit._circuit)
+  try {
+    const weekend = await Weekend.findOne({ year, round })
+      .populate('circuit._circuit')
+    const circuit = weekend.circuit._circuit
 
-      res.status(200).json(circuits)
+    // TODO: don't return the whole circuit document
+    res.json({
+      metadata: res.locals.metadata,
+      circuit
     })
-    .catch(err => {
-      // TODO: error handling
-      res.status(400).json({ success: false })
-      console.log('getCircuitsWithinASeason: ', err)
-    })
+  } catch (err) {
+    // TODO: error handling
+    res.status(500).json({ error: err.message })
+    console.log('getCircuitsWithinAWeekend: ', err)
+  }
 }
 
 module.exports = getCircuitsWithinASeason

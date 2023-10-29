@@ -1,18 +1,22 @@
 // models
 const Circuit = require('../../models/circuit')
 
-const getCircuitInformation = (req, res, next) => {
+const getCircuitInformation = async (req, res, next) => {
   const { id } = req.params
 
-  Circuit.findOne({ ref: id })
-    .then(circuit => {
-      res.status(200).json(circuit)
+  try {
+    const circuit = await Circuit.findOne({ ref: id })
+
+    // TODO: don't return the whole circuit document
+    res.json({
+      metadata: res.locals.metadata,
+      circuit
     })
-    .catch(err => {
-      // TODO: error handling
-      res.status(400).json({ success: false })
-      console.log('getCircuitInformation: ', err)
-    })
+  } catch (err) {
+    // TODO: error handling
+    res.status(500).json({ error: err.message })
+    console.log('getCircuitInformation: ', err)
+  }
 }
 
 module.exports = getCircuitInformation
