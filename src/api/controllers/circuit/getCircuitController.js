@@ -7,15 +7,19 @@ const getCircuitController = async (req, res, next) => {
   try {
     const circuit = await Circuit.findOne({ ref: id })
 
+    if (!circuit) {
+      const error = new Error('Circuit not found!')
+      error.statusCode = 404
+      throw error
+    }
+
     // TODO: don't return the whole circuit document
     res.json({
       metadata: res.locals.metadata,
       circuit
     })
   } catch (err) {
-    // TODO: error handling
-    res.status(500).json({ error: err.message })
-    console.log('getCircuitController: ', err)
+    next(err)
   }
 }
 
