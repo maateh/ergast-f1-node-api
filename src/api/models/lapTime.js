@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const pitStopSchema = new Schema({
+const lapTimeSchema = new Schema({
   weekend: {
     year: {
       type: Number,
@@ -43,20 +43,16 @@ const pitStopSchema = new Schema({
       required: true
     }
   },
-  stop: {
-    type: Number,
-    required: true
-  },
   lap: {
     type: Number,
     required: true
   },
-  timeOfDay: {
-    type: Date,
+  position: {
+    type: Number,
     required: true
   },
   duration: {
-    time: { // duration
+    time: {
       type: String,
       required: true
     },
@@ -67,4 +63,4 @@ const pitStopSchema = new Schema({
   }
 })
 
-module.exports = model('PitStop', pitStopSchema)
+module.exports = model('LapTime', lapTimeSchema)

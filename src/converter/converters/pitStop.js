@@ -64,9 +64,9 @@ const conversion = () => {
           },
           stop: pitStop.stop,
           lap: pitStop.lap,
-          time: new Date(`${pitStop.date.toISOString().split('T')[0]}T${pitStop.time}Z`),
-          interval: {
-            duration: pitStop.duration,
+          timeOfDay: new Date(`${pitStop.date.toISOString().split('T')[0]}T${pitStop.time}Z`),
+          duration: {
+            time: pitStop.duration,
             ms: pitStop.milliseconds
           }
         })

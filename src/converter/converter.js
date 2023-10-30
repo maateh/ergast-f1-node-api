@@ -14,6 +14,7 @@ const raceResultConverter = require('./converters/raceResult')
 const qualifyingResultConverter = require('./converters/qualifyingResult')
 const sprintResultConverter = require('./converters/sprintResult')
 const pitStopConverter = require('./converters/pitStop')
+const lapTimeConverter = require('./converters/lapTime')
 
 // associations
 const { createWeekendAssociations } = require('./converters/weekend')
@@ -34,7 +35,8 @@ const startConversion = async () => {
       raceResultConverter(),
       qualifyingResultConverter(),
       sprintResultConverter(),
-      pitStopConverter()
+      pitStopConverter(),
+      lapTimeConverter()
     ])
   } catch (err) {
     console.error('An error occurred during conversion: ', err)
