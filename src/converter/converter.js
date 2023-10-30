@@ -5,20 +5,20 @@ const { performance } = require('perf_hooks')
 const { createConnection } = require('../api/database/database')
 
 // converters
-const circuitConverter = require('./converters/circuit')
-const seasonConverter = require('./converters/season')
-const driverConverter = require('./converters/driver')
-const teamConverter = require('./converters/team')
-const weekendConverter = require('./converters/weekend')
-const raceResultConverter = require('./converters/raceResult')
-const qualifyingResultConverter = require('./converters/qualifyingResult')
-const sprintResultConverter = require('./converters/sprintResult')
-const pitStopConverter = require('./converters/pitStop')
-const lapTimeConverter = require('./converters/lapTime')
+const circuitConverter = require('./converters/circuitConverter')
+const seasonConverter = require('./converters/seasonConverter')
+const driverConverter = require('./converters/driverConverter')
+const teamConverter = require('./converters/teamConverter')
+const weekendConverter = require('./converters/weekendConverter')
+const raceResultConverter = require('./converters/raceResultConverter')
+const qualifyingResultConverter = require('./converters/qualifyingResultConverter')
+const sprintResultConverter = require('./converters/sprintResultConverter')
+const pitStopConverter = require('./converters/pitStopConverter')
+const lapTimeConverter = require('./converters/lapTimeConverter')
 
 // associations
-const { createWeekendAssociations } = require('./converters/weekend')
-const { createSeasonAssociations } = require('./converters/season')
+const { createWeekendAssociations } = require('./converters/weekendConverter')
+const { createSeasonAssociations } = require('./converters/seasonConverter')
 
 const startConversion = async () => {
   try {
