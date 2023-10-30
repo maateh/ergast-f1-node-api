@@ -13,6 +13,7 @@ const weekendConverter = require('./converters/weekend')
 const raceResultConverter = require('./converters/raceResult')
 const qualifyingResultConverter = require('./converters/qualifyingResult')
 const sprintResultConverter = require('./converters/sprintResult')
+const pitStopConverter = require('./converters/pitStop')
 
 // associations
 const { createWeekendAssociations } = require('./converters/weekend')
@@ -32,7 +33,8 @@ const startConversion = async () => {
     await Promise.all([
       raceResultConverter(),
       qualifyingResultConverter(),
-      sprintResultConverter()
+      sprintResultConverter(),
+      pitStopConverter()
     ])
   } catch (err) {
     console.error('An error occurred during conversion: ', err)
