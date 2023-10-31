@@ -8,7 +8,7 @@ const getSeasonCircuitsController = async (req, res, next) => {
   const { year } = req.params
   const { limit, offset } = res.locals.pagination
 
-  const filterCondition = { year }
+  const filterCondition = { 'season.year': year }
 
   try {
     const total = await Weekend.countDocuments(filterCondition)
