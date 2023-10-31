@@ -9,14 +9,15 @@ const weekendSchema = new Schema({
     required: false,
     unique: true
   },
-  // TODO: modify season & year field (+convert!)
-  _season: {
-    type: Schema.Types.ObjectId,
-    required: true
-  },
-  year: {
-    type: Number,
-    required: true
+  season: {
+    year: {
+      type: Number,
+      required: true
+    },
+    _season: {
+      type: Schema.Types.ObjectId,
+      required: true
+    }
   },
   round: {
     type: Number,
@@ -67,9 +68,7 @@ const weekendSchema = new Schema({
       ref: 'Team',
       required: true
     }
-  }],
-  // pits: [{}],
-  // laps: [{}]
+  }]
 })
 
 weekendSchema.methods.simplify = function() {

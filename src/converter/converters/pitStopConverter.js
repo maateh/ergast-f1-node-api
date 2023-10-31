@@ -49,10 +49,10 @@ const conversion = () => {
 
         return new PitStop({
           weekend: {
-            year: weekend.year,
+            year: weekend.season.year,
             round: weekend.round,
-            _weekend: weekend._id,
-            _season: weekend._season
+            _season: weekend.season._season,
+            _weekend: weekend._id
           },
           driver: {
             ref: driver.ref,

@@ -42,9 +42,11 @@ const conversion = () => {
 
         return new Weekend({
           ergastId: race.raceId,
-          year: race.year,
+          season: {
+            year: race.year,
+            _season: season._id
+          },
           round: race.round,
-          _season: season._id,
           name: race.name,
           date: {
             full: race.time
