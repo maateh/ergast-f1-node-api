@@ -1,32 +1,40 @@
 // models
 const Weekend = require('../../models/weekend')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
 const getSeasonCircuitsController = async (req, res, next) => {
   const { year } = req.params
   const { limit, offset } = res.locals.pagination
 
+  const filterCondition = { year }
+
   try {
-    const weekends = await Weekend.find({ year })
+    const total = await Weekend.countDocuments(filterCondition)
+    const weekends = await Weekend.find(filterCondition)
       .populate('circuit._circuit')
-      // TODO
-      // .sort()
-      // .skip(offset)
-      // .limit(limit)
+      .select('circuit._circuit')
+      .sort('circuit.ref')
+      .skip(offset)
+      .limit(limit)
     const circuits = weekends.map(w => w.circuit._circuit)
+
+    if (!circuits || !circuits.length) {
+      throw new DataNotFoundError('Circuits')
+    }
 
     // TODO: don't return the whole circuit document
     res.json({
       metadata: res.locals.metadata,
       pagination: {
         ...res.locals.pagination,
-        total: circuits.length
+        total
       },
       circuits
     })
   } catch (err) {
-    // TODO: error handling
-    res.status(500).json({ error: err.message })
-    console.log('getSeasonCircuitsController: ', err)
+    next(err)
   }
 }
 

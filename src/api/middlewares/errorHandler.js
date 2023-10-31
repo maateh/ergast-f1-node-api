@@ -8,6 +8,10 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).json({
     metadata: res.locals.metadata,
+    pagination: res.locals.pagination && {
+      ...res.locals.pagination,
+      total: 0
+    },
     error: { message }
   })
 }

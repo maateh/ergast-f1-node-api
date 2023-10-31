@@ -1,6 +1,9 @@
 // models
 const Circuit = require('../../models/circuit')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
 const getCircuitsController = async (req, res, next) => {
   const { limit, offset } = res.locals.pagination
 
@@ -10,6 +13,10 @@ const getCircuitsController = async (req, res, next) => {
       .sort({ name: 1 })
       .skip(offset)
       .limit(limit)
+
+    if (!circuits || !circuits.length) {
+      throw new DataNotFoundError('Circuits')
+    }
 
     // TODO: don't return the whole circuit document
     res.json({
@@ -21,9 +28,7 @@ const getCircuitsController = async (req, res, next) => {
       circuits
     })
   } catch (err) {
-    // TODO: error handling
-    res.status(500).json({ error: err.message })
-    console.log('getCircuitsController: ', err)
+    next(err)
   }
 }
 
