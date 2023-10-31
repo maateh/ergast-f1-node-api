@@ -66,4 +66,19 @@ const qualifyingResultSchema = new Schema({
   }
 })
 
+qualifyingResultSchema.methods.simplify = function() {
+  return {
+    weekend: this.weekend,
+    // weekend: this.weekend._weekend.simplify(),
+    driver: this.driver,
+    // driver: this.driver._driver.simplify(),
+    team: this.team,
+    // team: this.team._team.simplify(),
+    position: this.position,
+    q1: this.q1,
+    q2: this.q2,
+    q3: this.q3
+  }
+}
+
 module.exports = model('QualifyingResult', qualifyingResultSchema)

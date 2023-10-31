@@ -104,4 +104,21 @@ const raceResultSchema = new Schema({
   }
 })
 
+raceResultSchema.methods.simplify = function() {
+  return {
+    weekend: this.weekend,
+    // weekend: this.weekend._weekend.simplify(),
+    driver: this.driver,
+    // driver: this.driver._driver.simplify(),
+    team: this.team,
+    // team: this.team._team.simplify(),
+    grid: this.grid,
+    position: this.position,
+    points: this.points,
+    laps: this.laps,
+    duration: this.duration,
+    fastest: this.fastest
+  }
+}
+
 module.exports = model('RaceResult', raceResultSchema)

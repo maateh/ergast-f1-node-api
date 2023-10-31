@@ -25,4 +25,13 @@ const teamSchema = new Schema({
   }
 })
 
+teamSchema.methods.simplify = function() {
+  return {
+    id: this.ref,
+    name: this.name,
+    nationality: this.nationality,
+    wiki: this.wiki
+  }
+}
+
 module.exports = model('Team', teamSchema)

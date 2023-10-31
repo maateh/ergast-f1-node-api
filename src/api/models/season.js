@@ -34,4 +34,15 @@ const seasonSchema = new Schema({
   }]
 })
 
+seasonSchema.methods.simplify = function() {
+  return {
+    year: this.year,
+    wiki: this.wiki,
+    drivers: this.drivers,
+    // drivers: this.drivers.map(d => d._driver.simplify()),
+    teams: this.teams
+    // teams: this.teams.map(t => t._team.simplify())
+  }
+}
+
 module.exports = model('Season', seasonSchema)

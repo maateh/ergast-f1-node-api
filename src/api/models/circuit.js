@@ -45,7 +45,7 @@ const circuitSchema = new Schema({
 
 circuitSchema.methods.simplify = function() {
   return {
-    ref: this.ref,
+    id: this.ref,
     name: this.name,
     location: this.location,
     wiki: this.wiki

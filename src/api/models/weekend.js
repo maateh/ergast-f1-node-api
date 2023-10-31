@@ -9,6 +9,7 @@ const weekendSchema = new Schema({
     required: false,
     unique: true
   },
+  // TODO: modify season & year field (+convert!)
   _season: {
     type: Schema.Types.ObjectId,
     required: true
@@ -70,5 +71,23 @@ const weekendSchema = new Schema({
   // pits: [{}],
   // laps: [{}]
 })
+
+weekendSchema.methods.simplify = function() {
+  return {
+    // season: this._season, // TODO: this will be modified
+    // year: this.year, // TODO: this will be modified
+    round: this.round,
+    name: this.name,
+    date: this.date,
+    wiki: this.wiki,
+    sessions: this.sessions,
+    circuit: this.circuit,
+    // circuit: this.circuit._circuit.simplify(),
+    drivers: this.drivers,
+    // drivers: this.drivers.map(d => d._driver.simplify()),
+    teams: this.teams
+    // teams: this.teams.map(t => t._team.simplify())
+  }
+}
 
 module.exports = model('Weekend', weekendSchema)

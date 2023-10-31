@@ -67,4 +67,19 @@ const pitStopSchema = new Schema({
   }
 })
 
+pitStopSchema.methods.simplify = function() {
+  return {
+    weekend: this.weekend,
+    // weekend: this.weekend._weekend.simplify(),
+    driver: this.driver,
+    // driver: this.driver._driver.simplify(),
+    team: this.team,
+    // team: this.team._team.simplify(),
+    stop: this.stop,
+    lap: this.lap,
+    timeOfDay: this.timeOfDay,
+    duration: this.duration
+  }
+}
+
 module.exports = model('PitStop', pitStopSchema)

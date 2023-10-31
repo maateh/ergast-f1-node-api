@@ -63,4 +63,18 @@ const lapTimeSchema = new Schema({
   }
 })
 
+lapTimeSchema.methods.simplify = function() {
+  return {
+    weekend: this.weekend,
+    // weekend: this.weekend._weekend.simplify(),
+    driver: this.driver,
+    // driver: this.driver._driver.simplify(),
+    team: this.team,
+    // team: this.team._team.simplify(),
+    lap: this.lap,
+    position: this.position,
+    duration: this.duration
+  }
+}
+
 module.exports = model('LapTime', lapTimeSchema)
