@@ -14,10 +14,9 @@ const getCircuitController = async (req, res, next) => {
       throw new DataNotFoundError('Circuit')
     }
 
-    // TODO: don't return the whole circuit document
     res.json({
       metadata: res.locals.metadata,
-      circuit
+      circuit: circuit.simplify()
     })
   } catch (err) {
     next(err)

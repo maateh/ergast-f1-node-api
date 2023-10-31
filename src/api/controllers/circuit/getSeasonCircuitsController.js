@@ -18,20 +18,18 @@ const getSeasonCircuitsController = async (req, res, next) => {
       .sort('circuit.ref')
       .skip(offset)
       .limit(limit)
-    const circuits = weekends.map(w => w.circuit._circuit)
 
-    if (!circuits || !circuits.length) {
+    if (!weekends || !weekends.length || !weekends.find(w => w.circuit)) {
       throw new DataNotFoundError('Circuits')
     }
 
-    // TODO: don't return the whole circuit document
     res.json({
       metadata: res.locals.metadata,
       pagination: {
         ...res.locals.pagination,
         total
       },
-      circuits
+      circuits: weekends.map(w => w.circuit._circuit.simplify())
     })
   } catch (err) {
     next(err)

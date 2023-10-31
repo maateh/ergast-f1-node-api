@@ -16,11 +16,9 @@ const getWeekendCircuitController = async (req, res, next) => {
       throw new DataNotFoundError('Circuit')
     }
 
-    const circuit = weekend.circuit._circuit
-    // TODO: don't return the whole circuit document
     res.json({
       metadata: res.locals.metadata,
-      circuit
+      circuit: weekend.circuit._circuit.simplify()
     })
   } catch (err) {
     next(err)

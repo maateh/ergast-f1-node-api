@@ -43,4 +43,13 @@ const circuitSchema = new Schema({
   },
 })
 
+circuitSchema.methods.simplify = function() {
+  return {
+    ref: this.ref,
+    name: this.name,
+    location: this.location,
+    wiki: this.wiki
+  }
+}
+
 module.exports = model('Circuit', circuitSchema)
