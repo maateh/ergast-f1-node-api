@@ -8,6 +8,7 @@ const { createConnection } = require('./api/database/database')
 
 // middlewares
 const responseMetadata = require('./api/middlewares/responseMetadata')
+const unmatchedRoutesHandler = require('./api/middlewares/unmatchedRoutesHandler')
 const errorHandler = require('./api/middlewares/errorHandler')
 
 // routes
@@ -26,6 +27,7 @@ app.use(`${BASE_URL}/circuits`, circuitRoutes)
 app.use(`${BASE_URL}/drivers`, driverRoutes)
 app.use(`${BASE_URL}/teams`, teamRoutes)
 
+app.use(unmatchedRoutesHandler)
 app.use(errorHandler)
 
 // Initialize app
