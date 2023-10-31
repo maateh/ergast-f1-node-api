@@ -1,6 +1,9 @@
 // models
 const Circuit = require('../../models/circuit')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
 const getCircuitController = async (req, res, next) => {
   const { id } = req.params
 
@@ -8,9 +11,7 @@ const getCircuitController = async (req, res, next) => {
     const circuit = await Circuit.findOne({ ref: id })
 
     if (!circuit) {
-      const error = new Error('Circuit not found!')
-      error.statusCode = 404
-      throw error
+      throw new DataNotFoundError('Circuit')
     }
 
     // TODO: don't return the whole circuit document
