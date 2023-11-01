@@ -5,7 +5,7 @@ const Season = require('../../models/season')
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 // utils
-const sorting = require('../../utils/sorting')
+const { paginationWithSorting } = require('../../utils/pagination')
 
 const getSeasonDriversController = async (req, res, next) => {
   const { year } = req.params
@@ -21,10 +21,6 @@ const getSeasonDriversController = async (req, res, next) => {
     }
 
     const simplifiedDrivers = season.drivers.map(d => d._driver.simplify())
-    const sortedDrivers = await sorting(simplifiedDrivers, 'name.lastName')
-      .then(sortedDrivers => {
-        return sortedDrivers.slice(offset, offset + limit)
-      })
 
     res.json({
       metadata: res.locals.metadata,
@@ -32,7 +28,7 @@ const getSeasonDriversController = async (req, res, next) => {
         ...res.locals.pagination,
         total: season.drivers.length
       },
-      drivers: sortedDrivers
+      drivers: paginationWithSorting(simplifiedDrivers, limit, offset, 'name.lastName')
     })
   } catch (err) {
     next(err)

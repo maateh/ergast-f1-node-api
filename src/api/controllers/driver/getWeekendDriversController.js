@@ -5,7 +5,7 @@ const Weekend = require('../../models/weekend')
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 // utils
-const sorting = require('../../utils/sorting')
+const { paginationWithSorting } = require('../../utils/pagination')
 
 const getWeekendDriversController = async (req, res, next) => {
   const { year, round } = req.params
@@ -21,10 +21,6 @@ const getWeekendDriversController = async (req, res, next) => {
     }
 
     const simplifiedDrivers = weekend.drivers.map(d => d._driver.simplify())
-    const sortedDrivers = await sorting(simplifiedDrivers, 'name.lastName')
-      .then(sortedDrivers => {
-        return sortedDrivers.slice(offset, offset + limit)
-      })
 
     res.json({
       metadata: res.locals.metadata,
@@ -32,7 +28,7 @@ const getWeekendDriversController = async (req, res, next) => {
         ...res.locals.pagination,
         total: weekend.drivers.length
       },
-      drivers: sortedDrivers
+      drivers: paginationWithSorting(simplifiedDrivers, limit, offset, 'name.lastName')
     })
   } catch (err) {
     next(err)

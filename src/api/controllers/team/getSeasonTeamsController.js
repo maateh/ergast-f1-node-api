@@ -5,7 +5,7 @@ const Season = require('../../models/season')
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 // utils
-const sorting = require('../../utils/sorting')
+const { paginationWithSorting } = require('../../utils/pagination')
 
 const getSeasonTeamsController = async (req, res, next) => {
   const { year } = req.params
@@ -21,10 +21,6 @@ const getSeasonTeamsController = async (req, res, next) => {
     }
 
     const simplifiedTeams = season.teams.map(t => t._team.simplify())
-    const sortedTeams = await sorting(simplifiedTeams, 'name')
-      .then(sortedTeams => {
-        return sortedTeams.slice(offset, offset + limit)
-      })
 
     res.json({
       metadata: res.locals.metadata,
@@ -32,7 +28,7 @@ const getSeasonTeamsController = async (req, res, next) => {
         ...res.locals.pagination,
         total: season.teams.length
       },
-      teams: sortedTeams
+      teams: paginationWithSorting(simplifiedTeams, limit, offset, 'name')
     })
   } catch (err) {
     next(err)

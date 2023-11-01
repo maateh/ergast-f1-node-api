@@ -1,4 +1,4 @@
-async function sorting(array, keyRefs) {
+function sorting(array, keyRefs) {
   return array.sort((a, b) => {
     const keyA = getValueFromKey(a, keyRefs).toLowerCase()
     const keyB = getValueFromKey(b, keyRefs).toLowerCase()
