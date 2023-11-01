@@ -1,34 +1,41 @@
 // model
 const Season = require('../../models/season')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
+// utils
+const sorting = require('../../utils/sorting')
+
 const getSeasonDriversController = async (req, res, next) => {
   const { year } = req.params
   const { limit, offset } = res.locals.pagination
 
   try {
-    const season = await Season.findOne({ year }, {
-      'drivers._driver': true
-    })
+    const season = await Season.findOne({ year })
       .populate('drivers._driver')
-      // TODO
-      // .sort()
-      // .skip(offset)
-      // .limit(limit)
-    const drivers = season.drivers.map(d => d._driver)
+      .select('drivers._driver')
 
-    // TODO: don't return the whole driver document
+    if (!season || !season.drivers || !season.drivers.length) {
+      throw new DataNotFoundError('Drivers')
+    }
+
+    const simplifiedDrivers = season.drivers.map(d => d._driver.simplify())
+    const sortedDrivers = await sorting(simplifiedDrivers, 'name.lastName')
+      .then(sortedDrivers => {
+        return sortedDrivers.slice(offset, offset + limit)
+      })
+
     res.json({
       metadata: res.locals.metadata,
       pagination: {
         ...res.locals.pagination,
-        total: drivers.length
+        total: season.drivers.length
       },
-      drivers
+      drivers: sortedDrivers
     })
   } catch (err) {
-    // TODO: error handling
-    res.status(500).json({ error: err.message })
-    console.log('getSeasonDriversController: ', err)
+    next(err)
   }
 }
 

@@ -1,21 +1,25 @@
 // models
 const Driver = require('../../models/driver')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
 const getDriverController = async (req, res, next) => {
   const { id } = req.params
 
   try {
     const driver = await Driver.findOne({ ref: id })
 
-    // TODO: don't return the whole driver document
+    if (!driver) {
+      throw new DataNotFoundError('Driver')
+    }
+
     res.json({
       metadata: res.locals.metadata,
-      driver
+      driver: driver.simplify()
     })
   } catch (err) {
-    // TODO: error handling
-    res.status(500).json({ error: err.message })
-    console.log('getDriverController: ', err)
+    next(err)
   }
 }
 

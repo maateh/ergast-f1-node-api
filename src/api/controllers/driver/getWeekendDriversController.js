@@ -1,34 +1,41 @@
 // models
 const Weekend = require('../../models/weekend')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
+// utils
+const sorting = require('../../utils/sorting')
+
 const getWeekendDriversController = async (req, res, next) => {
   const { year, round } = req.params
   const { limit, offset } = res.locals.pagination
 
   try {
-    const weekend = await Weekend.findOne({ year, round }, {
-      'drivers._driver': true
-    })
+    const weekend = await Weekend.findOne({ 'season.year': year, round })
       .populate('drivers._driver')
-      // TODO
-      // .sort()
-      // .skip(offset)
-      // .limit(limit)
-    const drivers = weekend.drivers.map(d => d._driver)
+      .select('drivers._driver')
 
-    // TODO: don't return the whole driver document
+    if (!weekend || !weekend.drivers || !weekend.drivers.length) {
+      throw new DataNotFoundError('Drivers')
+    }
+
+    const simplifiedDrivers = weekend.drivers.map(d => d._driver.simplify())
+    const sortedDrivers = await sorting(simplifiedDrivers, 'name.lastName')
+      .then(sortedDrivers => {
+        return sortedDrivers.slice(offset, offset + limit)
+      })
+
     res.json({
       metadata: res.locals.metadata,
       pagination: {
         ...res.locals.pagination,
-        total: drivers.length
+        total: weekend.drivers.length
       },
-      drivers
+      drivers: sortedDrivers
     })
   } catch (err) {
-    // TODO: error handling
-    res.status(500).json({ error: err.message })
-    console.log('getWeekendDriversController: ', err)
+    next(err)
   }
 }
 
