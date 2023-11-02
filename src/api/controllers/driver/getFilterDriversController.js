@@ -8,8 +8,8 @@ const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 // utils
 const objectCleaner = require('../../utils/objectCleaner')
-const removeDuplicates = require('../../utils/removeDuplicates')
 const filterCommonElements = require('../../utils/filterCommonElements')
+const removeDuplicates = require('../../utils/removeDuplicates')
 const { paginationWithSorting } = require('../../utils/pagination')
 
 const getFilterDriversController = async (req, res, next) => {
