@@ -8,10 +8,7 @@ const getWeekendCircuitController = async (req, res, next) => {
   const { year, round } = req.params
 
   try {
-    const weekend = await Weekend.findOne({
-      'season.year': year,
-      round
-    })
+    const weekend = await Weekend.findOne({ 'season.year': year, round })
       .populate('circuit._circuit')
       .select('circuit._circuit')
 

@@ -10,7 +10,7 @@ const getCircuitsController = async (req, res, next) => {
   try {
     const total = await Circuit.countDocuments()
     const circuits = await Circuit.find()
-      .sort({ name: 1 })
+      .sort('name')
       .skip(offset)
       .limit(limit)
 
