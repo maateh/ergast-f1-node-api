@@ -7,7 +7,7 @@ const Driver = require('../../api/models/driver')
 const Team = require('../../api/models/team')
 
 // utils
-const { mapper } = require('../utils/mapper')
+const arrayToMap = require('../utils/arrayToMap')
 
 const getAllPitStops = () => {
   const query = `
@@ -38,14 +38,14 @@ const conversion = () => {
     .then(([pitStops, weekends, drivers, teams]) => {
       console.info('Converting pit stops...')
 
-      const weekendsMap = mapper(weekends, 'ergastId')
-      const driversMap = mapper(drivers, 'ref')
-      const teamsMap = mapper(teams, 'ref')
+      const weekendsMap = arrayToMap(weekends, 'ergastId')
+      const driversMap = arrayToMap(drivers, 'ref')
+      const teamsMap = arrayToMap(teams, 'ref')
 
       return pitStops.map(pitStop => {
-        const weekend = weekendsMap.get(pitStop.raceId)
-        const driver = driversMap.get(pitStop.driverRef)
-        const team = teamsMap.get(pitStop.constructorRef)
+        const weekend = weekendsMap[pitStop.raceId]
+        const driver = driversMap[pitStop.driverRef]
+        const team = teamsMap[pitStop.constructorRef]
 
         return new PitStop({
           season: {

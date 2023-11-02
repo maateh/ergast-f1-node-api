@@ -7,7 +7,7 @@ const Driver = require('../../api/models/driver')
 const Team = require('../../api/models/team')
 
 // utils
-const { mapper } = require('../utils/mapper')
+const arrayToMap = require('../utils/arrayToMap')
 
 const getAllQualifyingResults = () => {
   const query = `
@@ -36,14 +36,14 @@ const conversion = () => {
     .then(([qualifyingResults, weekends, drivers, teams]) => {
       console.info('Converting qualifying results...')
 
-      const weekendsMap = mapper(weekends, 'ergastId')
-      const driversMap = mapper(drivers, 'ref')
-      const teamsMap = mapper(teams, 'ref')
+      const weekendsMap = arrayToMap(weekends, 'ergastId')
+      const driversMap = arrayToMap(drivers, 'ref')
+      const teamsMap = arrayToMap(teams, 'ref')
 
       return qualifyingResults.map(result => {
-        const weekend = weekendsMap.get(result.raceId)
-        const driver = driversMap.get(result.driverRef)
-        const team = teamsMap.get(result.constructorRef)
+        const weekend = weekendsMap[result.raceId]
+        const driver = driversMap[result.driverRef]
+        const team = teamsMap[result.constructorRef]
 
         return new QualifyingResult({
           season: {

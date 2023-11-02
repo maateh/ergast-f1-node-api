@@ -8,7 +8,8 @@ function sorting(array, keyRefs) {
 }
 
 function getValueFromKey(object, key) {
-  return key.split('.').reduce((object, item) => object[item], object)
+  return key.split('.')
+    .reduce((object, item) => object[item], object)
 }
 
 module.exports = sorting

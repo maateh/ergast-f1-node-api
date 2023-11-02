@@ -8,17 +8,29 @@ const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 // utils
 const objectCleaner = require('../../utils/objectCleaner')
+const removeDuplicates = require('../../utils/removeDuplicates')
 const { paginationWithSorting } = require('../../utils/pagination')
 
 const getWeekendDriversController = async (req, res, next) => {
   const { year, round, circuitId, teamId } = req.params
+  const {
+    racePosition,
+    raceGrid,
+    raceFastest,
+    qualifyingPosition,
+    sprintPosition,
+    sprintGrid
+  } = req.query
   const { limit, offset } = res.locals.pagination
 
   const filter = objectCleaner({
     'season.year': year,
     'weekend.round': round,
     'circuit.ref': circuitId,
-    'team.ref': teamId
+    'team.ref': teamId,
+    'position.order': racePosition,
+    grid: raceGrid,
+    fastest: raceFastest
   })
 
   try {
@@ -30,7 +42,8 @@ const getWeekendDriversController = async (req, res, next) => {
       throw new DataNotFoundError('Drivers')
     }
 
-    const simplifiedDrivers = results.map(r => r.driver._driver.simplify())
+    const drivers = removeDuplicates(results, 'driver._driver._id', 'driver._driver')
+    const simplifiedDrivers = drivers.map(d => d.simplify())
 
     res.json({
       metadata: res.locals.metadata,

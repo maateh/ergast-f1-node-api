@@ -4,10 +4,9 @@ const db = require('../database/mysql')
 const Weekend = require('../../api/models/weekend')
 const Season = require('../../api/models/season')
 const Circuit = require('../../api/models/circuit')
-const RaceResult = require('../../api/models/raceResult')
 
 // utils
-const { mapper, arrayMapper } = require('../utils/mapper')
+const arrayToMap = require('../utils/arrayToMap')
 
 // constants
 const { SESSIONS } = require('../../api/models/schemas/session')
@@ -33,12 +32,12 @@ const conversion = () => {
     .then(([races, seasons, circuits]) => {
       console.info('Converting weekends...')
 
-      const seasonsMap = mapper(seasons, 'year')
-      const circuitsMap = mapper(circuits, 'ergastId')
+      const seasonsMap = arrayToMap(seasons, 'year')
+      const circuitsMap = arrayToMap(circuits, 'ergastId')
 
       return races.map(race => {
-        const season = seasonsMap.get(race.year)
-        const circuit = circuitsMap.get(race.circuitId)
+        const season = seasonsMap[race.year]
+        const circuit = circuitsMap[race.circuitId]
 
         return new Weekend({
           ergastId: race.raceId,
@@ -73,51 +72,6 @@ const conversion = () => {
     })
     .catch(err => {
       console.error('Conversion error: ', err)
-    })
-}
-
-const createAssociations = () => {
-  console.info('Create associations to the Weekend model...')
-
-  return Promise.all([
-    Weekend.find(),
-    RaceResult.find()
-  ])
-    .then(([weekends, results]) => {
-      const resultsMap = arrayMapper(results, ['weekend', '_weekend'])
-
-      return weekends.map(weekend => {
-        // INFO: There are no results for weekends that
-        // haven't yet taken place in the actual year.
-        const weekendResults = resultsMap.get(weekend._id.toString()) || []
-
-        const drivers = weekendResults.map(r => ({
-          ref: r.driver.ref,
-          _driver: r.driver._driver.toString()
-        }))
-        const teams = weekendResults.map(r => ({
-          ref: r.team.ref,
-          _team: r.team._team.toString()
-        }))
-
-        // INFO: Because drivers and constructors is given by
-        // the 'raceresults' collection, so the team will be
-        // duplicated if we don't filter them.
-        // On drivers... just as a precaution.
-        weekend.drivers = [...new Map(drivers.map(d => [d._driver, d])).values()]
-        weekend.teams = [...new Map(teams.map(t => [t._team, t])).values()]
-        return weekend
-      })
-    })
-    .then(updatedWeekends => {
-      console.info('Saving weekends...')
-      return Weekend.bulkSave(updatedWeekends)
-    })
-    .then(() => {
-      console.info('Associations is created successfully for the Weekend model!')
-    })
-    .catch(err => {
-      console.error('Association creation error: ', err)
     })
 }
 
@@ -212,4 +166,3 @@ const parseSessions = race => {
 }
 
 module.exports = conversion
-module.exports.createWeekendAssociations = createAssociations

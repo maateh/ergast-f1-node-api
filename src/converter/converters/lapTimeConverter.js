@@ -7,7 +7,7 @@ const Driver = require('../../api/models/driver')
 const Team = require('../../api/models/team')
 
 // utils
-const { mapper } = require('../utils/mapper')
+const arrayToMap = require('../utils/arrayToMap')
 
 const getAllLapTimes = () => {
   const query = `
@@ -38,14 +38,14 @@ const conversion = () => {
     .then(([lapTimes, weekends, drivers, teams]) => {
       console.info('Converting lap times...')
 
-      const weekendsMap = mapper(weekends, 'ergastId')
-      const driversMap = mapper(drivers, 'ref')
-      const teamsMap = mapper(teams, 'ref')
+      const weekendsMap = arrayToMap(weekends, 'ergastId')
+      const driversMap = arrayToMap(drivers, 'ref')
+      const teamsMap = arrayToMap(teams, 'ref')
 
       return lapTimes.map(lapTime => {
-        const weekend = weekendsMap.get(lapTime.raceId)
-        const driver = driversMap.get(lapTime.driverRef)
-        const team = teamsMap.get(lapTime.constructorRef)
+        const weekend = weekendsMap[lapTime.raceId]
+        const driver = driversMap[lapTime.driverRef]
+        const team = teamsMap[lapTime.constructorRef]
 
         return new LapTime({
           season: {

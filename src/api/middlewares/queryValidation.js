@@ -2,7 +2,7 @@ const queryValidation = (req, res, next) => {
   const validParams = [
     'racePosition',
     'raceGrid',
-    'racefastest',
+    'raceFastest',
     'qualifyingPosition',
     'sprintPosition',
     'sprintGrid'
