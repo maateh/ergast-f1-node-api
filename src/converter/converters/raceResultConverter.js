@@ -47,10 +47,12 @@ const conversion = () => {
         const team = teamsMap.get(result.constructorRef)
 
         return new RaceResult({
-          weekend: {
+          season: {
             year: weekend.season.year,
+            _season: weekend.season._season
+          },
+          weekend: {
             round: weekend.round,
-            _season: weekend.season._season,
             _weekend: weekend._id
           },
           driver: {
@@ -60,6 +62,10 @@ const conversion = () => {
           team: {
             ref: team.ref,
             _team: team._id
+          },
+          circuit: {
+            ref: weekend.circuit.ref,
+            _circuit: weekend.circuit._circuit
           },
           ergastId: result.resultId,
           grid: result.grid,

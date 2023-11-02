@@ -17,8 +17,8 @@ const pitStopConverter = require('./converters/pitStopConverter')
 const lapTimeConverter = require('./converters/lapTimeConverter')
 
 // associations
-const { createWeekendAssociations } = require('./converters/weekendConverter')
-const { createSeasonAssociations } = require('./converters/seasonConverter')
+// const { createWeekendAssociations } = require('./converters/weekendConverter')
+// const { createSeasonAssociations } = require('./converters/seasonConverter')
 
 const startConversion = async () => {
   try {
@@ -43,19 +43,19 @@ const startConversion = async () => {
   }
 }
 
-const createAssociations = async () => {
-  try {
-    await Promise.all([
-      createWeekendAssociations(),
-      createSeasonAssociations()
-    ])
-  } catch (err) {
-    console.error('An error occurred during creating associations: ', err)
-  }
-}
+// const createAssociations = async () => {
+//   try {
+//     await Promise.all([
+//       createWeekendAssociations(),
+//       createSeasonAssociations()
+//     ])
+//   } catch (err) {
+//     console.error('An error occurred during creating associations: ', err)
+//   }
+// }
 
 const convertMySQLToMongo = async () => {
-  let startTime = performance.now()
+  const startTime = performance.now()
 
   await createConnection()
     .then(() => startConversion())
@@ -64,14 +64,14 @@ const convertMySQLToMongo = async () => {
       const duration = (endTime - startTime).toFixed(2)
       console.info(`Conversion finished! (${duration} ms)\n`)
 
-      startTime = performance.now()
+      // startTime = performance.now()
     })
-    .then(() => createAssociations())
-    .then(() => {
-      const endTime = performance.now()
-      const duration = (endTime - startTime).toFixed(2)
-      console.info(`Associations created! (${duration} ms)`)
-    })
+    // .then(() => createAssociations())
+    // .then(() => {
+    //   const endTime = performance.now()
+    //   const duration = (endTime - startTime).toFixed(2)
+    //   console.info(`Associations created! (${duration} ms)`)
+    // })
     .catch(err => {
       console.error('Initialize failed: ', err)
     })
