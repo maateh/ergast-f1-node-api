@@ -3,7 +3,7 @@ const express = require('express')
 // controllers
 const getDriversController = require('../controllers/driver/getDriversController')
 // const getSeasonDriversController = require('../controllers/driver/getSeasonDriversController') // TODO: delete
-const getWeekendDriversController = require('../controllers/driver/getWeekendDriversController') // TODO: rename
+const getFilterDriversController = require('../controllers/driver/getFilterDriversController') // TODO: rename
 const getDriverController = require('../controllers/driver/getDriverController')
 
 // middlewares
@@ -27,7 +27,7 @@ router.get('/', [queryValidation, responsePagination], getDriversController)
 router.get([
   '(/circuits/:circuitId)?(/teams/:teamId)?(/year/:year)?',
   '(/circuits/:circuitId)?(/teams/:teamId)?(/year/:year/round/:round)?'
-], responsePagination, getWeekendDriversController) // TODO: rename controller
+], responsePagination, getFilterDriversController) // TODO: rename controller
 
 // http://localhost:6969/api/ergast/f1/drivers/circuits/circuiz/teams/team/season/2020?racePosition=1&raceGrid=2&racefastest=3&qualifyingPosition=4&sprintPosition=5&sprintGrid=6
 // query:

@@ -9,9 +9,10 @@ const DataNotFoundError = require('../../errors/DataNotFoundError')
 // utils
 const objectCleaner = require('../../utils/objectCleaner')
 const removeDuplicates = require('../../utils/removeDuplicates')
+const filterCommonElements = require('../../utils/filterCommonElements')
 const { paginationWithSorting } = require('../../utils/pagination')
 
-const getWeekendDriversController = async (req, res, next) => {
+const getFilterDriversController = async (req, res, next) => {
   const { year, round, circuitId, teamId } = req.params
   const {
     racePosition,
@@ -27,29 +28,57 @@ const getWeekendDriversController = async (req, res, next) => {
     'season.year': year,
     'weekend.round': round,
     'circuit.ref': circuitId,
-    'team.ref': teamId,
+    'team.ref': teamId
+  })
+
+  const raceFilter = objectCleaner({
     'position.order': racePosition,
     grid: raceGrid,
     fastest: raceFastest
   })
 
+  const qualifyingFilter = objectCleaner({
+    position: qualifyingPosition
+  })
+
+  const sprintFilter = objectCleaner({
+    'position.order': sprintPosition,
+    grid: sprintGrid
+  })
+
   try {
-    const results = await RaceResult.find(filter)
+    const raceResults = await RaceResult.find({ ...filter, ...raceFilter })
       .populate('driver._driver')
       .select('driver._driver')
+
+    const qualifyingResults = qualifyingFilter
+      ? await QualifyingResult.find({ ...filter, ...qualifyingFilter })
+        .populate('driver._driver')
+        .select('driver._driver')
+      : []
+
+    const sprintResults = sprintFilter
+      ? await SprintResult.find({ ...filter, ...sprintFilter })
+        .populate('driver._driver')
+        .select('driver._driver')
+      : []
+
+    const results = filterCommonElements('driver._driver.ref', [
+      raceResults, qualifyingResults, sprintResults
+    ])
 
     if (!results || !results.length) {
       throw new DataNotFoundError('Drivers')
     }
 
-    const drivers = removeDuplicates(results, 'driver._driver._id', 'driver._driver')
+    const drivers = removeDuplicates(results, 'driver._driver.ref', 'driver._driver')
     const simplifiedDrivers = drivers.map(d => d.simplify())
 
     res.json({
       metadata: res.locals.metadata,
       pagination: {
         ...res.locals.pagination,
-        total: results.length
+        total: drivers.length
       },
       drivers: paginationWithSorting(simplifiedDrivers, limit, offset, 'name.lastName')
     })
@@ -58,4 +87,4 @@ const getWeekendDriversController = async (req, res, next) => {
   }
 }
 
-module.exports = getWeekendDriversController
+module.exports = getFilterDriversController

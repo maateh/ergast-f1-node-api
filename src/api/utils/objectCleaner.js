@@ -7,7 +7,7 @@ function objectCleaner(object) {
       delete object[key]
     }
   })
-  return object
+  return Object.keys(object).length ? object : null
 }
 
 module.exports = objectCleaner
