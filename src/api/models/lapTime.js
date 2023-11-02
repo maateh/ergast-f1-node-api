@@ -1,18 +1,20 @@
 const { Schema, model } = require('mongoose')
 
 const lapTimeSchema = new Schema({
-  weekend: {
+  season: {
     year: {
-      type: Number,
-      required: true
-    },
-    round: {
       type: Number,
       required: true
     },
     _season: {
       type: Schema.Types.ObjectId,
       ref: 'Season',
+      required: true
+    }
+  },
+  weekend: {
+    round: {
+      type: Number,
       required: true
     },
     _weekend: {
@@ -40,6 +42,17 @@ const lapTimeSchema = new Schema({
     _team: {
       type: Schema.Types.ObjectId,
       ref: 'Team',
+      required: true
+    }
+  },
+  circuit: {
+    ref: {
+      type: String,
+      required: true
+    },
+    _circuit: {
+      type: Schema.Types.ObjectId,
+      ref: 'Circuit',
       required: true
     }
   },

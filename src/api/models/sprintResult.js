@@ -6,18 +6,20 @@ const sprintResultSchema = new Schema({
     required: false,
     unique: true
   },
-  weekend: {
+  season: {
     year: {
-      type: Number,
-      required: true
-    },
-    round: {
       type: Number,
       required: true
     },
     _season: {
       type: Schema.Types.ObjectId,
       ref: 'Season',
+      required: true
+    }
+  },
+  weekend: {
+    round: {
+      type: Number,
       required: true
     },
     _weekend: {
@@ -45,6 +47,17 @@ const sprintResultSchema = new Schema({
     _team: {
       type: Schema.Types.ObjectId,
       ref: 'Team',
+      required: true
+    }
+  },
+  circuit: {
+    ref: {
+      type: String,
+      required: true
+    },
+    _circuit: {
+      type: Schema.Types.ObjectId,
+      ref: 'Circuit',
       required: true
     }
   },
