@@ -69,11 +69,11 @@ const pitStopSchema = new Schema({
     required: true
   },
   duration: {
-    time: { // duration
+    time: {
       type: String,
       required: true
     },
-    ms: { // <- milliseconds
+    ms: {
       type: Number,
       required: true
     }

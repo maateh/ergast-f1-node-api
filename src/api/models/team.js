@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose')
 
 const teamSchema = new Schema({
-  ergastId: { // <- constructorId
+  ergastId: {
     type: Number,
     required: false,
     unique: true
   },
-  ref: { // <- constructorRef
+  ref: {
     type: String,
     required: true,
     unique: true
@@ -19,7 +19,7 @@ const teamSchema = new Schema({
     type: String,
     required: true
   },
-  wiki: { // <- url
+  wiki: {
     type: String,
     required: true
   }

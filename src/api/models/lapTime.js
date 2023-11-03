@@ -69,7 +69,7 @@ const lapTimeSchema = new Schema({
       type: String,
       required: true
     },
-    ms: { // <- milliseconds
+    ms: {
       type: Number,
       required: true
     }

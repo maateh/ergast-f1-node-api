@@ -4,7 +4,7 @@ const dateSchema = require('./schemas/dateSchema')
 const sessionSchema = require('./schemas/sessionSchema')
 
 const weekendSchema = new Schema({
-  ergastId: { // <- raceId
+  ergastId: {
     type: Number,
     required: false,
     unique: true
@@ -27,11 +27,11 @@ const weekendSchema = new Schema({
     type: String,
     required: true
   },
-  date: { // <- date, time
+  date: {
     type: dateSchema,
     required: true
   },
-  wiki: { // <- url
+  wiki: {
     type: String,
     required: true
   },
@@ -46,46 +46,20 @@ const weekendSchema = new Schema({
       ref: 'Circuit',
       required: true
     }
-  },
-  // drivers: [{
-  //   ref: {
-  //     type: String,
-  //     required: true
-  //   },
-  //   _driver: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Driver',
-  //     required: true
-  //   }
-  // }],
-  // teams: [{
-  //   ref: {
-  //     type: String,
-  //     required: true
-  //   },
-  //   _team: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Team',
-  //     required: true
-  //   }
-  // }]
+  }
 })
 
 weekendSchema.methods.simplify = function() {
   return {
-    // season: this._season, // TODO: this will be modified
-    // year: this.year, // TODO: this will be modified
+    year: this.season.year,
+    // season: this.season._season.simplify(),
     round: this.round,
     name: this.name,
     date: this.date,
     wiki: this.wiki,
     sessions: this.sessions,
-    circuit: this.circuit,
-    // circuit: this.circuit._circuit.simplify(),
-    drivers: this.drivers,
-    // drivers: this.drivers.map(d => d._driver.simplify()),
-    teams: this.teams
-    // teams: this.teams.map(t => t._team.simplify())
+    circuit: this.circuit
+    // circuit: this.circuit._circuit.simplify()
   }
 }
 

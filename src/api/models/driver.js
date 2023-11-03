@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose')
 
 const driverSchema = new Schema({
-  ergastId: { // <- driverId
+  ergastId: {
     type: Number,
     required: false,
     unique: true
   },
-  ref: { // <- driverRef
+  ref: {
     type: String,
     required: true,
     unique: true
@@ -29,7 +29,7 @@ const driverSchema = new Schema({
       required: true
     }
   },
-  dateOfBirth: { // <- dob
+  dateOfBirth: {
     type: Date,
     required: true
   },
@@ -37,7 +37,7 @@ const driverSchema = new Schema({
     type: String,
     required: true
   },
-  wiki: { // <- url
+  wiki: {
     type: String,
     required: true
   }

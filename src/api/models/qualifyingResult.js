@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const qualifyingResultSchema = new Schema({
-  ergastId: { // <- qualifyId
+  ergastId: {
     type: Number,
     required: false,
     unique: true

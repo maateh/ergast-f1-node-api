@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const sprintResultSchema = new Schema({
-  ergastId: { // <- sprintResultId
+  ergastId: {
     type: Number,
     required: false,
     unique: true
@@ -66,15 +66,15 @@ const sprintResultSchema = new Schema({
     required: true
   },
   position: {
-    number: { // <- position
+    number: {
       type: Number,
       required: false
     },
-    text: { // <- positionText
+    text: {
       type: String,
       required: true
     },
-    order: { // <- positionOrder
+    order: {
       type: Number,
       required: true
     }
@@ -88,21 +88,21 @@ const sprintResultSchema = new Schema({
     required: false
   },
   duration: {
-    gap: { // <- time
+    gap: {
       type: String,
       required: false
     },
-    ms: { // <- milliseconds
+    ms: {
       type: Number,
       required: false
     }
   },
   fastest: {
-    lap: { // <- fastestLap
+    lap: {
       type: Number,
       required: false
     },
-    time: { // <- fastestLapTime
+    time: {
       type: String,
       required: false
     }
