@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
-const dateSchema = require('./schemas/date')
-const sessionSchema = require('./schemas/session')
+const dateSchema = require('./schemas/dateSchema')
+const sessionSchema = require('./schemas/sessionSchema')
 
 const weekendSchema = new Schema({
   ergastId: { // <- raceId

@@ -9,7 +9,7 @@ const Circuit = require('../../api/models/Circuit')
 const arrayToMap = require('../utils/arrayToMap')
 
 // constants
-const { SESSIONS } = require('../../api/models/schemas/session')
+const { SESSIONS } = require('../../api/models/schemas/sessionSchema')
 
 const getAllWeekends = () => {
   const query = 'SELECT * FROM races'
