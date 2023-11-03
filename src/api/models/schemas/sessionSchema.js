@@ -46,6 +46,7 @@ const sessionSchema = new Schema({
     type: dateSchema,
     required: true
   },
+  _id: false
 })
 
 module.exports = sessionSchema

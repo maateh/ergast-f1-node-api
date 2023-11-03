@@ -13,7 +13,8 @@ const dateSchema = new Schema({ // <- date, time
     type: Boolean,
     required: true,
     default: true
-  }
+  },
+  _id: false
 })
 
 module.exports = dateSchema
