@@ -47,10 +47,6 @@ const getFilterDriversController = async (req, res, next) => {
   })
 
   try {
-    const raceResults = await RaceResult.find({ ...filter, ...raceFilter })
-      .populate('driver._driver')
-      .select('driver._driver')
-
     const qualifyingResults = qualifyingFilter
       ? await QualifyingResult.find({ ...filter, ...qualifyingFilter })
         .populate('driver._driver')
@@ -59,6 +55,12 @@ const getFilterDriversController = async (req, res, next) => {
 
     const sprintResults = sprintFilter
       ? await SprintResult.find({ ...filter, ...sprintFilter })
+        .populate('driver._driver')
+        .select('driver._driver')
+      : []
+
+    const raceResults = raceFilter || (!qualifyingFilter && !sprintFilter)
+      ? await RaceResult.find({ ...filter, ...raceFilter })
         .populate('driver._driver')
         .select('driver._driver')
       : []

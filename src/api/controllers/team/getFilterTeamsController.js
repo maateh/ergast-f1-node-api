@@ -47,10 +47,6 @@ const getFilterTeamsController = async (req, res, next) => {
   })
 
   try {
-    const raceResults = await RaceResult.find({ ...filter, ...raceFilter })
-      .populate('team._team')
-      .select('team._team')
-
     const qualifyingResults = qualifyingFilter
       ? await QualifyingResult.find({ ...filter, ...qualifyingFilter })
         .populate('team._team')
@@ -59,6 +55,12 @@ const getFilterTeamsController = async (req, res, next) => {
 
     const sprintResults = sprintFilter
       ? await SprintResult.find({ ...filter, ...sprintFilter })
+        .populate('team._team')
+        .select('team._team')
+      : []
+
+    const raceResults = raceFilter || (!qualifyingFilter && !sprintFilter)
+      ? await RaceResult.find({ ...filter, ...raceFilter })
         .populate('team._team')
         .select('team._team')
       : []
