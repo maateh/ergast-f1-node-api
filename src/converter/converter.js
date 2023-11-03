@@ -2,7 +2,8 @@ require('dotenv').config()
 
 const { performance } = require('perf_hooks')
 
-const createConnection = require('../api/database/database')
+// services
+const databaseConnection = require('../api/services/databaseConnection')
 
 // converters
 const circuitConverter = require('./converters/circuitConverter')
@@ -42,7 +43,7 @@ const startConversion = async () => {
 const convertMySQLToMongo = async () => {
   const startTime = performance.now()
 
-  await createConnection()
+  await databaseConnection()
     .then(() => startConversion())
     .then(() => {
       const endTime = performance.now()

@@ -3,8 +3,8 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 const express = require('express')
 
-// database
-const createConnection = require('./api/database/database')
+// services
+const databaseConnection = require('./api/services/databaseConnection')
 
 // middlewares
 const responseMetadata = require('./api/middlewares/responseMetadata')
@@ -31,7 +31,7 @@ app.use(unmatchedRoutesHandler)
 app.use(errorHandler)
 
 // Initialize app
-createConnection()
+databaseConnection()
   .then(() => {
     const port = process.env.PORT || 3000
     app.listen(port, () => {

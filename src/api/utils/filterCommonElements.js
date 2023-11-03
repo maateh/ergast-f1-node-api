@@ -4,15 +4,17 @@
 function filterCommonElements(keyRef, arrays) {
   const filterableArrays = arrays.filter(array => array.length)
 
-  return filterableArrays.reduce((commonElements, currentArray) => {
-    return commonElements.filter(element => {
-      const key = getKeyValueAsString(element, keyRef)
+  return filterableArrays.length
+    ? filterableArrays.reduce((commonElements, currentArray) => {
+      return commonElements.filter(element => {
+        const key = getKeyValueAsString(element, keyRef)
 
-      return currentArray.find(currentElement => {
-        return getKeyValueAsString(currentElement, keyRef) === key
+        return currentArray.find(currentElement => {
+          return getKeyValueAsString(currentElement, keyRef) === key
+        })
       })
     })
-  })
+    : []
 }
 
 function getKeyValueAsString(object, keyRef) {
