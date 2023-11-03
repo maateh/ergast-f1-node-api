@@ -1,5 +1,5 @@
 // models
-const Circuit = require('../../models/circuit')
+const Circuit = require('../../models/Circuit')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

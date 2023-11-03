@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const Circuit = require('../../api/models/circuit')
+const Circuit = require('../../api/models/Circuit')
 
 const getAllCircuits = () => {
   const query = 'SELECT * FROM circuits'

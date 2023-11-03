@@ -1,10 +1,10 @@
 const db = require('../database/mysql')
 
 // models
-const LapTime = require('../../api/models/lapTime')
-const Weekend = require('../../api/models/weekend')
-const Driver = require('../../api/models/driver')
-const Team = require('../../api/models/team')
+const LapTime = require('../../api/models/LapTime')
+const Weekend = require('../../api/models/Weekend')
+const Driver = require('../../api/models/Driver')
+const Team = require('../../api/models/Team')
 
 // utils
 const arrayToMap = require('../utils/arrayToMap')

@@ -1,5 +1,5 @@
 // models
-const Team = require('../../models/team')
+const Team = require('../../models/Team')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

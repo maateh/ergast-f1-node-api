@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose')
 
-const dateSchema = require('./date')
+const dateSchema = require('./dateSchema')
 
 const SESSIONS = {
   FP1: {

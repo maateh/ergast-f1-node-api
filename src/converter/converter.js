@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const { performance } = require('perf_hooks')
 
-const { createConnection } = require('../api/database/database')
+const createConnection = require('../api/database/database')
 
 // converters
 const circuitConverter = require('./converters/circuitConverter')

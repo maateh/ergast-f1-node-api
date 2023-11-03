@@ -1,9 +1,9 @@
 const db = require('../database/mysql')
 
 // models
-const Weekend = require('../../api/models/weekend')
-const Season = require('../../api/models/season')
-const Circuit = require('../../api/models/circuit')
+const Weekend = require('../../api/models/Weekend')
+const Season = require('../../api/models/Season')
+const Circuit = require('../../api/models/Circuit')
 
 // utils
 const arrayToMap = require('../utils/arrayToMap')

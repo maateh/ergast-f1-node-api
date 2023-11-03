@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 const express = require('express')
 
 // database
-const { createConnection } = require('./api/database/database')
+const createConnection = require('./api/database/database')
 
 // middlewares
 const responseMetadata = require('./api/middlewares/responseMetadata')

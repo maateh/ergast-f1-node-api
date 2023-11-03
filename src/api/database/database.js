@@ -12,4 +12,4 @@ const createConnection = () => {
     })
 }
 
-module.exports = { createConnection }
+module.exports = createConnection

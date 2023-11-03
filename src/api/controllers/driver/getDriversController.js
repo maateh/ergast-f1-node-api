@@ -1,5 +1,5 @@
 // models
-const Driver = require('../../models/driver')
+const Driver = require('../../models/Driver')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

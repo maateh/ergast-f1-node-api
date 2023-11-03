@@ -1,7 +1,7 @@
 // models
-const RaceResult = require('../../models/raceResult')
-const QualifyingResult = require('../../models/qualifyingResult')
-const SprintResult = require('../../models/sprintResult')
+const RaceResult = require('../../models/RaceResult')
+const QualifyingResult = require('../../models/QualifyingResult')
+const SprintResult = require('../../models/SprintResult')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

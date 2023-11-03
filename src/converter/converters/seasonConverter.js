@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const Season = require('../../api/models/season')
+const Season = require('../../api/models/Season')
 
 const getAllSeasons = () => {
   const query = 'SELECT * FROM seasons'
