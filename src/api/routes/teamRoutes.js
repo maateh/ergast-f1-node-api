@@ -2,8 +2,7 @@ const express = require('express')
 
 // controllers
 const getTeamsController = require('../controllers/team/getTeamsController')
-const getSeasonTeamsController = require('../controllers/team/getSeasonTeamsController')
-const getWeekendTeamsController = require('../controllers/team/getWeekendTeamsController')
+const getFilterTeamsController = require('../controllers/team/getFilterTeamsController')
 const getTeamController = require('../controllers/team/getTeamController')
 
 // middlewares
@@ -14,11 +13,11 @@ const router = express.Router()
 // List of all teams
 router.get('/', responsePagination, getTeamsController)
 
-// List of all teams within a season
-router.get('/year/:year', responsePagination, getSeasonTeamsController)
-
-// List of all teams within a weekend in a season
-router.get('/year/:year/round/:round', responsePagination, getWeekendTeamsController)
+// List of all teams who match the specified filter
+router.get([
+  '(/circuits/:circuitId)?(/drivers/:driverId)?(/year/:year)?',
+  '(/circuits/:circuitId)?(/drivers/:driverId)?(/year/:year/round/:round)?'
+], responsePagination, getFilterTeamsController)
 
 // Get team information
 router.get('/:id', getTeamController)
