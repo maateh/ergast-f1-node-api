@@ -6,12 +6,13 @@ const getFilterTeamsController = require('../controllers/team/getFilterTeamsCont
 const getTeamController = require('../controllers/team/getTeamController')
 
 // middlewares
+const queryValidation = require('../middlewares/queryValidation')
 const responsePagination = require('../middlewares/responsePagination')
 
 const router = express.Router()
 
 // List of all teams
-router.get('/', responsePagination, getTeamsController)
+router.get('/', [queryValidation, responsePagination], getTeamsController)
 
 // List of all teams who match the specified filter
 router.get([
