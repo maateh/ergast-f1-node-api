@@ -12,8 +12,8 @@ const filterCommonElements = require('../../utils/filterCommonElements')
 const removeDuplicates = require('../../utils/removeDuplicates')
 const { paginationWithSorting } = require('../../utils/pagination')
 
-const getFilterTeamsController = async (req, res, next) => {
-  const { year, round, circuitId, driverId } = req.params
+const getFilterCircuitsController = async (req, res, next) => {
+  const { year, round, driverId, teamId } = req.params
   const {
     racePosition,
     raceGrid,
@@ -27,8 +27,8 @@ const getFilterTeamsController = async (req, res, next) => {
   const filter = objectCleaner({
     'season.year': year,
     'weekend.round': round,
-    'circuit.ref': circuitId,
-    'driver.ref': driverId
+    'driver.ref': driverId,
+    'team.ref': teamId
   })
 
   const raceFilter = objectCleaner({
@@ -47,44 +47,46 @@ const getFilterTeamsController = async (req, res, next) => {
   })
 
   try {
-    const raceResults = await RaceResult.find({ ...filter, ...raceFilter })
-      .populate('team._team')
-      .select('team._team')
-
     const qualifyingResults = qualifyingFilter
       ? await QualifyingResult.find({ ...filter, ...qualifyingFilter })
-        .populate('team._team')
-        .select('team._team')
+        .populate('circuit._circuit')
+        .select('circuit._circuit')
       : []
 
     const sprintResults = sprintFilter
       ? await SprintResult.find({ ...filter, ...sprintFilter })
-        .populate('team._team')
-        .select('team._team')
+        .populate('circuit._circuit')
+        .select('circuit._circuit')
       : []
 
-    const results = filterCommonElements('team._team.ref', [
+    const raceResults = raceFilter || (!qualifyingFilter && !sprintFilter)
+      ? await RaceResult.find({ ...filter, ...raceFilter })
+        .populate('circuit._circuit')
+        .select('circuit._circuit')
+      : []
+
+    const results = filterCommonElements('circuit._circuit.ref', [
       raceResults, qualifyingResults, sprintResults
     ])
 
     if (!results || !results.length) {
-      throw new DataNotFoundError('Teams')
+      throw new DataNotFoundError('Circuits')
     }
 
-    const teams = removeDuplicates(results, 'team._team.ref', 'team._team')
-    const simplifiedTeams = teams.map(t => t.simplify())
+    const circuits = removeDuplicates(results, 'circuit._circuit.ref', 'circuit._circuit')
+    const simplifiedCircuits = circuits.map(c => c.simplify())
 
     res.json({
       metadata: res.locals.metadata,
       pagination: {
         ...res.locals.pagination,
-        total: teams.length
+        total: circuits.length
       },
-      teams: paginationWithSorting(simplifiedTeams, limit, offset, 'name')
+      circuits: paginationWithSorting(simplifiedCircuits, limit, offset, 'name')
     })
   } catch (err) {
     next(err)
   }
 }
 
-module.exports = getFilterTeamsController
+module.exports = getFilterCircuitsController
