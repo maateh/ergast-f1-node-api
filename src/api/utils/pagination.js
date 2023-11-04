@@ -2,7 +2,8 @@
 const sorting = require('./sorting')
 
 // Slice an array for pagination functionality
-function pagination(array, limit, offset) {
+function pagination(array, pagination) {
+  const { limit, offset } = pagination
   return array.slice(offset, offset + limit)
 }
 

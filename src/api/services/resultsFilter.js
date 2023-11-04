@@ -6,9 +6,8 @@ const SprintResult = require('../models/SprintResult')
 // utils
 const objectCleaner = require('../utils/objectCleaner')
 const filterCommonElements = require('../utils/filterCommonElements')
-const removeDuplicates = require('../utils/removeDuplicates')
 
-const resultsFilter = async (query, filter, populateKey, selectKey, filterKeyRef) => {
+const resultsFilter = async (queryFilter, filter, pagination, targetCollection, groupingId, populatingField, sortingKey) => {
   const {
     racePosition,
     raceGrid,
@@ -16,7 +15,7 @@ const resultsFilter = async (query, filter, populateKey, selectKey, filterKeyRef
     qualifyingPosition,
     sprintPosition,
     sprintGrid
-  } = query
+  } = queryFilter
 
   const raceFilter = objectCleaner({
     'position.order': racePosition,
@@ -33,29 +32,58 @@ const resultsFilter = async (query, filter, populateKey, selectKey, filterKeyRef
     grid: sprintGrid
   })
 
+  const aggregation = [
+    {
+      $group: {
+        _id: `$${groupingId}`
+      }
+    },
+    {
+      $lookup: {
+        from: targetCollection,
+        localField: `_id.${populatingField}`,
+        foreignField: '_id',
+        as: groupingId
+      }
+    },
+    { $unwind: `$${groupingId}` },
+    {
+      $sort: {
+        [`${groupingId}.${sortingKey}`]: 1
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        [groupingId]: 1
+      }
+    }
+  ]
+
   const qualifyingResults = qualifyingFilter
-    ? await QualifyingResult.find({ ...filter, ...qualifyingFilter })
-      .populate(populateKey)
-      .select(selectKey)
+    ? await QualifyingResult.aggregate([
+      { $match: { ...filter, ...qualifyingFilter } },
+      ...aggregation
+    ])
     : []
 
   const sprintResults = sprintFilter
-    ? await SprintResult.find({ ...filter, ...sprintFilter })
-      .populate(populateKey)
-      .select(selectKey)
+    ? await SprintResult.aggregate([
+      { $match: { ...filter, ...sprintFilter } },
+      ...aggregation
+    ])
     : []
 
   const raceResults = raceFilter || (!qualifyingFilter && !sprintFilter)
-    ? await RaceResult.find({ ...filter, ...raceFilter })
-      .populate(populateKey)
-      .select(selectKey)
+    ? await RaceResult.aggregate([
+      { $match: { ...filter, ...raceFilter } },
+      ...aggregation
+    ])
     : []
 
-  const results = filterCommonElements(filterKeyRef, [
+  return filterCommonElements(`${groupingId}._id`, [
     raceResults, qualifyingResults, sprintResults
   ])
-
-  return removeDuplicates(results, filterKeyRef, populateKey)
 }
 
 module.exports = resultsFilter
