@@ -2,7 +2,11 @@ const express = require('express')
 
 // controllers
 const getTeamsController = require('../controllers/team/getTeamsController')
-const getRaceFilterTeamsController = require('../controllers/team/getRaceFilterTeamsController')
+const {
+  getPopulatedTeamsFilteredByRaceResults,
+  getPopulatedTeamsFilteredByQualifyingResults,
+  getPopulatedTeamsFilteredBySprintResults
+} = require('../controllers/team/filterTeamsController')
 const getTeamController = require('../controllers/team/getTeamController')
 
 // middlewares
@@ -21,7 +25,7 @@ router.get('/', [queryValidation, responsePagination], getTeamsController)
 router.get(
   `${baseFilterRoute}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
   [responsePagination, filterParser],
-  getRaceFilterTeamsController
+  getPopulatedTeamsFilteredByRaceResults
 )
 
 // TODO: create the remaining 2 route with their filter service
