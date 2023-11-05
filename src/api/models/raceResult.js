@@ -110,6 +110,10 @@ const raceResultSchema = new Schema({
       type: String,
       required: false
     },
+    ms: {
+      type: Number,
+      required: false
+    },
     speed: {
       type: Number,
       required: false

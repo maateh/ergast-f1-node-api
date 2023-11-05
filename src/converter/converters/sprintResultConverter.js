@@ -8,6 +8,7 @@ const Team = require('../../api/models/Team')
 
 // utils
 const arrayToMap = require('../utils/arrayToMap')
+const convertTimeToMs = require('../utils/convertTimetoMs')
 
 const getAllSprintResults = () => {
   const query = `
@@ -84,6 +85,7 @@ const conversion = () => {
             rank: result.rank || undefined,
             lap: result.fastestLap || undefined,
             time: result.fastestLapTime || undefined,
+            ms: result.fastestLapTime ? convertTimeToMs(result.fastestLapTime) : undefined,
             speed: result.fastestLapSpeed || undefined
           }
         })

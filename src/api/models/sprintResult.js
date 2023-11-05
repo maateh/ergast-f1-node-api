@@ -105,6 +105,10 @@ const sprintResultSchema = new Schema({
     time: {
       type: String,
       required: false
+    },
+    ms: {
+      type: Number,
+      required: false
     }
   }
 })
