@@ -1,5 +1,5 @@
 // services
-const filterRaceResults = require('../../services/filterRaceResults')
+const filterWithPopulateRaceResults = require('../../services/filterWithPopulateRaceResults')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -8,7 +8,10 @@ const getPopulatedTeamsFilteredByRaceResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: teams, total } = await filterRaceResults(filter, pagination, {
+    const {
+      data: teams,
+      total
+    } = await filterWithPopulateRaceResults(filter, pagination, {
       targetCollection: 'teams',
       populatingField: 'team._team',
       sortingByField: 'name'

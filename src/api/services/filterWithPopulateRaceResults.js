@@ -1,7 +1,7 @@
 // models
 const RaceResult = require('../models/RaceResult')
 
-const filterRaceResults = async (filter, pagination, {
+const filterWithPopulateRaceResults = async (filter, pagination, {
   targetCollection,
   populatingField,
   sortingByField
@@ -41,4 +41,4 @@ const filterRaceResults = async (filter, pagination, {
   }
 }
 
-module.exports = filterRaceResults
+module.exports = filterWithPopulateRaceResults

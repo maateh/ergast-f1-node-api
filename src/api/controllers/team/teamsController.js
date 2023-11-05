@@ -5,24 +5,24 @@ const Team = require('../../models/Team')
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 const getTeamsController = async (req, res, next) => {
-  const { limit, offset } = res.locals.pagination
+  const { metadata, pagination } = res.locals
 
   try {
     const total = await Team.countDocuments()
     const teams = await Team.find()
       .collation({ locale: 'en' })
       .sort('name')
-      .skip(offset)
-      .limit(limit)
+      .skip(pagination.offset)
+      .limit(pagination.limit)
 
     if (!teams || !teams.length) {
       throw new DataNotFoundError('Teams')
     }
 
     res.json({
-      metadata: res.locals.metadata,
+      metadata,
       pagination: {
-        ...res.locals.pagination,
+        ...pagination,
         total
       },
       teams: teams.map(t => t.simplify())
@@ -32,4 +32,27 @@ const getTeamsController = async (req, res, next) => {
   }
 }
 
-module.exports = getTeamsController
+const getTeamController = async (req, res, next) => {
+  const { metadata } = res.locals
+  const { id } = req.params
+
+  try {
+    const team = await Team.findOne({ ref: id })
+
+    if (!team) {
+      throw new DataNotFoundError('Team')
+    }
+
+    res.json({
+      metadata,
+      team: team.simplify()
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  getTeamsController,
+  getTeamController
+}
