@@ -71,7 +71,7 @@ const sprintResultSchema = new Schema({
       required: true
     },
     finished: {
-      type: Number,
+      type: Boolean,
       required: true
     },
     info: {
