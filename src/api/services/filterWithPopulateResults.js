@@ -1,18 +1,15 @@
-// models
-const RaceResult = require('../models/RaceResult')
-
-const filterWithPopulateRaceResults = async (filter, pagination, {
+const filterWithPopulateResults = async (Model, filter, pagination, {
   targetCollection,
   populatingField,
   sortingByField
 }) => {
-  const total = await RaceResult.aggregate([
+  const total = await Model.aggregate([
     { $match: filter },
     { $group: { _id: `$${populatingField}` } },
     { $count: 'total' }
   ])
 
-  const data = await RaceResult.aggregate([
+  const data = await Model.aggregate([
     { $match: filter },
     { $group: { _id: `$${populatingField}` } },
     {
@@ -24,15 +21,11 @@ const filterWithPopulateRaceResults = async (filter, pagination, {
       }
     },
     { $unwind: '$populatedDoc' },
-    { $sort: { [`populatedDoc.${sortingByField}`]: 1 } },
+    { $replaceWith: '$populatedDoc' },
+    { $sort: { [sortingByField]: 1 } },
     { $limit: pagination.limit },
     { $skip: pagination.offset },
-    {
-      $project: {
-        _id: 0,
-        populatedDoc: 1
-      }
-    }
+    { $project: { _id: 0, ergastId: 0, __v: 0 } }
   ])
 
   return {
@@ -41,4 +34,4 @@ const filterWithPopulateRaceResults = async (filter, pagination, {
   }
 }
 
-module.exports = filterWithPopulateRaceResults
+module.exports = filterWithPopulateResults

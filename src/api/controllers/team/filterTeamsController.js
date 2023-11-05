@@ -1,17 +1,20 @@
+// models
+const RaceResult = require('../../models/RaceResult')
+const QualifyingResult = require('../../models/QualifyingResult')
+const SprintResult = require('../../models/SprintResult')
+
 // services
-const filterWithPopulateRaceResults = require('../../services/filterWithPopulateRaceResults')
+const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getPopulatedTeamsFilteredByRaceResults = async (req, res, next) => {
+const getPopulatedTeamsFilteredByResults = async (req, res, next, resultType) => {
   const { metadata, filter, pagination } = res.locals
+  const Model = getResultModel(resultType, filter)
 
   try {
-    const {
-      data: teams,
-      total
-    } = await filterWithPopulateRaceResults(filter, pagination, {
+    const { data: teams, total } = await filterWithPopulateResults(Model, filter, pagination, {
       targetCollection: 'teams',
       populatingField: 'team._team',
       sortingByField: 'name'
@@ -34,16 +37,21 @@ const getPopulatedTeamsFilteredByRaceResults = async (req, res, next) => {
   }
 }
 
-const getPopulatedTeamsFilteredByQualifyingResults = async (req, res, next) => {
-  // const { metadata, filter, pagination } = res.locals
-}
-
-const getPopulatedTeamsFilteredBySprintResults = async (req, res, next) => {
-  // const { metadata, filter, pagination } = res.locals
+const getResultModel = (resultType, filter) => {
+  switch (resultType) {
+    case 'race':
+      return RaceResult
+    case 'qualifying':
+      filter.position = filter['position.order'] || filter.position
+      delete filter['position.order']
+      return QualifyingResult
+    case 'sprint':
+      return SprintResult
+    default:
+      throw new Error('Invalid resultType')
+  }
 }
 
 module.exports = {
-  getPopulatedTeamsFilteredByRaceResults,
-  getPopulatedTeamsFilteredByQualifyingResults,
-  getPopulatedTeamsFilteredBySprintResults
+  getPopulatedTeamsFilteredByResults
 }
