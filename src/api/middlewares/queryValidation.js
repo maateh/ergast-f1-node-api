@@ -1,11 +1,7 @@
 const queryValidation = (req, res, next) => {
   const validParams = [
-    'racePosition',
-    'raceGrid',
-    'raceFastest',
-    'qualifyingPosition',
-    'sprintPosition',
-    'sprintGrid'
+    'year',
+    'round'
   ]
 
   const validatedQuery = Object.keys(req.query).find(param => {

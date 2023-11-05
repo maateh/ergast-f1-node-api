@@ -2,32 +2,32 @@ const express = require('express')
 
 // controllers
 const getTeamsController = require('../controllers/team/getTeamsController')
-const getFilterTeamsController = require('../controllers/team/getFilterTeamsController')
+const getRaceFilterTeamsController = require('../controllers/team/getRaceFilterTeamsController')
 const getTeamController = require('../controllers/team/getTeamController')
 
 // middlewares
 const queryValidation = require('../middlewares/queryValidation')
 const responsePagination = require('../middlewares/responsePagination')
-const queryFilterParser = require('../middlewares/queryFilterParser')
+const filterParser = require('../middlewares/filterParser')
 
 const router = express.Router()
+
+const baseFilterRoute = '(/circuits/:circuitId)?(/drivers/:driverId)?'
 
 // List of all teams
 router.get('/', [queryValidation, responsePagination], getTeamsController)
 
-// FIXME: I don't like this current solution. It's not so sophisticated.
-// What if I change this "one-route filter" approach and take
-// apart to 3 different routes: (?)
-// - .../race/:position/grid/:grid/fastest/:fastest/points/:points
+// List of all teams who match the specified filter (search in: raceresults)
+router.get(
+  `${baseFilterRoute}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
+  [responsePagination, filterParser],
+  getRaceFilterTeamsController
+)
+
+// TODO: create the remaining 2 route with their filter service
 // - .../qualifying/:position
 // - .../sprint/:position/grid/:grid/points/:points
 // https://github.com/maateh/ergast-f1-node-api/issues/3
-
-// List of all teams who match the specified filter
-router.get([
-  '(/circuits/:circuitId)?(/drivers/:driverId)?(/year/:year)?',
-  '(/circuits/:circuitId)?(/drivers/:driverId)?(/year/:year/round/:round)?'
-], [queryFilterParser, responsePagination], getFilterTeamsController)
 
 // Get team information
 router.get('/:id', getTeamController)
