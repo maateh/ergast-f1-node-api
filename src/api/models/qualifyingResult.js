@@ -1,5 +1,18 @@
 const { Schema, model } = require('mongoose')
 
+const qualifyingSessionSchema = new Schema({
+  time: {
+    type: String,
+    required: true,
+    default: '-'
+  },
+  ms: {
+    type: Number,
+    required: false
+  },
+  _id: false
+})
+
 const qualifyingResultSchema = new Schema({
   ergastId: {
     type: Number,
@@ -66,17 +79,11 @@ const qualifyingResultSchema = new Schema({
     required: true
   },
   q1: {
-    type: String,
-    required: false
+    type: qualifyingSessionSchema,
+    required: true
   },
-  q2: {
-    type: String,
-    required: false
-  },
-  q3: {
-    type: String,
-    required: false
-  }
+  q2: qualifyingSessionSchema,
+  q3: qualifyingSessionSchema
 })
 
 qualifyingResultSchema.methods.simplify = function() {

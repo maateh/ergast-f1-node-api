@@ -66,26 +66,26 @@ const sprintResultSchema = new Schema({
     required: true
   },
   position: {
-    number: {
-      type: Number,
-      required: false
-    },
-    text: {
-      type: String,
-      required: true
-    },
     order: {
       type: Number,
+      required: true
+    },
+    finished: {
+      type: Number,
+      required: true
+    },
+    info: {
+      type: String,
       required: true
     }
   },
   points: {
     type: Number,
-    required: false
+    required: true
   },
   laps: {
-    type: String,
-    required: false
+    type: Number,
+    required: true
   },
   duration: {
     gap: {

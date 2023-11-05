@@ -68,9 +68,18 @@ const conversion = () => {
           },
           ergastId: result.qualifyId,
           position: result.position,
-          q1: result.q1 || undefined,
-          q2: result.q2 || undefined,
-          q3: result.q3 || undefined
+          q1: {
+            time: result.q1 || '-',
+            ms: result.q1 ? convertTimeToMs(result.q1) : undefined
+          },
+          q2: weekend.season.year >= 2006 ? {
+            time: result.q2 || '-',
+            ms: result.q2 ? convertTimeToMs(result.q2) : undefined
+          } : undefined,
+          q3: weekend.season.year >= 2006 ? {
+            time: result.q3 || '-',
+            ms: result.q3 ? convertTimeToMs(result.q3) : undefined
+          } : undefined
         })
       })
     })
@@ -84,6 +93,16 @@ const conversion = () => {
     .catch(err => {
       console.error('Conversion error: ', err)
     })
+}
+
+function convertTimeToMs(time) {
+  const [minutes, _time] = time.split(':')
+  const [seconds, ms] = _time.split('.')
+
+  const minutesInMs = minutes * 60 * 1000
+  const secondsInMs = seconds * 1000
+
+  return minutesInMs + secondsInMs + parseInt(ms)
 }
 
 module.exports = conversion
