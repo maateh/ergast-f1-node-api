@@ -5,24 +5,24 @@ const Driver = require('../../models/Driver')
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 const getDriversController = async (req, res, next) => {
-  const { limit, offset } = res.locals.pagination
+  const { metadata, pagination } = res.locals
 
   try {
     const total = await Driver.countDocuments()
     const drivers = await Driver.find()
       .collation({ locale: 'en' })
       .sort('name.lastName')
-      .skip(offset)
-      .limit(limit)
+      .skip(pagination.offset)
+      .limit(pagination.limit)
 
     if (!drivers || !drivers.length) {
       throw new DataNotFoundError('Drivers')
     }
 
     res.json({
-      metadata: res.locals.metadata,
+      metadata,
       pagination: {
-        ...res.locals.pagination,
+        ...pagination,
         total
       },
       drivers: drivers.map(d => d.simplify())
@@ -32,4 +32,27 @@ const getDriversController = async (req, res, next) => {
   }
 }
 
-module.exports = getDriversController
+const getDriverController = async (req, res, next) => {
+  const { metadata } = res.locals
+  const { id } = req.params
+
+  try {
+    const driver = await Driver.findOne({ ref: id })
+
+    if (!driver) {
+      throw new DataNotFoundError('Driver')
+    }
+
+    res.json({
+      metadata,
+      driver: driver.simplify()
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  getDriversController,
+  getDriverController
+}

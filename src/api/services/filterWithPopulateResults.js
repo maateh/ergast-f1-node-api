@@ -1,7 +1,7 @@
 // This service filters results from a specified result collection
-// (Race, Qualifying, Sprint - based on the provided model) and allowing
-// for sorting and pagination. It retrieves and populates relevant data
-// from the target collection based on provided parameters.
+// (Race, Qualifying, Sprint - based on the provided "resultType") and
+// allowing for sorting and pagination. It retrieves and populates relevant
+// data from the target collection based on provided parameters.
 
 // models
 const RaceResult = require('../models/RaceResult')

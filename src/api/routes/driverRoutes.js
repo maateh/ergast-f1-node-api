@@ -1,13 +1,15 @@
 const express = require('express')
 
 // controllers
-const getDriversController = require('../controllers/driver/getDriversController')
-const getFilterDriversController = require('../controllers/driver/getFilterDriversController')
-const getDriverController = require('../controllers/driver/getDriverController')
+const { getDriversController, getDriverController } = require('../controllers/driver/driversController')
+const { getPopulatedDriversFilteredByResults } = require('../controllers/driver/filterDriversController')
 
 // middlewares
 const queryValidation = require('../middlewares/queryValidation')
 const responsePagination = require('../middlewares/responsePagination')
+const filterParser = require('../middlewares/filterParser')
+
+const BASE_FILTER_ROUTE = '(/circuits/:circuitId)?(/teams/:teamId)?'
 
 const router = express.Router()
 
@@ -15,10 +17,29 @@ const router = express.Router()
 router.get('/', [queryValidation, responsePagination], getDriversController)
 
 // List of all drivers who match the specified filter
-router.get([
-  '(/circuits/:circuitId)?(/teams/:teamId)?(/year/:year)?',
-  '(/circuits/:circuitId)?(/teams/:teamId)?(/year/:year/round/:round)?'
-], responsePagination, getFilterDriversController)
+router.get(
+  `${BASE_FILTER_ROUTE}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
+  [responsePagination, filterParser],
+  (req, res, next) => {
+    getPopulatedDriversFilteredByResults(req, res, next, 'race')
+  }
+)
+
+router.get(
+  `${BASE_FILTER_ROUTE}(/qualifying(/:position)?)?`,
+  [responsePagination, filterParser],
+  (req, res, next) => {
+    getPopulatedDriversFilteredByResults(req, res, next, 'qualifying')
+  }
+)
+
+router.get(
+  `${BASE_FILTER_ROUTE}(/sprint(/:position)?(/grid/:grid)?(/points/:points)?)?`,
+  [responsePagination, filterParser],
+  (req, res, next) => {
+    getPopulatedDriversFilteredByResults(req, res, next, 'sprint')
+  }
+)
 
 // Get driver information
 router.get('/:id', getDriverController)
