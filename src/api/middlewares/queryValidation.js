@@ -4,9 +4,8 @@ const queryValidation = (req, res, next) => {
     'round'
   ]
 
-  const validatedQuery = Object.keys(req.query).find(param => {
-    return validParams.includes(param)
-  })
+  const validatedQuery = Object.keys(req.query)
+    .find(param => validParams.includes(param))
 
   if (validatedQuery) {
     next('route')
