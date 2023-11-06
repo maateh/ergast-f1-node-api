@@ -25,7 +25,7 @@ const getWeekendsController = async (req, res, next) => {
         ...pagination,
         total
       },
-      weekends: weekends.map(t => t.simplify())
+      weekends: weekends.map(w => w.simplify())
     })
   } catch (err) {
     next(err)

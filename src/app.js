@@ -16,6 +16,7 @@ const circuitRoutes = require('./api/routes/circuitRoutes')
 const driverRoutes = require('./api/routes/driverRoutes')
 const teamRoutes = require('./api/routes/teamRoutes')
 const weekendRoutes = require('./api/routes/weekendRoute')
+const seasonRoutes = require('./api/routes/seasonRoutes')
 
 const BASE_URL = process.env.BASE_URL
 
@@ -28,6 +29,7 @@ app.use(`${BASE_URL}/circuits`, circuitRoutes)
 app.use(`${BASE_URL}/drivers`, driverRoutes)
 app.use(`${BASE_URL}/teams`, teamRoutes)
 app.use(`${BASE_URL}/weekends`, weekendRoutes)
+app.use(`${BASE_URL}/seasons`, seasonRoutes)
 
 app.use(handleUnmatchedRoutes)
 app.use(handleErrors)
