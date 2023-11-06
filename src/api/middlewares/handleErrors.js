@@ -1,4 +1,4 @@
-const errorHandler = (err, req, res, next) => {
+const handleErrors = (err, req, res, next) => {
   console.error(err.stack)
 
   const {
@@ -16,4 +16,4 @@ const errorHandler = (err, req, res, next) => {
   })
 }
 
-module.exports = errorHandler
+module.exports = handleErrors
