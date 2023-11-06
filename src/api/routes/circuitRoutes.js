@@ -16,7 +16,7 @@ const router = express.Router()
 // List of all circuits
 router.get('/', [queryValidation, responsePagination], getCircuitsController)
 
-// List of all circuits who match the specified filter
+// List of all circuits which match the specified filter
 router.get(
   `${BASE_FILTER_ROUTE}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
   [responsePagination, filterParser],
