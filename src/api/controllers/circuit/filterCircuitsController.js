@@ -11,7 +11,7 @@ const getPopulatedCircuitsFilteredByResults = async (req, res, next, resultType)
     const { data: circuits, total } = await filterWithPopulateResults(resultType, filter, pagination, {
       targetCollection: 'circuits',
       populatingField: 'circuit._circuit',
-      sortingByField: 'name'
+      sort: { name: 1 }
     })
 
     if (!circuits || !circuits.length) {

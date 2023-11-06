@@ -11,7 +11,7 @@ const SprintResult = require('../models/SprintResult')
 const filterWithPopulateResults = async (resultType, filter, pagination, {
   targetCollection,
   populatingField,
-  sortingByField
+  sort
 }) => {
   const ResultModel = getResultModel(resultType, filter)
 
@@ -34,7 +34,7 @@ const filterWithPopulateResults = async (resultType, filter, pagination, {
     },
     { $unwind: '$populatedDoc' },
     { $replaceWith: '$populatedDoc' },
-    { $sort: { [sortingByField]: 1 } },
+    { $sort: sort },
     { $limit: pagination.limit },
     { $skip: pagination.offset },
     { $project: { _id: 0, ergastId: 0, __v: 0 } }

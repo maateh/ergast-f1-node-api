@@ -11,7 +11,7 @@ const getPopulatedDriversFilteredByResults = async (req, res, next, resultType) 
     const { data: drivers, total } = await filterWithPopulateResults(resultType, filter, pagination, {
       targetCollection: 'drivers',
       populatingField: 'driver._driver',
-      sortingByField: 'name.lastName'
+      sort: { 'name.lastName': 1 }
     })
 
     if (!drivers || !drivers.length) {

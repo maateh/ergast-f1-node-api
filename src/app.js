@@ -15,6 +15,7 @@ const handleErrors = require('./api/middlewares/handleErrors')
 const circuitRoutes = require('./api/routes/circuitRoutes')
 const driverRoutes = require('./api/routes/driverRoutes')
 const teamRoutes = require('./api/routes/teamRoutes')
+const weekendRoutes = require('./api/routes/weekendRoute')
 
 const BASE_URL = process.env.BASE_URL
 
@@ -26,6 +27,7 @@ app.use(responseMetadata)
 app.use(`${BASE_URL}/circuits`, circuitRoutes)
 app.use(`${BASE_URL}/drivers`, driverRoutes)
 app.use(`${BASE_URL}/teams`, teamRoutes)
+app.use(`${BASE_URL}/weekends`, weekendRoutes)
 
 app.use(handleUnmatchedRoutes)
 app.use(handleErrors)

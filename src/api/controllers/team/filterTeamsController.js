@@ -11,7 +11,7 @@ const getPopulatedTeamsFilteredByResults = async (req, res, next, resultType) =>
     const { data: teams, total } = await filterWithPopulateResults(resultType, filter, pagination, {
       targetCollection: 'teams',
       populatingField: 'team._team',
-      sortingByField: 'name'
+      sort: { name: 1 }
     })
 
     if (!teams || !teams.length) {
