@@ -1,6 +1,9 @@
 // services
 const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
 
+// models
+const { simplifyDriver } = require('../../models/Driver')
+
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
@@ -24,7 +27,7 @@ const getPopulatedDriversFilteredByResults = async (req, res, next, resultType) 
         ...pagination,
         total
       },
-      drivers
+      drivers: drivers.map(d => simplifyDriver(d))
     })
   } catch (err) {
     next(err)

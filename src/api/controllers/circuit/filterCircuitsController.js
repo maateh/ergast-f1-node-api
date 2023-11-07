@@ -1,6 +1,9 @@
 // services
 const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
 
+// models
+const { simplifyCircuit } = require('../../models/Circuit')
+
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
@@ -24,7 +27,7 @@ const getPopulatedCircuitsFilteredByResults = async (req, res, next, resultType)
         ...pagination,
         total
       },
-      circuits
+      circuits: circuits.map(c => simplifyCircuit(c))
     })
   } catch (err) {
     next(err)

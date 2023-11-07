@@ -1,6 +1,9 @@
 // services
 const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
 
+// models
+const { simplifySeason } = require('../../models/Season')
+
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
@@ -24,7 +27,7 @@ const getPopulatedSeasonsFilteredByResults = async (req, res, next, resultType) 
         ...pagination,
         total
       },
-      seasons
+      seasons: seasons.map(s => simplifySeason(s))
     })
   } catch (err) {
     next(err)

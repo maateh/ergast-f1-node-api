@@ -1,6 +1,9 @@
 // services
 const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
 
+// models
+const { simplifyWeekend } = require('../../models/Weekend')
+
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
@@ -24,7 +27,7 @@ const getPopulatedWeekendsFilteredByResults = async (req, res, next, resultType)
         ...pagination,
         total
       },
-      weekends
+      weekends: weekends.map(w => simplifyWeekend(w))
     })
   } catch (err) {
     next(err)

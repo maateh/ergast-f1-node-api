@@ -44,15 +44,20 @@ const driverSchema = new Schema({
 })
 
 driverSchema.methods.simplify = function() {
+  return simplify(this)
+}
+
+const simplify = driver => {
   return {
-    id: this.ref,
-    number: this.number,
-    code: this.code,
-    name: this.name,
-    dateOfBirth: this.dateOfBirth,
-    nationality: this.nationality,
-    wiki: this.wiki
+    id: driver.ref,
+    number: driver.number,
+    code: driver.code,
+    name: driver.name,
+    dateOfBirth: driver.dateOfBirth,
+    nationality: driver.nationality,
+    wiki: driver.wiki
   }
 }
 
 module.exports = model('Driver', driverSchema)
+module.exports.simplifyDriver = simplify
