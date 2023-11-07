@@ -4,7 +4,7 @@ const Weekend = require('../../models/Weekend')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getWeekendsController = async (req, res, next) => {
+const getWeekends = async (req, res, next) => {
   const { metadata, pagination } = res.locals
 
   try {
@@ -33,7 +33,7 @@ const getWeekendsController = async (req, res, next) => {
   }
 }
 
-const getWeekendController = async (req, res, next) => {
+const getWeekend = async (req, res, next) => {
   const { metadata } = res.locals
   const { year, round } = req.params
 
@@ -57,6 +57,6 @@ const getWeekendController = async (req, res, next) => {
 }
 
 module.exports = {
-  getWeekendsController,
-  getWeekendController
+  getWeekends,
+  getWeekend
 }

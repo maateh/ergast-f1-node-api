@@ -7,7 +7,7 @@ const { simplifyWeekend } = require('../../models/Weekend')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getPopulatedWeekendsFilteredByResults = async (req, res, next, resultType) => {
+const getWeekendsFilteredByResults = async (req, res, next, resultType) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
@@ -55,5 +55,5 @@ const getPopulatedWeekendsFilteredByResults = async (req, res, next, resultType)
 }
 
 module.exports = {
-  getPopulatedWeekendsFilteredByResults
+  getWeekendsFilteredByResults
 }

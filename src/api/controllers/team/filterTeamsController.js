@@ -7,7 +7,7 @@ const { simplifyTeam } = require('../../models/Team')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getPopulatedTeamsFilteredByResults = async (req, res, next, resultType) => {
+const getTeamsFilteredByResults = async (req, res, next, resultType) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
@@ -35,5 +35,5 @@ const getPopulatedTeamsFilteredByResults = async (req, res, next, resultType) =>
 }
 
 module.exports = {
-  getPopulatedTeamsFilteredByResults
+  getTeamsFilteredByResults
 }

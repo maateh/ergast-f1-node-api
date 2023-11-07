@@ -7,7 +7,7 @@ const { simplifySeason } = require('../../models/Season')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getPopulatedSeasonsFilteredByResults = async (req, res, next, resultType) => {
+const getSeasonsFilteredByResults = async (req, res, next, resultType) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
@@ -36,5 +36,5 @@ const getPopulatedSeasonsFilteredByResults = async (req, res, next, resultType) 
 }
 
 module.exports = {
-  getPopulatedSeasonsFilteredByResults
+  getSeasonsFilteredByResults
 }

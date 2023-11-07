@@ -7,7 +7,7 @@ const { simplifyDriver } = require('../../models/Driver')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getPopulatedDriversFilteredByResults = async (req, res, next, resultType) => {
+const getDriversFilteredByResults = async (req, res, next, resultType) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
@@ -35,5 +35,5 @@ const getPopulatedDriversFilteredByResults = async (req, res, next, resultType) 
 }
 
 module.exports = {
-  getPopulatedDriversFilteredByResults
+  getDriversFilteredByResults
 }

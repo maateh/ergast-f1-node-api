@@ -4,7 +4,7 @@ const Driver = require('../../models/Driver')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getDriversController = async (req, res, next) => {
+const getDrivers = async (req, res, next) => {
   const { metadata, pagination } = res.locals
 
   try {
@@ -32,7 +32,7 @@ const getDriversController = async (req, res, next) => {
   }
 }
 
-const getDriverController = async (req, res, next) => {
+const getDriver = async (req, res, next) => {
   const { metadata } = res.locals
   const { id } = req.params
 
@@ -53,6 +53,6 @@ const getDriverController = async (req, res, next) => {
 }
 
 module.exports = {
-  getDriversController,
-  getDriverController
+  getDrivers,
+  getDriver
 }

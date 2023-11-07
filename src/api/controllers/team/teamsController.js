@@ -4,7 +4,7 @@ const Team = require('../../models/Team')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getTeamsController = async (req, res, next) => {
+const getTeams = async (req, res, next) => {
   const { metadata, pagination } = res.locals
 
   try {
@@ -32,7 +32,7 @@ const getTeamsController = async (req, res, next) => {
   }
 }
 
-const getTeamController = async (req, res, next) => {
+const getTeam = async (req, res, next) => {
   const { metadata } = res.locals
   const { id } = req.params
 
@@ -53,6 +53,6 @@ const getTeamController = async (req, res, next) => {
 }
 
 module.exports = {
-  getTeamsController,
-  getTeamController
+  getTeams,
+  getTeam
 }

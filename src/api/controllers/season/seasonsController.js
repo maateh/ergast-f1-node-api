@@ -4,7 +4,7 @@ const Season = require('../../models/Season')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getSeasonsController = async (req, res, next) => {
+const getSeasons = async (req, res, next) => {
   const { metadata, pagination } = res.locals
 
   try {
@@ -32,7 +32,7 @@ const getSeasonsController = async (req, res, next) => {
   }
 }
 
-const getSeasonController = async (req, res, next) => {
+const getSeason = async (req, res, next) => {
   const { metadata } = res.locals
   const { year } = req.params
 
@@ -53,6 +53,6 @@ const getSeasonController = async (req, res, next) => {
 }
 
 module.exports = {
-  getSeasonsController,
-  getSeasonController
+  getSeasons,
+  getSeason
 }

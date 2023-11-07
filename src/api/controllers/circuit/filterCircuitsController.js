@@ -7,7 +7,7 @@ const { simplifyCircuit } = require('../../models/Circuit')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getPopulatedCircuitsFilteredByResults = async (req, res, next, resultType) => {
+const getCircuitsFilteredByResults = async (req, res, next, resultType) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
@@ -35,5 +35,5 @@ const getPopulatedCircuitsFilteredByResults = async (req, res, next, resultType)
 }
 
 module.exports = {
-  getPopulatedCircuitsFilteredByResults
+  getCircuitsFilteredByResults
 }

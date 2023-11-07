@@ -4,7 +4,7 @@ const Circuit = require('../../models/Circuit')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getCircuitsController = async (req, res, next) => {
+const getCircuits = async (req, res, next) => {
   const { metadata, pagination } = res.locals
 
   try {
@@ -31,7 +31,7 @@ const getCircuitsController = async (req, res, next) => {
   }
 }
 
-const getCircuitController = async (req, res, next) => {
+const getCircuit = async (req, res, next) => {
   const { metadata } = res.locals
   const { id } = req.params
 
@@ -52,6 +52,6 @@ const getCircuitController = async (req, res, next) => {
 }
 
 module.exports = {
-  getCircuitsController,
-  getCircuitController
+  getCircuits,
+  getCircuit
 }
