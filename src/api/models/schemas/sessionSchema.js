@@ -1,7 +1,5 @@
 const { Schema } = require('mongoose')
 
-const dateSchema = require('./dateSchema')
-
 const SESSIONS = {
   FP1: {
     key: 'fp1',
@@ -42,9 +40,14 @@ const sessionSchema = new Schema({
     type: String,
     required: true
   },
-  date: { // <- date, time
-    type: dateSchema,
+  date: {
+    type: Date,
     required: true
+  },
+  hasExactTime: {
+    type: Boolean,
+    required: true,
+    default: true
   },
   _id: false
 })

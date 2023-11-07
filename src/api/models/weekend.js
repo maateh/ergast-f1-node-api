@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose')
 
 // schemas
-const dateSchema = require('./schemas/dateSchema')
 const sessionSchema = require('./schemas/sessionSchema')
 
 // models
@@ -33,8 +32,19 @@ const weekendSchema = new Schema({
     required: true
   },
   date: {
-    type: dateSchema,
-    required: true
+    start: {
+      type: Date,
+      required: true
+    },
+    end: {
+      type: Date,
+      required: true
+    },
+    hasExactTime: {
+      type: Boolean,
+      required: true,
+      default: true
+    },
   },
   wiki: {
     type: String,
