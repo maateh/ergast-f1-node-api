@@ -11,9 +11,16 @@ const SprintResult = require('../models/SprintResult')
 const filterWithPopulateResults = async (resultType, filter, pagination, {
   targetCollection,
   populatingField,
-  sort
+  sort,
+  sortAndPaginationAfterPopulate = true
 }) => {
   const ResultModel = getResultModel(resultType, filter)
+
+  const sortAndPaginationStages = [
+    { $sort: sort },
+    { $limit: pagination.limit },
+    { $skip: pagination.offset },
+  ]
 
   const total = await ResultModel.aggregate([
     { $match: filter },
@@ -24,6 +31,7 @@ const filterWithPopulateResults = async (resultType, filter, pagination, {
   const data = await ResultModel.aggregate([
     { $match: filter },
     { $group: { _id: `$${populatingField}` } },
+    ...(sortAndPaginationAfterPopulate ? [] : sortAndPaginationStages),
     {
       $lookup: {
         from: targetCollection,
@@ -34,9 +42,7 @@ const filterWithPopulateResults = async (resultType, filter, pagination, {
     },
     { $unwind: '$populatedDoc' },
     { $replaceWith: '$populatedDoc' },
-    { $sort: sort },
-    { $limit: pagination.limit },
-    { $skip: pagination.offset },
+    ...(sortAndPaginationAfterPopulate ? sortAndPaginationStages : []),
     { $project: { _id: 0, ergastId: 0, __v: 0 } }
   ])
 

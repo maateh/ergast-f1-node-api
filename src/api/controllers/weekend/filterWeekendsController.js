@@ -14,7 +14,8 @@ const getPopulatedWeekendsFilteredByResults = async (req, res, next, resultType)
     const { data: weekends, total } = await filterWithPopulateResults(resultType, filter, pagination, {
       targetCollection: 'weekends',
       populatingField: 'weekend._weekend',
-      sort: { 'season.year': 1, round: 1 }
+      sort: { 'season.year': 1, 'weekend.round': 1 },
+      sortAndPaginationAfterPopulate: false
     })
 
     if (!weekends || !weekends.length) {

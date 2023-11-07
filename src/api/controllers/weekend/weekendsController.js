@@ -14,6 +14,7 @@ const getWeekendsController = async (req, res, next) => {
       .sort('season.year round')
       .skip(pagination.offset)
       .limit(pagination.limit)
+      .populate('season._season circuit._circuit')
 
     if (!weekends || !weekends.length) {
       throw new DataNotFoundError('Weekends')
@@ -40,7 +41,7 @@ const getWeekendController = async (req, res, next) => {
     const weekend = await Weekend.findOne({
       'season.year': year,
       round
-    })
+    }).populate('season._season circuit._circuit')
 
     if (!weekend) {
       throw new DataNotFoundError('Weekend')
