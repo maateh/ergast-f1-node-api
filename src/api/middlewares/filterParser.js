@@ -52,7 +52,7 @@ const filterParser = (req, res, next) => {
     'team.ref': teamId,
     'position.order': position,
     grid,
-    fastest,
+    'fastest.rank': fastest,
     points: points ? { $gte: points } : undefined
   })
 
