@@ -1,5 +1,5 @@
 // services
-const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
+const filterWithRegroupResults = require('../../services/filterWithRegroupResults')
 
 // models
 const { simplifySeason } = require('../../models/Season')
@@ -11,10 +11,11 @@ const getPopulatedSeasonsFilteredByResults = async (req, res, next, resultType) 
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: seasons, total } = await filterWithPopulateResults(resultType, filter, pagination, {
+    const { data: seasons, total } = await filterWithRegroupResults(resultType, filter, pagination, {
       targetCollection: 'seasons',
-      populatingField: 'season._season',
-      sort: { year: 1 }
+      groupingField: 'season._season',
+      sort: { year: 1 },
+      paginationBeforeLookup: true
     })
 
     if (!seasons || !seasons.length) {

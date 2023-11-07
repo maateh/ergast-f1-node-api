@@ -1,5 +1,5 @@
 // services
-const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
+const filterWithRegroupResults = require('../../services/filterWithRegroupResults')
 
 // models
 const { simplifyDriver } = require('../../models/Driver')
@@ -11,9 +11,9 @@ const getPopulatedDriversFilteredByResults = async (req, res, next, resultType) 
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: drivers, total } = await filterWithPopulateResults(resultType, filter, pagination, {
+    const { data: drivers, total } = await filterWithRegroupResults(resultType, filter, pagination, {
       targetCollection: 'drivers',
-      populatingField: 'driver._driver',
+      groupingField: 'driver._driver',
       sort: { 'name.lastName': 1 }
     })
 

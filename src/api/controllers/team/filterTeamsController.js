@@ -1,5 +1,5 @@
 // services
-const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
+const filterWithRegroupResults = require('../../services/filterWithRegroupResults')
 
 // models
 const { simplifyTeam } = require('../../models/Team')
@@ -11,9 +11,9 @@ const getPopulatedTeamsFilteredByResults = async (req, res, next, resultType) =>
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: teams, total } = await filterWithPopulateResults(resultType, filter, pagination, {
+    const { data: teams, total } = await filterWithRegroupResults(resultType, filter, pagination, {
       targetCollection: 'teams',
-      populatingField: 'team._team',
+      groupingField: 'team._team',
       sort: { name: 1 }
     })
 

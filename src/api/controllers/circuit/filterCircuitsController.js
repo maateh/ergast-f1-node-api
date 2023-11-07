@@ -1,5 +1,5 @@
 // services
-const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
+const filterWithRegroupResults = require('../../services/filterWithRegroupResults')
 
 // models
 const { simplifyCircuit } = require('../../models/Circuit')
@@ -11,9 +11,9 @@ const getPopulatedCircuitsFilteredByResults = async (req, res, next, resultType)
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: circuits, total } = await filterWithPopulateResults(resultType, filter, pagination, {
+    const { data: circuits, total } = await filterWithRegroupResults(resultType, filter, pagination, {
       targetCollection: 'circuits',
-      populatingField: 'circuit._circuit',
+      groupingField: 'circuit._circuit',
       sort: { name: 1 }
     })
 

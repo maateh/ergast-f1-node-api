@@ -1,5 +1,5 @@
 // services
-const filterWithPopulateResults = require('../../services/filterWithPopulateResults')
+const filterWithRegroupResults = require('../../services/filterWithRegroupResults')
 
 // models
 const { simplifyWeekend } = require('../../models/Weekend')
@@ -11,12 +11,31 @@ const getPopulatedWeekendsFilteredByResults = async (req, res, next, resultType)
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: weekends, total } = await filterWithPopulateResults(resultType, filter, pagination, {
+    const { data: weekends, total } = await filterWithRegroupResults(resultType, filter, pagination, {
       targetCollection: 'weekends',
-      populatingField: 'weekend._weekend',
+      groupingField: 'weekend._weekend',
       sort: { 'season.year': 1, 'weekend.round': 1 },
-      sortAndPaginationAfterPopulate: false
-    })
+      paginationBeforeLookup: true
+    }, [
+      {
+        $lookup: {
+          from: 'seasons',
+          localField: 'season._season',
+          foreignField: '_id',
+          as: 'season._season'
+        }
+      },
+      { $unwind: '$season._season' },
+      {
+        $lookup: {
+          from: 'circuits',
+          localField: 'circuit._circuit',
+          foreignField: '_id',
+          as: 'circuit._circuit'
+        }
+      },
+      { $unwind: '$circuit._circuit' }
+    ])
 
     if (!weekends || !weekends.length) {
       throw new DataNotFoundError('Weekends')

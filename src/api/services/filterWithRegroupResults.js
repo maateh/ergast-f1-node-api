@@ -1,4 +1,4 @@
-// This service filters results from a specified result collection
+// This service filters out results from a specified result collection
 // (Race, Qualifying, Sprint - based on the provided "resultType") and
 // allowing for sorting and pagination. It retrieves and populates relevant
 // data from the target collection based on provided parameters.
@@ -8,30 +8,30 @@ const RaceResult = require('../models/RaceResult')
 const QualifyingResult = require('../models/QualifyingResult')
 const SprintResult = require('../models/SprintResult')
 
-const filterWithPopulateResults = async (resultType, filter, pagination, {
+const filterWithRegroupResults = async (resultType, filter, pagination, {
   targetCollection,
-  populatingField,
+  groupingField,
   sort,
-  sortAndPaginationAfterPopulate = true
-}) => {
+  paginationBeforeLookup = false
+}, additionalStages = []) => {
   const ResultModel = getResultModel(resultType, filter)
 
-  const sortAndPaginationStages = [
+  const total = await ResultModel.aggregate([
+    { $match: filter },
+    { $group: { _id: `$${groupingField}` } },
+    { $count: 'total' }
+  ])
+
+  const paginationStages = [
     { $sort: sort },
     { $limit: pagination.limit },
     { $skip: pagination.offset },
   ]
 
-  const total = await ResultModel.aggregate([
-    { $match: filter },
-    { $group: { _id: `$${populatingField}` } },
-    { $count: 'total' }
-  ])
-
   const data = await ResultModel.aggregate([
     { $match: filter },
-    { $group: { _id: `$${populatingField}` } },
-    ...(sortAndPaginationAfterPopulate ? [] : sortAndPaginationStages),
+    { $group: { _id: `$${groupingField}` } },
+    ...(paginationBeforeLookup ? paginationStages : []),
     {
       $lookup: {
         from: targetCollection,
@@ -42,7 +42,8 @@ const filterWithPopulateResults = async (resultType, filter, pagination, {
     },
     { $unwind: '$populatedDoc' },
     { $replaceWith: '$populatedDoc' },
-    ...(sortAndPaginationAfterPopulate ? sortAndPaginationStages : []),
+    ...(paginationBeforeLookup ? [] : paginationStages),
+    ...additionalStages,
     { $project: { _id: 0, ergastId: 0, __v: 0 } }
   ])
 
@@ -52,7 +53,7 @@ const filterWithPopulateResults = async (resultType, filter, pagination, {
   }
 }
 
-const getResultModel = (resultType, filter) => {
+function getResultModel(resultType, filter) {
   switch (resultType) {
     case 'race':
       return RaceResult
@@ -67,4 +68,4 @@ const getResultModel = (resultType, filter) => {
   }
 }
 
-module.exports = filterWithPopulateResults
+module.exports = filterWithRegroupResults
