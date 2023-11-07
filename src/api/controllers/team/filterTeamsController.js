@@ -1,5 +1,5 @@
 // services
-const filterWithRegroupResults = require('../../services/filterWithRegroupResults')
+const filterWithRegroupResults = require('../../services/filter/filterWithRegroupResults')
 
 // models
 const { simplifyTeam } = require('../../models/Team')

@@ -3,17 +3,16 @@
 // allowing for sorting and pagination. It retrieves and populates relevant
 // data from the target collection based on provided parameters.
 
-// models
-const RaceResult = require('../models/RaceResult')
-const QualifyingResult = require('../models/QualifyingResult')
-const SprintResult = require('../models/SprintResult')
+// utils
+const { getResultModel, getPaginationStages } = require('../../utils/filterResultsUtils')
 
-const filterWithRegroupResults = async (resultType, filter, pagination, {
-  targetCollection,
-  groupingField,
-  sort,
-  paginationBeforeLookup = false
-}, additionalStages = []) => {
+const filterWithRegroupResults = async (
+  resultType,
+  filter = {},
+  pagination = { limit: 30, offset: 0 },
+  { groupingField, targetCollection, sort, paginationBeforeLookup = false },
+  additionalStages = []
+) => {
   const ResultModel = getResultModel(resultType, filter)
 
   const total = await ResultModel.aggregate([
@@ -22,11 +21,7 @@ const filterWithRegroupResults = async (resultType, filter, pagination, {
     { $count: 'total' }
   ])
 
-  const paginationStages = [
-    { $sort: sort },
-    { $limit: pagination.limit },
-    { $skip: pagination.offset },
-  ]
+  const paginationStages = getPaginationStages(sort, pagination)
 
   const data = await ResultModel.aggregate([
     { $match: filter },
@@ -50,21 +45,6 @@ const filterWithRegroupResults = async (resultType, filter, pagination, {
   return {
     data,
     total: total.length ? total[0].total : 0
-  }
-}
-
-function getResultModel(resultType, filter) {
-  switch (resultType) {
-    case 'race':
-      return RaceResult
-    case 'qualifying':
-      filter.position = filter['position.order'] || filter.position
-      delete filter['position.order']
-      return QualifyingResult
-    case 'sprint':
-      return SprintResult
-    default:
-      throw new Error('Invalid resultType')
   }
 }
 
