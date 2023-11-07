@@ -31,21 +31,6 @@ const weekendSchema = new Schema({
     type: String,
     required: true
   },
-  date: {
-    start: {
-      type: Date,
-      required: true
-    },
-    end: {
-      type: Date,
-      required: true
-    },
-    hasExactTime: {
-      type: Boolean,
-      required: true,
-      default: true
-    },
-  },
   wiki: {
     type: String,
     required: true
@@ -73,7 +58,6 @@ const simplify = weekend => {
     year: weekend.season.year,
     round: weekend.round,
     name: weekend.name,
-    date: weekend.date,
     wiki: weekend.wiki,
     sessions: weekend.sessions,
     // season: simplifySeason(weekend.season._season),
