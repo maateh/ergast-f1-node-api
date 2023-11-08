@@ -1,10 +1,23 @@
 // Remove properties from an object whose value is undefined or null
 
 function objectCleaner(object) {
-  const cleanedObject = Object.entries(object)
-    .filter(([_, value]) => value !== undefined && value !== null)
+  const clean = obj => {
+    if (obj === null || typeof obj !== 'object') {
+      return obj
+    }
 
-  return Object.fromEntries(cleanedObject)
+    if (Array.isArray(obj)) {
+      return obj.map(clean)
+    }
+
+    return Object.fromEntries(
+      Object.entries(obj)
+        .filter(([_, value]) => value !== undefined && value !== null)
+        .map(([key, value]) => [key, clean(value)])
+    )
+  }
+
+  return clean(object)
 }
 
 module.exports = objectCleaner
