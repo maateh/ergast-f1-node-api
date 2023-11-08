@@ -7,7 +7,7 @@ const Driver = require('../../api/models/Driver')
 const Team = require('../../api/models/Team')
 
 // utils
-const arrayToMap = require('../utils/arrayToMap')
+const { arrayToMap } = require('../utils/arrayToMap')
 
 const getAllLapTimes = () => {
   const query = `

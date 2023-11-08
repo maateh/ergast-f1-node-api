@@ -1,13 +1,10 @@
 const db = require('../database/mysql')
 
 // models
-const SprintResult = require('../../api/models/SprintResult')
-const Weekend = require('../../api/models/Weekend')
-const Driver = require('../../api/models/Driver')
-const Team = require('../../api/models/Team')
+const Result = require('../../api/models/Result')
 
 // utils
-const arrayToMap = require('../utils/arrayToMap')
+const { arrayToMapWithMultipleKeyRefs } = require('../utils/arrayToMap')
 const convertTimeToMs = require('../utils/convertTimetoMs')
 
 const getAllSprintResults = () => {
@@ -31,72 +28,54 @@ const conversion = () => {
   console.info('SprintResults conversion started...')
   return Promise.all([
     getAllSprintResults(),
-    Weekend.find(),
-    Driver.find(),
-    Team.find()
+    Result.find().populate('weekend._weekend')
   ])
-    .then(([sprintResults, weekends, drivers, teams]) => {
+    .then(([sprintResults, results]) => {
       console.info('Converting sprint results...')
 
-      const weekendsMap = arrayToMap(weekends, 'ergastId')
-      const driversMap = arrayToMap(drivers, 'ref')
-      const teamsMap = arrayToMap(teams, 'ref')
+      const sprintResultsMap = arrayToMapWithMultipleKeyRefs(sprintResults, [
+        'raceId', 'driverRef', 'constructorRef'
+      ])
 
-      return sprintResults.map(result => {
-        const weekend = weekendsMap[result.raceId]
-        const driver = driversMap[result.driverRef]
-        const team = teamsMap[result.constructorRef]
+      return results.map(result => {
+        const sprintResult = sprintResultsMap[
+          `${result.weekend._weekend.ergastId}${result.driver.ref}${result.team.ref}`
+        ]
 
-        return new SprintResult({
-          season: {
-            year: weekend.season.year,
-            _season: weekend.season._season
-          },
-          weekend: {
-            round: weekend.round,
-            _weekend: weekend._id
-          },
-          driver: {
-            ref: driver.ref,
-            _driver: driver._id
-          },
-          team: {
-            ref: team.ref,
-            _team: team._id
-          },
-          circuit: {
-            ref: weekend.circuit.ref,
-            _circuit: weekend.circuit._circuit
-          },
-          ergastId: result.sprintResultId,
-          grid: result.grid,
-          position: {
-            order: result.positionOrder,
-            finished: !!result.position,
-            info: getPositionInfo(result.positionText),
-          },
-          points: result.points,
-          laps: result.laps,
-          duration: {
-            gap: result.time || undefined,
-            ms: result.milliseconds || undefined
-          },
-          fastest: {
-            rank: result.rank || undefined,
-            lap: result.fastestLap || undefined,
-            time: result.fastestLapTime || undefined,
-            ms: result.fastestLapTime ? convertTimeToMs(result.fastestLapTime) : undefined,
-            speed: result.fastestLapSpeed || undefined
+        if (sprintResult) {
+          result.sprint = {
+            grid: sprintResult.grid,
+            position: {
+              order: sprintResult.positionOrder,
+              finished: !!sprintResult.position,
+              info: getPositionInfo(sprintResult.positionText),
+            },
+            points: sprintResult.points,
+            laps: sprintResult.laps,
+            duration: {
+              gap: sprintResult.time || undefined,
+              ms: sprintResult.milliseconds || undefined
+            },
+            fastest: {
+              rank: sprintResult.rank || undefined,
+              lap: sprintResult.fastestLap || undefined,
+              time: sprintResult.fastestLapTime || undefined,
+              ms: sprintResult.fastestLapTime
+                ? convertTimeToMs(sprintResult.fastestLapTime)
+                : undefined,
+              speed: sprintResult.fastestLapSpeed || undefined
+            }
           }
-        })
+        }
+        return result
       })
     })
-    .then(convertedSprintResults => {
-      console.info('Inserting SprintResults...')
-      return SprintResult.insertMany(convertedSprintResults)
+    .then(updatedResults => {
+      console.info('Updating results with adding sprint results data...')
+      return Result.bulkSave(updatedResults)
     })
     .then(() => {
-      console.info('SprintResults conversion done!')
+      console.info('Results updated with sprint results data!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

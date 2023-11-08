@@ -1,13 +1,10 @@
 const db = require('../database/mysql')
 
 // models
-const QualifyingResult = require('../../api/models/QualifyingResult')
-const Weekend = require('../../api/models/Weekend')
-const Driver = require('../../api/models/Driver')
-const Team = require('../../api/models/Team')
+const Result = require('../../api/models/Result')
 
 // utils
-const arrayToMap = require('../utils/arrayToMap')
+const { arrayToMapWithMultipleKeyRefs } = require('../utils/arrayToMap')
 const convertTimeToMs = require('../utils/convertTimetoMs')
 
 const getAllQualifyingResults = () => {
@@ -30,66 +27,52 @@ const conversion = () => {
   console.info('QualifyingResults conversion started...')
   return Promise.all([
     getAllQualifyingResults(),
-    Weekend.find(),
-    Driver.find(),
-    Team.find()
+    Result.find().populate('weekend._weekend')
   ])
-    .then(([qualifyingResults, weekends, drivers, teams]) => {
+    .then(([qualifyingResults, results]) => {
       console.info('Converting qualifying results...')
 
-      const weekendsMap = arrayToMap(weekends, 'ergastId')
-      const driversMap = arrayToMap(drivers, 'ref')
-      const teamsMap = arrayToMap(teams, 'ref')
+      const qualifyingResultsMap = arrayToMapWithMultipleKeyRefs(qualifyingResults, [
+        'raceId', 'driverRef', 'constructorRef'
+      ])
 
-      return qualifyingResults.map(result => {
-        const weekend = weekendsMap[result.raceId]
-        const driver = driversMap[result.driverRef]
-        const team = teamsMap[result.constructorRef]
+      return results.map(result => {
+        const qualifyingResult = qualifyingResultsMap[
+          `${result.weekend._weekend.ergastId}${result.driver.ref}${result.team.ref}`
+        ]
 
-        return new QualifyingResult({
-          season: {
-            year: weekend.season.year,
-            _season: weekend.season._season
-          },
-          weekend: {
-            round: weekend.round,
-            _weekend: weekend._id
-          },
-          driver: {
-            ref: driver.ref,
-            _driver: driver._id
-          },
-          team: {
-            ref: team.ref,
-            _team: team._id
-          },
-          circuit: {
-            ref: weekend.circuit.ref,
-            _circuit: weekend.circuit._circuit
-          },
-          ergastId: result.qualifyId,
-          position: result.position,
-          q1: {
-            time: result.q1 || '-',
-            ms: result.q1 ? convertTimeToMs(result.q1) : undefined
-          },
-          q2: weekend.season.year >= 2006 ? {
-            time: result.q2 || '-',
-            ms: result.q2 ? convertTimeToMs(result.q2) : undefined
-          } : undefined,
-          q3: weekend.season.year >= 2006 ? {
-            time: result.q3 || '-',
-            ms: result.q3 ? convertTimeToMs(result.q3) : undefined
-          } : undefined
-        })
+        if (qualifyingResult) {
+          result.qualifying = {
+            position: qualifyingResult.position,
+            q1: {
+              time: qualifyingResult.q1 || '-',
+              ms: qualifyingResult.q1
+                ? convertTimeToMs(qualifyingResult.q1)
+                : undefined
+            },
+            q2: result.season.year >= 2006 ? {
+              time: qualifyingResult.q2 || '-',
+              ms: qualifyingResult.q2
+                ? convertTimeToMs(qualifyingResult.q2)
+                : undefined
+            } : undefined,
+            q3: result.season.year >= 2006 ? {
+              time: qualifyingResult.q3 || '-',
+              ms: qualifyingResult.q3
+                ? convertTimeToMs(qualifyingResult.q3)
+                : undefined
+            } : undefined
+          }
+        }
+        return result
       })
     })
-    .then(convertedQualifyingResults => {
-      console.info('Inserting QualifyingResults...')
-      return QualifyingResult.bulkSave(convertedQualifyingResults)
+    .then(updatedResults => {
+      console.info('Updating results with adding qualifying results data...')
+      return Result.bulkSave(updatedResults)
     })
     .then(() => {
-      console.info('QualifyingResults conversion done!')
+      console.info('Results updated with qualifying results data!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)

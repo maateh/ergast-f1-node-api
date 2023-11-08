@@ -1,13 +1,13 @@
 const db = require('../database/mysql')
 
 // models
-const RaceResult = require('../../api/models/RaceResult')
+const Result = require('../../api/models/Result')
 const Weekend = require('../../api/models/Weekend')
 const Driver = require('../../api/models/Driver')
 const Team = require('../../api/models/Team')
 
 // utils
-const arrayToMap = require('../utils/arrayToMap')
+const { arrayToMap } = require('../utils/arrayToMap')
 const convertTimeToMs = require('../utils/convertTimetoMs')
 
 const getAllRaceResults = () => {
@@ -47,7 +47,7 @@ const conversion = () => {
         const driver = driversMap[result.driverRef]
         const team = teamsMap[result.constructorRef]
 
-        return new RaceResult({
+        return new Result({
           season: {
             year: weekend.season.year,
             _season: weekend.season._season
@@ -68,32 +68,33 @@ const conversion = () => {
             ref: weekend.circuit.ref,
             _circuit: weekend.circuit._circuit
           },
-          ergastId: result.resultId,
-          grid: result.grid,
-          position: {
-            order: result.positionOrder,
-            finished: !!result.position,
-            info: getPositionInfo(result.positionText),
-          },
-          points: result.points,
-          laps: result.laps,
-          duration: {
-            gap: result.time || undefined,
-            ms: result.milliseconds || undefined
-          },
-          fastest: {
-            rank: result.rank || undefined,
-            lap: result.fastestLap || undefined,
-            time: result.fastestLapTime || undefined,
-            ms: result.fastestLapTime ? convertTimeToMs(result.fastestLapTime) : undefined,
-            speed: result.fastestLapSpeed || undefined
+          race: {
+            grid: result.grid,
+            position: {
+              order: result.positionOrder,
+              finished: !!result.position,
+              info: getPositionInfo(result.positionText),
+            },
+            points: result.points,
+            laps: result.laps,
+            duration: {
+              gap: result.time || undefined,
+              ms: result.milliseconds || undefined
+            },
+            fastest: {
+              rank: result.rank || undefined,
+              lap: result.fastestLap || undefined,
+              time: result.fastestLapTime || undefined,
+              ms: result.fastestLapTime ? convertTimeToMs(result.fastestLapTime) : undefined,
+              speed: result.fastestLapSpeed || undefined
+            }
           }
         })
       })
     })
     .then(convertedRaceResults => {
       console.info('Inserting RaceResults...')
-      return RaceResult.insertMany(convertedRaceResults)
+      return Result.insertMany(convertedRaceResults)
     })
     .then(() => {
       console.info('RaceResults conversion done!')

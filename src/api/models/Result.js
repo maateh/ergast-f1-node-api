@@ -13,11 +13,6 @@ const qualifyingResultSchema = require('./schemas/qualifyingResultSchema')
 const sprintResultSchema = require('./schemas/sprintResultSchema')
 
 const resultSchema = new Schema({
-  ergastId: {
-    type: Number,
-    required: false,
-    unique: true
-  },
   season: {
     year: {
       type: Number,

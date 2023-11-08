@@ -6,7 +6,7 @@ const Season = require('../../api/models/Season')
 const Circuit = require('../../api/models/Circuit')
 
 // utils
-const arrayToMap = require('../utils/arrayToMap')
+const { arrayToMap } = require('../utils/arrayToMap')
 
 // constants
 const { SESSIONS } = require('../../api/models/schemas/sessionSchema')

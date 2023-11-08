@@ -28,12 +28,13 @@ const startConversion = async () => {
       return weekendConverter()
     })
 
+    await raceResultConverter()
+
     await Promise.all([
-      raceResultConverter(),
-      qualifyingResultConverter(),
-      sprintResultConverter(),
       pitStopConverter(),
-      lapTimeConverter()
+      lapTimeConverter(),
+      qualifyingResultConverter(),
+      sprintResultConverter()
     ])
   } catch (err) {
     console.error('An error occurred during conversion: ', err)

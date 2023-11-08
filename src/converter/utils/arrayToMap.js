@@ -9,10 +9,24 @@ function arrayToMap(array, keyRef) {
   }, {})
 }
 
+function arrayToMapWithMultipleKeyRefs(array, keyRefs) {
+  return array.reduce((map, item) => {
+    const keys = keyRefs.reduce((acc, keyRef) => {
+      return acc + getKeyValueAsString(item, keyRef)
+    }, '')
+
+    map[keys] = item
+    return map
+  }, {})
+}
+
 function getKeyValueAsString(object, keyRef) {
   return keyRef.split('.')
     .reduce((object, key) => object[key], object)
     .toString()
 }
 
-module.exports = arrayToMap
+module.exports = {
+  arrayToMap,
+  arrayToMapWithMultipleKeyRefs
+}
