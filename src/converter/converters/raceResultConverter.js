@@ -8,6 +8,7 @@ const Team = require('../../api/models/Team')
 
 // utils
 const { arrayToMap } = require('../utils/arrayToMap')
+const getPositionInfo = require('../utils/racePositionInfo')
 const convertTimeToMs = require('../utils/convertTimetoMs')
 
 const getAllRaceResults = () => {
@@ -102,25 +103,6 @@ const conversion = () => {
     .catch(err => {
       console.error('Conversion error: ', err)
     })
-}
-
-function getPositionInfo(positionText) {
-  switch (positionText) {
-    case 'R':
-      return 'Retired'
-    case 'D':
-      return 'Disqualified'
-    case 'E':
-      return 'Excluded'
-    case 'W':
-      return 'Withdrawn'
-    case 'F':
-      return 'Failed to qualify'
-    case 'N':
-      return 'Not classified'
-    default:
-      return positionText
-  }
 }
 
 module.exports = conversion
