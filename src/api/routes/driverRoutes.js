@@ -18,27 +18,21 @@ router.get('/', [queryValidation, responsePagination], getDrivers)
 
 // List of all drivers who match the specified filter
 router.get(
-  `${BASE_FILTER_ROUTE}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/race(/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getDriversFilteredByResults(req, res, next, 'race')
-  }
+  getDriversFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/qualifying(/:position)?)?`,
+  `${BASE_FILTER_ROUTE}(/qualifying(/:qualifyingPosition)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getDriversFilteredByResults(req, res, next, 'qualifying')
-  }
+  getDriversFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/sprint(/:position)?(/grid/:grid)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/sprint(/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getDriversFilteredByResults(req, res, next, 'sprint')
-  }
+  getDriversFilteredByResults
 )
 
 // Get driver information

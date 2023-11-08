@@ -7,11 +7,11 @@ const { simplifyTeam } = require('../../models/Team')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getTeamsFilteredByResults = async (req, res, next, resultType) => {
+const getTeamsFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: teams, total } = await filterWithRegroupResults(resultType, filter, pagination, {
+    const { data: teams, total } = await filterWithRegroupResults(filter.results, pagination, {
       targetCollection: 'teams',
       groupingField: 'team._team',
       sort: { name: 1 }

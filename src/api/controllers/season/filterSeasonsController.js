@@ -7,11 +7,11 @@ const { simplifySeason } = require('../../models/Season')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getSeasonsFilteredByResults = async (req, res, next, resultType) => {
+const getSeasonsFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: seasons, total } = await filterWithRegroupResults(resultType, filter, pagination, {
+    const { data: seasons, total } = await filterWithRegroupResults(filter.results, pagination, {
       targetCollection: 'seasons',
       groupingField: 'season._season',
       sort: { year: 1 },

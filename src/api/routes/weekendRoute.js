@@ -18,27 +18,21 @@ router.get('/', [queryValidation, responsePagination], getWeekends)
 
 // List of all weekends which match the specified filter
 router.get(
-  `${BASE_FILTER_ROUTE}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/race(/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getWeekendsFilteredByResults(req, res, next, 'race')
-  }
+  getWeekendsFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/qualifying(/:position)?)?`,
+  `${BASE_FILTER_ROUTE}(/qualifying(/:qualifyingPosition)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getWeekendsFilteredByResults(req, res, next, 'qualifying')
-  }
+  getWeekendsFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/sprint(/:position)?(/grid/:grid)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/sprint(/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getWeekendsFilteredByResults(req, res, next, 'sprint')
-  }
+  getWeekendsFilteredByResults
 )
 
 // Get weekend information

@@ -1,20 +1,17 @@
-// utils
-const { getResultModel } = require('../../utils/filterResultsUtils')
+// models
+const Result = require('../../models/Result')
 
 const filterResults = async (
-  resultType,
   filter = {},
   sort = {},
   pagination = { limit: 30, offset: 0 }
 ) => {
-  const ResultModel = getResultModel(resultType, filter)
-
-  const total = await ResultModel.aggregate([
+  const total = await Result.aggregate([
     { $match: filter },
     { $count: 'total' }
   ])
 
-  const results = await ResultModel.aggregate([
+  const results = await Result.aggregate([
     { $match: filter },
     { $sort: sort },
     { $limit: pagination.limit },

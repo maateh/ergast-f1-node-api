@@ -13,10 +13,14 @@ const filterParser = (req, res, next) => {
   const numericFilters = [
     'year',
     'round',
-    'position',
-    'grid',
-    'fastest',
-    'points'
+    'racePosition',
+    'raceGrid',
+    'raceFastest',
+    'racePoints',
+    'qualifyingPosition',
+    'sprintPosition',
+    'sprintGrid',
+    'sprintPoints'
   ]
 
   // Converts any value to a Number that must be a Number
@@ -36,24 +40,34 @@ const filterParser = (req, res, next) => {
     circuitId,
     driverId,
     teamId,
-    position,
-    grid,
-    fastest,
-    points
+    racePosition,
+    raceGrid,
+    raceFastest,
+    racePoints,
+    qualifyingPosition,
+    sprintPosition,
+    sprintGrid,
+    sprintPoints
   } = filterParams
 
   // Parses values from "filterParams" to be able to use them
   // as an aggregation query filter (at stage: $match)
   res.locals.filter = objectCleaner({
-    'season.year': year,
-    'weekend.round': round,
-    'circuit.ref': circuitId,
-    'driver.ref': driverId,
-    'team.ref': teamId,
-    'position.order': position,
-    grid,
-    'fastest.rank': fastest,
-    points: points ? { $gte: points } : undefined
+    results: {
+      'season.year': year,
+      'weekend.round': round,
+      'circuit.ref': circuitId,
+      'driver.ref': driverId,
+      'team.ref': teamId,
+      'race.position.order': racePosition,
+      'race.grid': raceGrid,
+      'race.fastest.rank': raceFastest,
+      'race.points': racePoints ? { $gte: racePoints } : undefined,
+      'qualifying.position': qualifyingPosition,
+      'sprint.position.order': sprintPosition,
+      'sprint.grid': sprintGrid,
+      'sprint.points': sprintPoints ? { $gte: sprintPoints } : undefined
+    }
   })
 
   next()

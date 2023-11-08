@@ -7,11 +7,11 @@ const { simplifyDriver } = require('../../models/Driver')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getDriversFilteredByResults = async (req, res, next, resultType) => {
+const getDriversFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: drivers, total } = await filterWithRegroupResults(resultType, filter, pagination, {
+    const { data: drivers, total } = await filterWithRegroupResults(filter.results, pagination, {
       targetCollection: 'drivers',
       groupingField: 'driver._driver',
       sort: { 'name.lastName': 1 }

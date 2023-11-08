@@ -18,27 +18,21 @@ router.get('/', [queryValidation, responsePagination], getCircuits)
 
 // List of all circuits which match the specified filter
 router.get(
-  `${BASE_FILTER_ROUTE}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/race(/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getCircuitsFilteredByResults(req, res, next, 'race')
-  }
+  getCircuitsFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/qualifying(/:position)?)?`,
+  `${BASE_FILTER_ROUTE}(/qualifying(/:qualifyingPosition)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getCircuitsFilteredByResults(req, res, next, 'qualifying')
-  }
+  getCircuitsFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/sprint(/:position)?(/grid/:grid)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/sprint(/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getCircuitsFilteredByResults(req, res, next, 'sprint')
-  }
+  getCircuitsFilteredByResults
 )
 
 // Get circuit information

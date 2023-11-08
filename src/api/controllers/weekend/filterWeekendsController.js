@@ -7,11 +7,11 @@ const { simplifyWeekend } = require('../../models/Weekend')
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
-const getWeekendsFilteredByResults = async (req, res, next, resultType) => {
+const getWeekendsFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: weekends, total } = await filterWithRegroupResults(resultType, filter, pagination, {
+    const { data: weekends, total } = await filterWithRegroupResults(filter.results, pagination, {
       targetCollection: 'weekends',
       groupingField: 'weekend._weekend',
       sort: { 'season.year': 1, 'weekend.round': 1 },

@@ -18,27 +18,21 @@ router.get('/', [queryValidation, responsePagination], getSeasons)
 
 // List of all seasons which match the specified filter
 router.get(
-  `${BASE_FILTER_ROUTE}(/race(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/race(/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getSeasonsFilteredByResults(req, res, next, 'race')
-  }
+  getSeasonsFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/qualifying(/:position)?)?`,
+  `${BASE_FILTER_ROUTE}(/qualifying(/:qualifyingPosition)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getSeasonsFilteredByResults(req, res, next, 'qualifying')
-  }
+  getSeasonsFilteredByResults
 )
 
 router.get(
-  `${BASE_FILTER_ROUTE}(/sprint(/:position)?(/grid/:grid)?(/points/:points)?)?`,
+  `${BASE_FILTER_ROUTE}(/sprint(/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?`,
   [responsePagination, filterParser],
-  (req, res, next) => {
-    getSeasonsFilteredByResults(req, res, next, 'sprint')
-  }
+  getSeasonsFilteredByResults
 )
 
 // Get season information

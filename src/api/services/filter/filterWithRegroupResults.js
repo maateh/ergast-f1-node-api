@@ -3,27 +3,28 @@
 // allowing for sorting and pagination. It retrieves and populates relevant
 // data from the target collection based on provided parameters.
 
-// utils
-const { getResultModel, getPaginationStages } = require('../../utils/filterResultsUtils')
+// models
+const Result = require('../../models/Result')
 
 const filterWithRegroupResults = async (
-  resultType,
   filter = {},
   pagination = { limit: 30, offset: 0 },
   { groupingField, targetCollection, sort, paginationBeforeLookup = false },
   additionalStages = []
 ) => {
-  const ResultModel = getResultModel(resultType, filter)
-
-  const total = await ResultModel.aggregate([
+  const total = await Result.aggregate([
     { $match: filter },
     { $group: { _id: `$${groupingField}` } },
     { $count: 'total' }
   ])
 
-  const paginationStages = getPaginationStages(sort, pagination)
+  const paginationStages = [
+    { $sort: sort },
+    { $limit: pagination.limit },
+    { $skip: pagination.offset },
+  ]
 
-  const data = await ResultModel.aggregate([
+  const data = await Result.aggregate([
     { $match: filter },
     { $group: { _id: `$${groupingField}` } },
     ...(paginationBeforeLookup ? paginationStages : []),
