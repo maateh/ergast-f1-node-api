@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 const express = require('express')
 
 // services
-const databaseConnection = require('./api/services/databaseConnection')
+const connectToMongoDb = require('./api/services/databaseConnection')
 
 // middlewares
 const responseMetadata = require('./api/middlewares/responseMetadata')
@@ -37,7 +37,7 @@ app.use(handleUnmatchedRoutes)
 app.use(handleErrors)
 
 // Initialize app
-databaseConnection()
+connectToMongoDb()
   .then(() => {
     const port = process.env.PORT || 3000
     app.listen(port, () => {
