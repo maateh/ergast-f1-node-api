@@ -4,7 +4,7 @@ const filterResults = require('../../services/filter/filterResults')
 // models
 const { simplifyResult } = require('../../models/Result')
 
-const getRaceResults = async (req, res, next) => {
+const getResults = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
@@ -26,24 +26,4 @@ const getRaceResults = async (req, res, next) => {
   }
 }
 
-const getQualifyingResults = async (req, res, next) => {
-  try {
-    res.json({ success: true })
-  } catch (err) {
-    next(err)
-  }
-}
-
-const getSprintResults = async (req, res, next) => {
-  try {
-    res.json({ success: true })
-  } catch (err) {
-    next(err)
-  }
-}
-
-module.exports = {
-  getRaceResults,
-  getQualifyingResults,
-  getSprintResults
-}
+module.exports = { getResults }
