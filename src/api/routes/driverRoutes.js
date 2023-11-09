@@ -9,7 +9,8 @@ const queryValidation = require('../middlewares/queryValidation')
 const responsePagination = require('../middlewares/responsePagination')
 const filterParser = require('../middlewares/filterParser')
 
-const BASE_FILTER_ROUTE = '(/circuits/:circuitId)?(/teams/:teamId)?'
+// constants
+const { BASE_ROUTE_FILTERS, RESULT_ROUTE_FILTERS } = require('../config/constants')
 
 const router = express.Router()
 
@@ -18,19 +19,7 @@ router.get('/', [queryValidation, responsePagination], getDrivers)
 
 // List of all drivers who match the specified filter
 router.get(
-  `${BASE_FILTER_ROUTE}(/race(/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?`,
-  [responsePagination, filterParser],
-  getDriversFilteredByResults
-)
-
-router.get(
-  `${BASE_FILTER_ROUTE}(/qualifying(/:qualifyingPosition)?)?`,
-  [responsePagination, filterParser],
-  getDriversFilteredByResults
-)
-
-router.get(
-  `${BASE_FILTER_ROUTE}(/sprint(/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?`,
+  `${BASE_ROUTE_FILTERS}${RESULT_ROUTE_FILTERS}`,
   [responsePagination, filterParser],
   getDriversFilteredByResults
 )

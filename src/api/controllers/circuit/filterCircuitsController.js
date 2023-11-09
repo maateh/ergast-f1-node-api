@@ -11,7 +11,7 @@ const getCircuitsFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: circuits, total } = await filterWithRegroupResults(filter.results.results, pagination, {
+    const { data: circuits, total } = await filterWithRegroupResults(filter.results, pagination, {
       targetCollection: 'circuits',
       groupingField: 'circuit._circuit',
       sort: { name: 1 }
