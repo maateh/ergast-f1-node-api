@@ -1,4 +1,8 @@
-// Remove properties from an object whose value is undefined or null
+/**
+ * Recursively removes properties with values of undefined or null from an object.
+ * @param {Object} object - The object to clean.
+ * @returns {Object} A cleaned version of the input object.
+ */
 
 function objectCleaner(object) {
   const clean = obj => {

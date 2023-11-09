@@ -1,3 +1,12 @@
+/**
+ * Aggregates and filters results from the 'Result' model with pagination and required result types.
+ * @param {Object} filter - The filtering criteria for the aggregation.
+ * @param {Object} pagination - The pagination options for the results (limit and offset).
+ * @param {Object} sort - The sorting options for the results.
+ * @param {Object} requiredResults - The types of results to include (race, qualifying, sprint).
+ * @returns {Object} An object with filtered and aggregated results along with the total count.
+ */
+
 // models
 const Result = require('../../models/Result')
 

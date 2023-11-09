@@ -1,7 +1,15 @@
-// This service filters out results from a specified result collection
-// (Race, Qualifying, Sprint - based on the provided "resultType") and
-// allowing for sorting and pagination. It retrieves and populates relevant
-// data from the target collection based on provided parameters.
+/**
+ * Aggregates and filters results from the 'Result' model with pagination and regrouping data.
+ * @param {Object} filter - The filtering criteria for the aggregation.
+ * @param {Object} pagination - The pagination options for the results (limit and offset).
+ * @param {Object} options - Additional options for the aggregation:
+ *   - groupingField: The field used for grouping results.
+ *   - targetCollection: The target collection for the lookup.
+ *   - sort: The sorting options for the results.
+ *   - paginationBeforeLookup: Flag indicating if pagination should be applied before lookup.
+ * @param {Array} additionalStages - Additional aggregation stages to be applied.
+ * @returns {Object} An object with aggregated data and total count.
+ */
 
 // models
 const Result = require('../../models/Result')

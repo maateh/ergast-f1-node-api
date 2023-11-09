@@ -39,7 +39,13 @@ const getResults = async (req, res, next) => {
   }
 }
 
-// TODO: write description
+/**
+ * Generates additional sorting keys based on the provided URL.
+ * It creates an object with keys for sorting race, qualifying, and sprint results.
+ * The keys are set to 1 if the corresponding type is present in the URL, otherwise undefined.
+ * @param {string} url - The URL to analyze.
+ * @returns {Object} An object with sorting keys for race, qualifying, and sprint results.
+ */
 function sortingKeys(url) {
   return objectCleaner({
     'race.position.order': url.includes('race') ? 1 : undefined,
@@ -48,7 +54,14 @@ function sortingKeys(url) {
   })
 }
 
-// TODO: write description
+/**
+ * Determines the required fields based on the provided URL.
+ * If the URL contains a specific type (race, qualifying, or sprint),
+ * it returns an object with that type as a required field.
+ * Otherwise, it returns an object with all types as required fields.
+ * @param {string} url - The URL to analyze.
+ * @returns {Object} An object specifying the required fields.
+ */
 function requiredResults(url) {
   const fields = {
     race: 1,
