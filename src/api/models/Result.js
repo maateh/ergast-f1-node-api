@@ -80,12 +80,12 @@ resultSchema.methods.simplify = function() {
 
 const simplify = result => {
   return {
-    weekend: simplifyWeekend(result.weekend),
-    driver: simplifyDriver(result.driver),
-    team: simplifyTeam(result.team),
     race: result.race,
     qualifying: result.qualifying,
-    sprint: result.sprint
+    sprint: result.sprint,
+    driver: simplifyDriver(result.driver),
+    team: simplifyTeam(result.team),
+    weekend: simplifyWeekend(result.weekend)
   }
 }
 

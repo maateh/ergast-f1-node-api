@@ -4,7 +4,12 @@ const Result = require('../../models/Result')
 const filterResults = async (
   filter = {},
   pagination = { limit: 30, offset: 0 },
-  sort = {}
+  sort = {},
+  requiredResults = {
+    race: 1,
+    qualifying: 1,
+    sprint: 1
+  }
 ) => {
   const total = await Result.aggregate([
     { $match: filter },
@@ -64,10 +69,10 @@ const filterResults = async (
     {
       $project: {
         _id: 0,
-        ergastId: 0,
-        __v: 0,
-        season: 0,
-        circuit: 0
+        driver: 1,
+        team: 1,
+        weekend: 1,
+        ...requiredResults,
       }
     }
   ])
