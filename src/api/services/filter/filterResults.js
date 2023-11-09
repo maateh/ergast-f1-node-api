@@ -14,8 +14,8 @@ const filterResults = async (
   const results = await Result.aggregate([
     { $match: filter },
     { $sort: sort },
-    { $limit: pagination.limit },
     { $skip: pagination.offset },
+    { $limit: pagination.limit },
     {
       $lookup: {
         from: 'weekends',

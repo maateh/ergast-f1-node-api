@@ -20,8 +20,8 @@ const filterWithRegroupResults = async (
 
   const paginationStages = [
     { $sort: sort },
-    { $limit: pagination.limit },
     { $skip: pagination.offset },
+    { $limit: pagination.limit }
   ]
 
   const data = await Result.aggregate([
