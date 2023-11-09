@@ -12,12 +12,12 @@ const handleUnmatchedRoutes = require('./api/middlewares/handleUnmatchedRoutes')
 const handleErrors = require('./api/middlewares/handleErrors')
 
 // routes
+const seasonRoutes = require('./api/routes/seasonRoutes')
+const weekendRoutes = require('./api/routes/weekendRoutes')
 const circuitRoutes = require('./api/routes/circuitRoutes')
 const driverRoutes = require('./api/routes/driverRoutes')
 const teamRoutes = require('./api/routes/teamRoutes')
-const weekendRoutes = require('./api/routes/weekendRoute')
-const seasonRoutes = require('./api/routes/seasonRoutes')
-const resultsRoutes = require('./api/routes/resultsRoutes')
+const resultRoutes = require('./api/routes/resultRoutes')
 
 const BASE_URL = process.env.BASE_URL
 
@@ -26,12 +26,12 @@ const app = express()
 app.use(express.json())
 app.use(responseMetadata)
 
+app.use(`${BASE_URL}/seasons`, seasonRoutes)
+app.use(`${BASE_URL}/weekends`, weekendRoutes)
 app.use(`${BASE_URL}/circuits`, circuitRoutes)
 app.use(`${BASE_URL}/drivers`, driverRoutes)
 app.use(`${BASE_URL}/teams`, teamRoutes)
-app.use(`${BASE_URL}/weekends`, weekendRoutes)
-app.use(`${BASE_URL}/seasons`, seasonRoutes)
-app.use(`${BASE_URL}/results`, resultsRoutes)
+app.use(`${BASE_URL}/results`, resultRoutes)
 
 app.use(handleUnmatchedRoutes)
 app.use(handleErrors)
