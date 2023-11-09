@@ -1,9 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 // models
-const { simplifySeason } = require('./Season')
 const { simplifyWeekend } = require('./Weekend')
-const { simplifyCircuit } = require('./Circuit')
 const { simplifyDriver } = require('./Driver')
 const { simplifyTeam } = require('./Team')
 
@@ -82,15 +80,14 @@ resultSchema.methods.simplify = function() {
 
 const simplify = result => {
   return {
-    season: simplifySeason(result.season),
     weekend: simplifyWeekend(result.weekend),
-    circuit: simplifyCircuit(result.circuit),
     driver: simplifyDriver(result.driver),
     team: simplifyTeam(result.team),
-    race: result.race.simplify(),
-    qualifying: result.qualifying.simplify(),
-    sprint: result.sprint.simplify()
+    race: result.race,
+    qualifying: result.qualifying,
+    sprint: result.sprint
   }
 }
 
 module.exports = model('Result', resultSchema)
+module.exports.simplifyResult = simplify

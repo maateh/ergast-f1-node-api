@@ -56,10 +56,10 @@ weekendSchema.methods.simplify = function() {
 
 const simplify = weekend => {
   return {
-    season: simplifySeason(weekend.season._season),
+    season: simplifySeason(weekend.season._season || weekend.season),
     round: weekend.round,
     name: weekend.name,
-    circuit: simplifyCircuit(weekend.circuit._circuit),
+    circuit: simplifyCircuit(weekend.circuit._circuit || weekend.circuit),
     sessions: weekend.sessions,
     wiki: weekend.wiki
   }

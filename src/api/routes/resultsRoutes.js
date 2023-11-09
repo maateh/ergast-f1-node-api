@@ -13,23 +13,26 @@ const router = express.Router()
 
 // List of all race results which match the specified filter
 router.get(
-  `/race${BASE_FILTER_ROUTE}(/position(/:position)?(/grid/:grid)?(/fastest/:fastest)?(/points/:points)?)?`,
+  `/race${BASE_FILTER_ROUTE}(/position(/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?`,
   [responsePagination, filterParser],
   getRaceResults
 )
 
-// List of all qualifying results which match the specified filter
-router.get(
-  `/qualifying${BASE_FILTER_ROUTE}(/position(/:position)?)?`,
-  [responsePagination, filterParser],
-  getQualifyingResults
-)
+// TODO: reconsider this current "filter results" route structure
+// mechanism because models have already changed
 
-// List of all sprint results which match the specified filter
-router.get(
-  `/sprint${BASE_FILTER_ROUTE}(/position(/:position)?(/grid/:grid)?(/points/:points)?)?`,
-  [responsePagination, filterParser],
-  getSprintResults
-)
+// // List of all qualifying results which match the specified filter
+// router.get(
+//   `/qualifying${BASE_FILTER_ROUTE}(/position(/:qualifyingPosition)?)?`,
+//   [responsePagination, filterParser],
+//   getQualifyingResults
+// )
+
+// // List of all sprint results which match the specified filter
+// router.get(
+//   `/sprint${BASE_FILTER_ROUTE}(/position(/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?`,
+//   [responsePagination, filterParser],
+//   getSprintResults
+// )
 
 module.exports = router
