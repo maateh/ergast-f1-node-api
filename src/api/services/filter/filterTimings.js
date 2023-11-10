@@ -1,6 +1,6 @@
 // models
 const Weekend = require('../../models/Weekend')
-const LapTime = require('../../models/Timing')
+const Timing = require('../../models/Timing')
 
 const filterTimings = async (
   filter = {},
@@ -35,7 +35,7 @@ const filterTimings = async (
     { $project: { _id: 0, __v: 0, ergastId: 0 } }
   ])
 
-  const [{ total, laps }] = await LapTime.aggregate([
+  const [{ total, timings }] = await Timing.aggregate([
     { $match: filter },
     {
       $facet: {
@@ -72,8 +72,7 @@ const filterTimings = async (
               _id: 0,
               __v: 0,
               season: 0,
-              weekend: 0,
-              circuit: 0 // TODO: remove as soon as possible
+              weekend: 0
             }
           }
         ]
@@ -83,7 +82,7 @@ const filterTimings = async (
     {
       $project: {
         total: '$totalCount.total',
-        laps: '$paginatedData'
+        timings: '$paginatedData'
       }
     }
   ])
@@ -91,7 +90,7 @@ const filterTimings = async (
   return {
     total,
     weekend,
-    laps
+    timings
   }
 }
 

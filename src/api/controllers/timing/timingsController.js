@@ -9,7 +9,7 @@ const getTimings = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
-    const { laps, weekend, total } = await filterTimings(filter.laps, pagination, {
+    const { timings, weekend, total } = await filterTimings(filter.timings, pagination, {
       lap: 1,
       position: 1
     })
@@ -21,7 +21,7 @@ const getTimings = async (req, res, next) => {
         total
       },
       weekend: simplifyWeekend(weekend),
-      laps: laps.map(lap => simplifyTiming(lap))
+      timings: timings.map(t => simplifyTiming(t))
     })
   } catch (err) {
     next(err)
