@@ -18,7 +18,7 @@ const circuitRoutes = require('./api/routes/circuitRoutes')
 const driverRoutes = require('./api/routes/driverRoutes')
 const teamRoutes = require('./api/routes/teamRoutes')
 const resultRoutes = require('./api/routes/resultRoutes')
-const lapRoutes = require('./api/routes/lapRoutes')
+const timingRoutes = require('./api/routes/timingRoutes')
 
 const BASE_URL = process.env.BASE_URL
 
@@ -33,7 +33,7 @@ app.use(`${BASE_URL}/circuits`, circuitRoutes)
 app.use(`${BASE_URL}/drivers`, driverRoutes)
 app.use(`${BASE_URL}/teams`, teamRoutes)
 app.use(`${BASE_URL}/results`, resultRoutes)
-app.use(`${BASE_URL}/laps`, lapRoutes)
+app.use(`${BASE_URL}/timings`, timingRoutes)
 
 app.use(handleUnmatchedRoutes)
 app.use(handleErrors)

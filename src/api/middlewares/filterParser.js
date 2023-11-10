@@ -51,9 +51,9 @@ const filterParser = (req, res, next) => {
     sprintPosition,
     sprintGrid,
     sprintPoints,
-    lapNumber,
-    lapPosition,
-    lapDuration
+    timingLapNumber,
+    timingPosition,
+    timingDuration
   } = filterParams
 
   // Parses values from "filterParams" to be able to use them
@@ -74,14 +74,14 @@ const filterParser = (req, res, next) => {
       'sprint.grid': sprintGrid,
       'sprint.points': sprintPoints ? { $gte: sprintPoints } : undefined
     },
-    laps: {
+    timings: {
       'season.year': year,
       'weekend.round': round,
       'driver.ref': driverId,
       'team.ref': teamId,
-      lap: lapNumber,
-      position: lapPosition,
-      duration: lapDuration
+      lap: timingLapNumber,
+      position: timingPosition,
+      duration: timingDuration
     }
   })
 

@@ -1,15 +1,15 @@
 // models
-const { simplifyLapTime } = require('../../models/LapTime')
+const { simplifyTiming } = require('../../models/Timing')
 const { simplifyWeekend } = require('../../models/Weekend')
 
 // services
-const filterLaps = require('../../services/filter/filterLaps')
+const filterTimings = require('../../services/filter/filterTimings')
 
-const getLaps = async (req, res, next) => {
+const getTimings = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
-    const { laps, weekend, total } = await filterLaps(filter.laps, pagination, {
+    const { laps, weekend, total } = await filterTimings(filter.laps, pagination, {
       lap: 1,
       position: 1
     })
@@ -21,7 +21,7 @@ const getLaps = async (req, res, next) => {
         total
       },
       weekend: simplifyWeekend(weekend),
-      laps: laps.map(lap => simplifyLapTime(lap))
+      laps: laps.map(lap => simplifyTiming(lap))
     })
   } catch (err) {
     next(err)
@@ -29,5 +29,5 @@ const getLaps = async (req, res, next) => {
 }
 
 module.exports = {
-  getLaps
+  getTimings
 }

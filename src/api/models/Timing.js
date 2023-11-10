@@ -4,7 +4,7 @@ const { Schema, model } = require('mongoose')
 const { simplifyDriver } = require('./Driver')
 const { simplifyTeam } = require('./Team')
 
-const lapTimeSchema = new Schema({
+const timingSchema = new Schema({
   season: {
     year: {
       type: Number,
@@ -80,7 +80,7 @@ const lapTimeSchema = new Schema({
   }
 })
 
-lapTimeSchema.methods.simplify = function() {
+timingSchema.methods.simplify = function() {
   return simplify(this)
 }
 
@@ -94,5 +94,5 @@ function simplify(lapTime) {
   }
 }
 
-module.exports = model('LapTime', lapTimeSchema)
-module.exports.simplifyLapTime = simplify
+module.exports = model('Timing', timingSchema)
+module.exports.simplifyTiming = simplify

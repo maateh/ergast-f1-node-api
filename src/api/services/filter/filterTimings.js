@@ -1,8 +1,8 @@
 // models
 const Weekend = require('../../models/Weekend')
-const LapTime = require('../../models/LapTime')
+const LapTime = require('../../models/Timing')
 
-const filterLaps = async (
+const filterTimings = async (
   filter = {},
   pagination = { limit: 30, offset: 0 },
   sort = {}
@@ -95,4 +95,4 @@ const filterLaps = async (
   }
 }
 
-module.exports = filterLaps
+module.exports = filterTimings
