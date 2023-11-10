@@ -1,10 +1,13 @@
-// results
-const raceRouteFilters = '(/race(/position/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?'
-const qualifyingRouteFilters = '(/qualifying(/position/:qualifyingPosition)?)?'
-const sprintRouteFilters = '(/sprint(/position/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?'
-
 module.exports = {
-  BASE_ROUTE_FILTERS: '(/circuits/:circuitId)?(/drivers/:driverId)?(/teams/:teamId)?',
-  RESULT_ROUTE_FILTERS: `${raceRouteFilters}${qualifyingRouteFilters}${sprintRouteFilters}`,
-  LAPS_ROUTE_FILTERS: '(/lap/:lapNumber)?(/position/:lapPosition)?(/duration/:lapDuration)?'
+  ROUTE_FILTERS: {
+    circuits: '(/circuits/:circuitId)?',
+    drivers: '(/drivers/:driverId)?',
+    teams: '(/teams/:teamId)?',
+    timings: '(/lap/:timingLapNumber)?(/position/:timingPosition)?(/duration/:timingDuration)?',
+    results: {
+      race: '(/race(/position/:racePosition)?(/grid/:raceGrid)?(/fastest/:raceFastest)?(/points/:racePoints)?)?',
+      qualifying: '(/qualifying(/position/:qualifyingPosition)?)?',
+      sprint: '(/sprint(/position/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?'
+    }
+  }
 }

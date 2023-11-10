@@ -35,7 +35,7 @@ const filterTimings = async (
     { $project: { _id: 0, __v: 0, ergastId: 0 } }
   ])
 
-  const [{ total, timings }] = await Timing.aggregate([
+  const [{ timings, total }] = await Timing.aggregate([
     { $match: filter },
     {
       $facet: {
@@ -81,16 +81,16 @@ const filterTimings = async (
     { $unwind: '$totalCount' },
     {
       $project: {
-        total: '$totalCount.total',
-        timings: '$paginatedData'
+        timings: '$paginatedData',
+        total: '$totalCount.total'
       }
     }
   ])
 
   return {
-    total,
     weekend,
-    timings
+    timings,
+    total
   }
 }
 

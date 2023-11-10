@@ -20,7 +20,7 @@ const filterResults = async (
     sprint: 1
   }
 ) => {
-  const [{ total, results }] = await Result.aggregate([
+  const [{ results, total }] = await Result.aggregate([
     { $match: filter },
     {
       $facet: {
@@ -94,15 +94,15 @@ const filterResults = async (
     { $unwind: '$totalCount' },
     {
       $project: {
-        total: '$totalCount.total',
-        results: '$paginatedData'
+        results: '$paginatedData',
+        total: '$totalCount.total'
       }
     }
   ])
 
   return {
-    total,
-    results
+    results,
+    total
   }
 }
 

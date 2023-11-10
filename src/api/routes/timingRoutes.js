@@ -8,7 +8,7 @@ const responsePagination = require('../middlewares/responsePagination')
 const filterParser = require('../middlewares/filterParser')
 
 // constants
-const { BASE_ROUTE_FILTERS, LAPS_ROUTE_FILTERS } = require('../config/constants')
+const { ROUTE_FILTERS: { drivers, teams, timings } } = require('../config/constants')
 
 const router = express.Router()
 
@@ -17,7 +17,7 @@ const router = express.Router()
 
 // Get lap timings from a weekend which match the specified filter
 router.get(
-  `${BASE_ROUTE_FILTERS}${LAPS_ROUTE_FILTERS}`,
+  `${drivers}${teams}${timings}`,
   [responsePagination, filterParser],
   getTimings
 )

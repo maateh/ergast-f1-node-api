@@ -10,7 +10,7 @@ const responsePagination = require('../middlewares/responsePagination')
 const filterParser = require('../middlewares/filterParser')
 
 // constants
-const { BASE_ROUTE_FILTERS, RESULT_ROUTE_FILTERS } = require('../config/constants')
+const { ROUTE_FILTERS: { circuits, drivers, results } } = require('../config/constants')
 
 const router = express.Router()
 
@@ -19,7 +19,7 @@ router.get('/', [queryValidation, responsePagination], getTeams)
 
 // List of all teams who match the specified filter
 router.get(
-  `${BASE_ROUTE_FILTERS}${RESULT_ROUTE_FILTERS}`,
+  `${circuits}${drivers}${results.race}${results.qualifying}${results.sprint}`,
   [responsePagination, filterParser],
   getTeamsFilteredByResults
 )
