@@ -1,4 +1,5 @@
 // models
+const Weekend = require('../../models/Weekend')
 const LapTime = require('../../models/LapTime')
 
 const filterLaps = async (
@@ -6,74 +7,91 @@ const filterLaps = async (
   pagination = { limit: 30, offset: 0 },
   sort = {}
 ) => {
-  const total = await LapTime.aggregate([
-    { $match: filter },
-    { $count: 'total' }
-  ])
-
-  const laps = await LapTime.aggregate([
-    { $match: filter },
-    { $sort: sort },
-    { $skip: pagination.offset },
-    { $limit: pagination.limit },
+  const [weekend] = await Weekend.aggregate([
     {
-      $lookup: {
-        from: 'weekends',
-        foreignField: '_id',
-        localField: 'weekend._weekend',
-        as: 'weekend'
+      $match: {
+        'season.year': filter['season.year'],
+        round: filter['weekend.round'],
       }
     },
-    { $unwind: '$weekend' },
     {
       $lookup: {
         from: 'seasons',
         foreignField: '_id',
-        localField: 'weekend.season._season',
-        as: 'weekend.season'
+        localField: 'season._season',
+        as: 'season'
       }
     },
-    { $unwind: '$weekend.season' },
+    { $unwind: '$season' },
     {
       $lookup: {
         from: 'circuits',
         foreignField: '_id',
-        localField: 'weekend.circuit._circuit',
-        as: 'weekend.circuit'
+        localField: 'circuit._circuit',
+        as: 'circuit'
       }
     },
-    { $unwind: '$weekend.circuit' },
+    { $unwind: '$circuit' },
+    { $project: { _id: 0, __v: 0, ergastId: 0 } }
+  ])
+
+  const [{ total, laps }] = await LapTime.aggregate([
+    { $match: filter },
     {
-      $lookup: {
-        from: 'drivers',
-        foreignField: '_id',
-        localField: 'driver._driver',
-        as: 'driver'
+      $facet: {
+        totalCount: [{
+          $group: {
+            _id: null,
+            total: { $sum: 1 }
+          }
+        }],
+        paginatedData: [
+          { $sort: sort },
+          { $skip: pagination.offset },
+          { $limit: pagination.limit },
+          {
+            $lookup: {
+              from: 'drivers',
+              foreignField: '_id',
+              localField: 'driver._driver',
+              as: 'driver'
+            }
+          },
+          { $unwind: '$driver' },
+          {
+            $lookup: {
+              from: 'teams',
+              foreignField: '_id',
+              localField: 'team._team',
+              as: 'team'
+            }
+          },
+          { $unwind: '$team' },
+          {
+            $project: {
+              _id: 0,
+              __v: 0,
+              season: 0,
+              weekend: 0,
+              circuit: 0 // TODO: remove as soon as possible
+            }
+          }
+        ]
       }
     },
-    { $unwind: '$driver' },
-    {
-      $lookup: {
-        from: 'teams',
-        foreignField: '_id',
-        localField: 'team._team',
-        as: 'team'
-      }
-    },
-    { $unwind: '$team' },
+    { $unwind: '$totalCount' },
     {
       $project: {
-        _id: 0,
-        __v: 0,
-        season: 0,
-        circuit: 0 // TODO: remove as soon as possible
+        total: '$totalCount.total',
+        laps: '$paginatedData'
       }
     }
   ])
 
   return {
-    laps,
-    total: total.length ? total[0].total : 0
+    total,
+    weekend,
+    laps
   }
 }
 
