@@ -73,9 +73,9 @@ const filterParser = (req, res, next) => {
       'sprint.position.order': sprintPosition,
       'sprint.grid': sprintGrid,
       'sprint.points': sprintPoints ? { $gte: sprintPoints } : undefined,
-      race: req.url.includes('race') ? { $exists: true } : undefined,
-      qualifying: req.url.includes('qualifying') ? { $exists: true } : undefined,
-      sprint: req.url.includes('sprint') ? { $exists: true } : undefined
+      race: req.originalUrl.includes('race') ? { $exists: true } : undefined,
+      qualifying: req.originalUrl.includes('qualifying') ? { $exists: true } : undefined,
+      sprint: req.originalUrl.includes('sprint') ? { $exists: true } : undefined
     },
     timings: {
       'season.year': year,

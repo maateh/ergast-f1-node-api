@@ -14,8 +14,8 @@ const getResults = async (req, res, next) => {
     const { results, total } = await filterResults(filter.results, pagination, {
       'season.year': 1,
       'weekend.round': 1,
-      ...sortingKeys(req.url)
-    }, requiredResults(req.url))
+      ...sortingKeys(req.originalUrl)
+    }, requiredResults(req.originalUrl))
 
     res.json({
       metadata,
