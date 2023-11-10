@@ -1,7 +1,7 @@
 const express = require('express')
 
 // controllers
-const { getLaps } = require('../controllers/results/lapsController')
+const { getLaps } = require('../controllers/lap/lapsController')
 
 // middlewares
 const responsePagination = require('../middlewares/responsePagination')

@@ -21,7 +21,9 @@ const filterParser = (req, res, next) => {
     'sprintPosition',
     'sprintGrid',
     'sprintPoints',
-    'lap'
+    'lapNumber',
+    'lapPosition',
+    'lapDuration'
   ]
 
   // Converts any value to a Number that must be a Number
