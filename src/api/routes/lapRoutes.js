@@ -1,25 +1,25 @@
 const express = require('express')
 
 // controllers
-const { getLaps, getLap } = require('../controllers/results/lapsController')
-const { getDriverLaps, getDriverLap } = require('../controllers/results/driverLapsController')
+const { getLaps } = require('../controllers/results/lapsController')
 
 // middlewares
 const responsePagination = require('../middlewares/responsePagination')
 const filterParser = require('../middlewares/filterParser')
 
+// constants
+const { BASE_ROUTE_FILTERS, LAPS_ROUTE_FILTERS } = require('../config/constants')
+
 const router = express.Router()
 
-// Get drivers lap times from a weekend
-router.get('/', [responsePagination, filterParser], getLaps)
+// TODO: blocking requests with a middleware that don't
+// contain mandatory query fields (year, round)
 
-// Get drivers lap times of a specific lap from a weekend
-router.get('/:lap', filterParser, getLap)
-
-// Get a specific or a list of all driver lap times from a weekend
-router.get('/drivers/:driverId', [responsePagination, filterParser], getDriverLaps)
-
-// Get a specific or a list of all driver lap times from a weekend
-router.get('/:lap/drivers/:driverId', filterParser, getDriverLap)
+// Get lap times from a weekend which match the specified filter
+router.get(
+  `${BASE_ROUTE_FILTERS}${LAPS_ROUTE_FILTERS}`,
+  [responsePagination, filterParser],
+  getLaps
+)
 
 module.exports = router
