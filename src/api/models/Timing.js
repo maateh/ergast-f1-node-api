@@ -49,17 +49,6 @@ const timingSchema = new Schema({
       required: true
     }
   },
-  circuit: {
-    ref: {
-      type: String,
-      required: true
-    },
-    _circuit: {
-      type: Schema.Types.ObjectId,
-      ref: 'Circuit',
-      required: true
-    }
-  },
   lap: {
     type: Number,
     required: true
