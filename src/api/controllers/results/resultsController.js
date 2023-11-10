@@ -10,23 +10,12 @@ const objectCleaner = require('../../utils/objectCleaner')
 const getResults = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
-  const requiredFields = requiredResults(req.url)
-
-  const resultsFilter = objectCleaner({
-    ...filter.results,
-    // FIXME: if there aren't any result types specified in route
-    // then don't take into account all of three result types
-    race: requiredFields.race ? { $exists: true } : undefined,
-    qualifying: requiredFields.qualifying ? { $exists: true } : undefined,
-    sprint: requiredFields.sprint ? { $exists: true } : undefined,
-  })
-
   try {
-    const { results, total } = await filterResults(resultsFilter, pagination, {
+    const { results, total } = await filterResults(filter.results, pagination, {
       'season.year': 1,
       'weekend.round': 1,
       ...sortingKeys(req.url)
-    }, requiredFields)
+    }, requiredResults(req.url))
 
     res.json({
       metadata,
