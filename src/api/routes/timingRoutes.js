@@ -4,6 +4,7 @@ const express = require('express')
 const { getTimings } = require('../controllers/timing/timingsController')
 
 // middlewares
+const validateMandatoryQuery = require('../middlewares/validateMandatoryQuery')
 const responsePagination = require('../middlewares/responsePagination')
 const filterParser = require('../middlewares/filterParser')
 
@@ -12,13 +13,10 @@ const { ROUTE_FILTERS: { drivers, teams, timings } } = require('../config/consta
 
 const router = express.Router()
 
-// TODO: blocking requests with a middleware that don't
-// contain mandatory query fields (year, round)
-
 // Get lap timings from a weekend which match the specified filter
 router.get(
   `${drivers}${teams}${timings}`,
-  [responsePagination, filterParser],
+  [validateMandatoryQuery, responsePagination, filterParser],
   getTimings
 )
 
