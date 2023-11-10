@@ -20,7 +20,8 @@ const filterParser = (req, res, next) => {
     'qualifyingPosition',
     'sprintPosition',
     'sprintGrid',
-    'sprintPoints'
+    'sprintPoints',
+    'lap'
   ]
 
   // Converts any value to a Number that must be a Number
@@ -47,7 +48,10 @@ const filterParser = (req, res, next) => {
     qualifyingPosition,
     sprintPosition,
     sprintGrid,
-    sprintPoints
+    sprintPoints,
+    lapNumber,
+    lapPosition,
+    lapDuration
   } = filterParams
 
   // Parses values from "filterParams" to be able to use them
@@ -67,6 +71,15 @@ const filterParser = (req, res, next) => {
       'sprint.position.order': sprintPosition,
       'sprint.grid': sprintGrid,
       'sprint.points': sprintPoints ? { $gte: sprintPoints } : undefined
+    },
+    laps: {
+      'season.year': year,
+      'weekend.round': round,
+      'driver.ref': driverId,
+      'team.ref': teamId,
+      lap: lapNumber,
+      position: lapPosition,
+      duration: lapDuration
     }
   })
 
