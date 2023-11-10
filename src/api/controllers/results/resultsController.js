@@ -14,6 +14,8 @@ const getResults = async (req, res, next) => {
 
   const resultsFilter = objectCleaner({
     ...filter.results,
+    // FIXME: if there aren't any result types specified in route
+    // then don't take into account all of three result types
     race: requiredFields.race ? { $exists: true } : undefined,
     qualifying: requiredFields.qualifying ? { $exists: true } : undefined,
     sprint: requiredFields.sprint ? { $exists: true } : undefined,
