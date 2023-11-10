@@ -15,7 +15,7 @@ const raceResultConverter = require('./converters/raceResultConverter')
 const qualifyingResultConverter = require('./converters/qualifyingResultConverter')
 const sprintResultConverter = require('./converters/sprintResultConverter')
 const pitStopConverter = require('./converters/pitStopConverter')
-const lapTimeConverter = require('./converters/lapTimeConverter')
+const timingsConverter = require('./converters/timingsConverter')
 
 const startConversion = async () => {
   try {
@@ -32,7 +32,7 @@ const startConversion = async () => {
 
     await Promise.all([
       pitStopConverter(),
-      lapTimeConverter(),
+      timingsConverter(),
       qualifyingResultConverter(),
       sprintResultConverter()
     ])

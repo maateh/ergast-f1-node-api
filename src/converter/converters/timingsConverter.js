@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const LapTime = require('../../api/models/LapTime')
+const Timing = require('../../api/models/Timing')
 const Weekend = require('../../api/models/Weekend')
 const Driver = require('../../api/models/Driver')
 const Team = require('../../api/models/Team')
@@ -28,7 +28,7 @@ const getAllLapTimes = () => {
 }
 
 const conversion = () => {
-  console.info('LapTimes conversion started...')
+  console.info('Timings conversion started...')
   return Promise.all([
     getAllLapTimes(),
     Weekend.find(),
@@ -36,7 +36,7 @@ const conversion = () => {
     Team.find()
   ])
     .then(([lapTimes, weekends, drivers, teams]) => {
-      console.info('Converting lap times...')
+      console.info('Converting timings...')
 
       const weekendsMap = arrayToMap(weekends, 'ergastId')
       const driversMap = arrayToMap(drivers, 'ref')
@@ -47,7 +47,7 @@ const conversion = () => {
         const driver = driversMap[lapTime.driverRef]
         const team = teamsMap[lapTime.constructorRef]
 
-        return new LapTime({
+        return new Timing({
           season: {
             year: weekend.season.year,
             _season: weekend.season._season
@@ -64,10 +64,6 @@ const conversion = () => {
             ref: team.ref,
             _team: team._id
           },
-          circuit: {
-            ref: weekend.circuit.ref,
-            _circuit: weekend.circuit._circuit
-          },
           lap: lapTime.lap,
           position: lapTime.position,
           duration: {
@@ -77,12 +73,12 @@ const conversion = () => {
         })
       })
     })
-    .then(convertedLapTimes => {
-      console.info('Inserting LapTimes...')
-      return LapTime.insertMany(convertedLapTimes)
+    .then(convertedTimings => {
+      console.info('Inserting Timings...')
+      return Timing.insertMany(convertedTimings)
     })
     .then(() => {
-      console.info('LapTimes conversion done!')
+      console.info('Timings conversion done!')
     })
     .catch(err => {
       console.error('Conversion error: ', err)
