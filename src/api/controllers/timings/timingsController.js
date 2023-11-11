@@ -1,7 +1,8 @@
 // services
-const filterTimings = require('../../services/filter/filterTimings')
+const filterService = require('../../services/filter/filterService')
 
 // models
+const Timing = require('../../models/Timing')
 const { simplifyTiming } = require('../../models/Timing')
 const { simplifyWeekend } = require('../../models/Weekend')
 
@@ -12,14 +13,23 @@ const getTimings = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
-    const { timings, weekend, total } = await filterTimings(filter.timings, pagination, {
+    const { data: timings, total } = await filterService(Timing, filter.timings, pagination, {
       lap: 1,
       position: 1
-    })
+    }, {
+      lap: 1,
+      position: 1,
+      duration: 1,
+      driver: 1,
+      team: 1
+    }, { driver: true, team: true }, true)
 
     if (!timings || !timings.length) {
       throw new DataNotFoundError('Timings')
     }
+
+    // TODO: query weekend
+    const weekend = {}
 
     res.json({
       metadata,
@@ -27,7 +37,8 @@ const getTimings = async (req, res, next) => {
         ...pagination,
         total
       },
-      weekend: simplifyWeekend(weekend),
+      weekend,
+      // weekend: simplifyWeekend(weekend),
       timings: timings.map(t => simplifyTiming(t))
     })
   } catch (err) {

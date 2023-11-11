@@ -1,7 +1,8 @@
 // services
-const filterResults = require('../../services/filter/filterResults')
+const filterService = require('../../services/filter/filterService')
 
 // models
+const Result = require('../../models/Result')
 const { simplifyResult } = require('../../models/Result')
 
 // errors
@@ -14,11 +15,16 @@ const getResults = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
-    const { results, total } = await filterResults(filter.results, pagination, {
+    const { data: results, total } = await filterService(Result, filter.results, pagination, {
       'season.year': 1,
       'weekend.round': 1,
       ...sortingKeys(req.originalUrl)
-    }, requiredResults(req.originalUrl))
+    }, {
+      weekend: 1,
+      driver: 1,
+      team: 1,
+      ...requiredResults(req.originalUrl)
+    }, { weekend: true, driver: true, team: true })
 
     if (!results || !results.length) {
       throw new DataNotFoundError('Results')
