@@ -100,3 +100,4 @@ function simplify(pitStop) {
 }
 
 module.exports = model('PitStop', pitStopSchema)
+module.exports.simplifyPitStop = simplify
