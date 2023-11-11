@@ -64,10 +64,6 @@ const conversion = () => {
             ref: team.ref,
             _team: team._id
           },
-          circuit: {
-            ref: weekend.circuit.ref,
-            _circuit: weekend.circuit._circuit
-          },
           stop: pitStop.stop,
           lap: pitStop.lap,
           timeOfDay: new Date(`${pitStop.date.toISOString().split('T')[0]}T${pitStop.time}Z`),
