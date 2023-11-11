@@ -23,7 +23,10 @@ const filterParser = (req, res, next) => {
     'sprintPoints',
     'timingLapNumber',
     'timingPosition',
-    'timingDuration'
+    'timingDuration',
+    'pitStop',
+    'pitStopLap',
+    'pitStopDuration'
   ]
 
   // Converts any value to a Number that must be a Number
@@ -53,7 +56,10 @@ const filterParser = (req, res, next) => {
     sprintPoints,
     timingLapNumber,
     timingPosition,
-    timingDuration
+    timingDuration,
+    pitStop,
+    pitStopLap,
+    pitStopDuration
   } = filterParams
 
   // Parses values from "filterParams" to be able to use them
@@ -85,6 +91,15 @@ const filterParser = (req, res, next) => {
       lap: timingLapNumber,
       position: timingPosition,
       duration: timingDuration
+    },
+    pitStops: {
+      'season.year': year,
+      'weekend.round': round,
+      'driver.ref': driverId,
+      'team.ref': teamId,
+      stop: pitStop,
+      lap: pitStopLap,
+      duration: pitStopDuration
     }
   })
 
