@@ -3,6 +3,7 @@ const filterService = require('../../services/filter/filterService')
 
 // models
 const PitStop = require('../../models/PitStop')
+const Weekend = require('../../models/Weekend')
 const { simplifyPitStop } = require('../../models/PitStop')
 const { simplifyWeekend } = require('../../models/Weekend')
 
@@ -30,8 +31,14 @@ const getPitStops = async (req, res, next) => {
       throw new DataNotFoundError('PitStops')
     }
 
-    // TODO: query weekend
-    const weekend = {}
+    const weekend = await Weekend.findOne({
+      'season.year': filter.timings['season.year'],
+      round: filter.timings['weekend.round']
+    }).populate('season._season circuit._circuit')
+
+    if (!weekend) {
+      throw new DataNotFoundError('Weekend')
+    }
 
     res.json({
       metadata,
@@ -39,8 +46,7 @@ const getPitStops = async (req, res, next) => {
         ...pagination,
         total
       },
-      weekend,
-      // weekend: simplifyWeekend(weekend),
+      weekend: simplifyWeekend(weekend),
       pitStops: pitStops.map(ps => simplifyPitStop(ps))
     })
   } catch (err) {
