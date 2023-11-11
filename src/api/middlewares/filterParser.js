@@ -90,7 +90,7 @@ const filterParser = (req, res, next) => {
       'team.ref': teamId,
       lap: timingLapNumber,
       position: timingPosition,
-      duration: timingDuration
+      'duration.ms': timingDuration ? { $lte: timingDuration } : undefined
     },
     pitStops: {
       'season.year': year,
@@ -99,7 +99,7 @@ const filterParser = (req, res, next) => {
       'team.ref': teamId,
       stop: pitStop,
       lap: pitStopLap,
-      duration: pitStopDuration
+      'duration.ms': pitStopDuration ? { $lte: pitStopDuration } : undefined
     }
   })
 
