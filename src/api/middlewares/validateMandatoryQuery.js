@@ -16,7 +16,6 @@ const validateMandatoryQuery = (req, res, next) => {
 
   const queryKeys = Object.keys(query)
   const missing = mandatoryFields.some(field => !queryKeys.includes(field))
-  console.log('missing: ', missing)
 
   if (missing) {
     const error = new MissingMandatoryQueryError(mandatoryFields)
