@@ -73,13 +73,13 @@ timingSchema.methods.simplify = function() {
   return simplify(this)
 }
 
-function simplify(lapTime) {
+function simplify(timing) {
   return {
-    lap: lapTime.lap,
-    position: lapTime.position,
-    duration: lapTime.duration,
-    driver: simplifyDriver(lapTime.driver),
-    team: simplifyTeam(lapTime.team)
+    lap: timing.lap,
+    position: timing.position,
+    duration: timing.duration,
+    driver: simplifyDriver(timing.driver),
+    team: simplifyTeam(timing.team)
   }
 }
 
