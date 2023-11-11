@@ -1,7 +1,7 @@
 const express = require('express')
 
 // controllers
-const { getTimings } = require('../controllers/timing/timingsController')
+const { getTimings } = require('../controllers/timings/timingsController')
 
 // middlewares
 const validateMandatoryQuery = require('../middlewares/validateMandatoryQuery')

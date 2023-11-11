@@ -1,8 +1,8 @@
 const express = require('express')
 
 // controllers
-const { getCircuits, getCircuit } = require('../controllers/circuit/circuitsController')
-const { getCircuitsFilteredByResults } = require('../controllers/circuit/filterCircuitsController')
+const { getCircuits, getCircuit } = require('../controllers/circuits/circuitsController')
+const { getCircuitsFilteredByResults } = require('../controllers/circuits/filterCircuitsController')
 
 // middlewares
 const queryValidation = require('../middlewares/queryValidation')

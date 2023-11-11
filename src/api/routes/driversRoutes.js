@@ -1,8 +1,8 @@
 const express = require('express')
 
 // controllers
-const { getDrivers, getDriver } = require('../controllers/driver/driversController')
-const { getDriversFilteredByResults } = require('../controllers/driver/filterDriversController')
+const { getDrivers, getDriver } = require('../controllers/drivers/driversController')
+const { getDriversFilteredByResults } = require('../controllers/drivers/filterDriversController')
 
 // middlewares
 const queryValidation = require('../middlewares/queryValidation')

@@ -1,8 +1,8 @@
 const express = require('express')
 
 // controllers
-const { getSeasons, getSeason } = require('../controllers/season/seasonsController')
-const { getSeasonsFilteredByResults } = require('../controllers/season/filterSeasonsController')
+const { getWeekends, getWeekend } = require('../controllers/weekends/weekendsController')
+const { getWeekendsFilteredByResults } = require('../controllers/weekends/filterWeekendsController')
 
 // middlewares
 const queryValidation = require('../middlewares/queryValidation')
@@ -14,17 +14,17 @@ const { ROUTE_FILTERS: { circuits, drivers, teams, results } } = require('../con
 
 const router = express.Router()
 
-// List of all seasons
-router.get('/', [queryValidation, responsePagination], getSeasons)
+// List of all weekends
+router.get('/', [queryValidation, responsePagination], getWeekends)
 
-// List of all seasons which match the specified filter
+// List of all weekends which match the specified filter
 router.get(
   `${circuits}${drivers}${teams}${results.race}${results.qualifying}${results.sprint}`,
   [responsePagination, filterParser],
-  getSeasonsFilteredByResults
+  getWeekendsFilteredByResults
 )
 
-// Get season information
-router.get('/:year', getSeason)
+// Get weekend information
+router.get('/:year/:round', getWeekend)
 
 module.exports = router

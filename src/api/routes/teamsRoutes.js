@@ -1,8 +1,8 @@
 const express = require('express')
 
 // controllers
-const { getTeams, getTeam } = require('../controllers/team/teamsController')
-const { getTeamsFilteredByResults } = require('../controllers/team/filterTeamsController')
+const { getTeams, getTeam } = require('../controllers/teams/teamsController')
+const { getTeamsFilteredByResults } = require('../controllers/teams/filterTeamsController')
 
 // middlewares
 const queryValidation = require('../middlewares/queryValidation')
