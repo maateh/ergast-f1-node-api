@@ -2,6 +2,9 @@
 const { simplifyPitStop } = require('../../models/PitStop')
 const { simplifyWeekend } = require('../../models/Weekend')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
 // services
 const filterPitStops = require('../../services/filter/filterPitStops')
 
@@ -14,6 +17,10 @@ const getPitStops = async (req, res, next) => {
       lap: 1,
       timeOfDay: 1
     })
+
+    if (!pitStops || !pitStops.length) {
+      throw new DataNotFoundError('PitStops')
+    }
 
     res.json({
       metadata,

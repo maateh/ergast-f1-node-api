@@ -35,7 +35,7 @@ const filterPitStops = async (
     { $project: { _id: 0, __v: 0, ergastId: 0 } }
   ])
 
-  const [{ pitStops, total }] = await PitStop.aggregate([
+  const [filteredData] = await PitStop.aggregate([
     { $match: filter },
     {
       $facet: {
@@ -89,8 +89,8 @@ const filterPitStops = async (
 
   return {
     weekend,
-    pitStops,
-    total
+    pitStops: filteredData ? filteredData.pitStops : null,
+    total: filteredData ? filteredData.total : 0
   }
 }
 

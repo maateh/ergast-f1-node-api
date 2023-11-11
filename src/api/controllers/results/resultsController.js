@@ -4,6 +4,9 @@ const filterResults = require('../../services/filter/filterResults')
 // models
 const { simplifyResult } = require('../../models/Result')
 
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
+
 // utils
 const objectCleaner = require('../../utils/objectCleaner')
 
@@ -16,6 +19,10 @@ const getResults = async (req, res, next) => {
       'weekend.round': 1,
       ...sortingKeys(req.originalUrl)
     }, requiredResults(req.originalUrl))
+
+    if (!results || !results.length) {
+      throw new DataNotFoundError('Results')
+    }
 
     res.json({
       metadata,

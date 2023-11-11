@@ -1,9 +1,12 @@
+// services
+const filterTimings = require('../../services/filter/filterTimings')
+
 // models
 const { simplifyTiming } = require('../../models/Timing')
 const { simplifyWeekend } = require('../../models/Weekend')
 
-// services
-const filterTimings = require('../../services/filter/filterTimings')
+// errors
+const DataNotFoundError = require('../../errors/DataNotFoundError')
 
 const getTimings = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
@@ -13,6 +16,10 @@ const getTimings = async (req, res, next) => {
       lap: 1,
       position: 1
     })
+
+    if (!timings || !timings.length) {
+      throw new DataNotFoundError('Timings')
+    }
 
     res.json({
       metadata,
