@@ -1,7 +1,8 @@
 // services
-const filterWithRegroupResults = require('../../services/filter/filterWithRegroupResults')
+const filterWithRegroupService = require('../../services/filter/filterWithRegroupService')
 
 // models
+const Result = require('../../models/Result')
 const { simplifyCircuit } = require('../../models/Circuit')
 
 // errors
@@ -11,10 +12,16 @@ const getCircuitsFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: circuits, total } = await filterWithRegroupResults(filter.results, pagination, {
-      targetCollection: 'circuits',
+    const { data: circuits, total } = await filterWithRegroupService(Result, filter.results, pagination, {
       groupingField: 'circuit._circuit',
-      sort: { name: 1 }
+      targetCollection: 'circuits',
+      sort: { name: 1 },
+      requiredFields: {
+        ref: 1,
+        name: 1,
+        location: 1,
+        wiki: 1
+      }
     })
 
     if (!circuits || !circuits.length) {

@@ -1,4 +1,5 @@
 // TODO: write service description
+
 const filterService = async (
   Model,
   filter = {},
@@ -73,7 +74,7 @@ const filterService = async (
             _id: null,
             total: { $sum: 1 }
           }
-        }],
+        }]
       }
     },
     { $unwind: '$totalCount' },

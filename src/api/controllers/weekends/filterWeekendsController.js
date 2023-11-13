@@ -1,7 +1,8 @@
 // services
-const filterWithRegroupResults = require('../../services/filter/filterWithRegroupResults')
+const filterWithRegroupService = require('../../services/filter/filterWithRegroupService')
 
 // models
+const Result = require('../../models/Result')
 const { simplifyWeekend } = require('../../models/Weekend')
 
 // errors
@@ -11,31 +12,20 @@ const getWeekendsFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: weekends, total } = await filterWithRegroupResults(filter.results, pagination, {
-      targetCollection: 'weekends',
+    const { data: weekends, total } = await filterWithRegroupService(Result, filter.results, pagination, {
       groupingField: 'weekend._weekend',
+      targetCollection: 'weekends',
       sort: { 'season.year': 1, 'weekend.round': 1 },
-      paginationBeforeLookup: true
-    }, [
-      {
-        $lookup: {
-          from: 'seasons',
-          localField: 'season._season',
-          foreignField: '_id',
-          as: 'season._season'
-        }
-      },
-      { $unwind: '$season._season' },
-      {
-        $lookup: {
-          from: 'circuits',
-          localField: 'circuit._circuit',
-          foreignField: '_id',
-          as: 'circuit._circuit'
-        }
-      },
-      { $unwind: '$circuit._circuit' }
-    ])
+      sortingBeforeGrouping: true,
+      requiredFields: {
+        season: 1,
+        round: 1,
+        name: 1,
+        circuit: 1,
+        sessions: 1,
+        wiki: 1
+      }
+    }, { weekend: true })
 
     if (!weekends || !weekends.length) {
       throw new DataNotFoundError('Weekends')

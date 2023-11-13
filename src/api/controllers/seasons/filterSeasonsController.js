@@ -1,7 +1,8 @@
 // services
-const filterWithRegroupResults = require('../../services/filter/filterWithRegroupResults')
+const filterWithRegroupService = require('../../services/filter/filterWithRegroupService')
 
 // models
+const Result = require('../../models/Result')
 const { simplifySeason } = require('../../models/Season')
 
 // errors
@@ -11,11 +12,15 @@ const getSeasonsFilteredByResults = async (req, res, next) => {
   const { metadata, filter, pagination } = res.locals
 
   try {
-    const { data: seasons, total } = await filterWithRegroupResults(filter.results, pagination, {
-      targetCollection: 'seasons',
+    const { data: seasons, total } = await filterWithRegroupService(Result, filter.results, pagination, {
       groupingField: 'season._season',
+      targetCollection: 'seasons',
       sort: { year: 1 },
-      paginationBeforeLookup: true
+      sortingBeforeGrouping: true,
+      requiredFields: {
+        year: 1,
+        wiki: 1
+      }
     })
 
     if (!seasons || !seasons.length) {
