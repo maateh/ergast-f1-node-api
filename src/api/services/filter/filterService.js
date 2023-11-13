@@ -1,4 +1,19 @@
-// TODO: write service description
+/**
+ * Retrieves data from a specified collection (Model)
+ * based on provided filters, pagination, sorting,
+ * and optional lookups for related collections.
+ *
+ * @param {Model} Model - The Mongoose model to perform aggregation on.
+ * @param {Object} filter - The filter criteria to apply to the aggregation.
+ * @param {Object} pagination - The pagination settings, including limit and offset.
+ * @param {Object} sort - The sorting criteria for the data.
+ * @param {Object} requiredFields - The required fields to include in the result set.
+ * @param {Object} optionalLookups - Optional lookups for related collections.
+ *
+ * @returns {Object} An object containing paginated data and total count.
+ * @property {Array|null} data - The paginated data based on the aggregation.
+ * @property {number} total - The total count of documents matching the filter criteria.
+ */
 
 const filterService = async (
   Model,

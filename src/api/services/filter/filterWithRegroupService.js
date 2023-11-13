@@ -1,4 +1,18 @@
-// TODO: write service description
+/**
+ * Retrieves and "regrouping" data from a specified collection (FilterModel)
+ * based on provided filters, pagination and grouping options (included sorting).
+ * Optionally includes additional lookups for related collections.
+ *
+ * @param {Model} FilterModel - The Mongoose model to perform aggregation on.
+ * @param {Object} filter - The filter criteria to apply to the aggregation.
+ * @param {Object} pagination - The pagination settings, including limit and offset.
+ * @param {Object} options - Additional options for grouping, sorting, and required fields.
+ * @param {Object} optionalLookups - Optional lookups for related collections.
+ *
+ * @returns {Object} An object containing paginated data and total count.
+ * @property {Array|null} data - The paginated data based on the aggregation.
+ * @property {number} total - The total count of documents matching the filter criteria.
+ */
 
 const filterWithRegroupService = async (
   FilterModel,
