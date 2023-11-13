@@ -21,11 +21,11 @@ const filterWithRegroupService = async (
 
   const [aggregatedData] = await FilterModel.aggregate([
     { $match: filter },
+    ...(options.sortingBeforeGrouping ? paginationStages : []),
+    { $group: { _id: `$${options.groupingField}` } },
     {
       $facet: {
         paginatedData: [
-          ...(options.sortingBeforeGrouping ? paginationStages : []),
-          { $group: { _id: `$${options.groupingField}` } },
           {
             $lookup: {
               from: options.targetCollection,
