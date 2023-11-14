@@ -1,6 +1,22 @@
 const { Schema } = require('mongoose')
 
 const standingsSchema = new Schema({
+  ergastId: {
+    type: Number,
+    required: false,
+    unique: true
+  },
+  season: {
+    year: {
+      type: Number,
+      required: true
+    },
+    _season: {
+      type: Schema.Types.ObjectId,
+      ref: 'Season',
+      required: true
+    }
+  },
   weekend: {
     round: {
       type: Number,
@@ -9,28 +25,6 @@ const standingsSchema = new Schema({
     _weekend: {
       type: Schema.Types.ObjectId,
       ref: 'Weekend',
-      required: true
-    }
-  },
-  driver: {
-    ref: {
-      type: String,
-      required: true
-    },
-    _driver: {
-      type: Schema.Types.ObjectId,
-      ref: 'Driver',
-      required: true
-    }
-  },
-  team: {
-    ref: {
-      type: String,
-      required: true
-    },
-    _team: {
-      type: Schema.Types.ObjectId,
-      ref: 'Team',
       required: true
     }
   },
