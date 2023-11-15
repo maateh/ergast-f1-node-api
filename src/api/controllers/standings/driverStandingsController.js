@@ -3,6 +3,7 @@ const filterService = require('../../services/filter/filterService')
 
 // models
 const DriverStanding = require('../../models/DriverStanding')
+const { simplifyDriverStanding } = require('../../models/DriverStanding')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -27,8 +28,7 @@ const getDriverStandings = async (req, res, next) => {
         ...pagination,
         total
       },
-      // TODO: create simplify method
-      // standings: standings.map(st => simplifyStanding(st))
+      standings: standings.map(st => simplifyDriverStanding(st))
     })
   } catch (err) {
     next(err)
