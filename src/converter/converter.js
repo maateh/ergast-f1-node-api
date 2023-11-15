@@ -16,30 +16,28 @@ const qualifyingResultConverter = require('./converters/qualifyingResultConverte
 const sprintResultConverter = require('./converters/sprintResultConverter')
 const pitStopConverter = require('./converters/pitStopConverter')
 const timingsConverter = require('./converters/timingsConverter')
-const driverStandingsConverter = require('./converters/driverStandingsConverter')
-const teamStandingsConverter = require('./converters/teamStandingsConverter')
+const standingsConverter = require('./converters/standingsConverter')
 
 const startConversion = async () => {
   try {
-    await Promise.all([
-      circuitConverter(),
-      seasonConverter(),
-      driverConverter(),
-      teamConverter()
-    ]).then(() => {
-      return weekendConverter()
-    })
+    // await Promise.all([
+    //   circuitConverter(),
+    //   seasonConverter(),
+    //   driverConverter(),
+    //   teamConverter()
+    // ]).then(() => {
+    //   return weekendConverter()
+    // })
 
-    await raceResultConverter()
+    // await raceResultConverter()
 
-    await Promise.all([
-      pitStopConverter(),
-      timingsConverter(),
-      qualifyingResultConverter(),
-      sprintResultConverter(),
-      driverStandingsConverter(),
-      teamStandingsConverter()
-    ])
+    // await Promise.all([
+    //   pitStopConverter(),
+    //   timingsConverter(),
+    //   qualifyingResultConverter(),
+    //   sprintResultConverter(),
+    // ])
+    await standingsConverter()
   } catch (err) {
     console.error('An error occurred during conversion: ', err)
   }

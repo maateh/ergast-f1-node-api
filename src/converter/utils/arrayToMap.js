@@ -9,6 +9,18 @@ function arrayToMap(array, keyRef) {
   }, {})
 }
 
+function arrayToPushMap(array, keyRef) {
+  return array.reduce((map, item) => {
+    const key = getKeyValueAsString(item, keyRef)
+    if (map[key]) {
+      map[key] = [...map[key], item]
+      return map
+    }
+    map[key] = [item]
+    return map
+  }, {})
+}
+
 function arrayToMapWithMultipleKeyRefs(array, keyRefs) {
   return array.reduce((map, item) => {
     const keys = keyRefs.reduce((acc, keyRef) => {
@@ -28,5 +40,6 @@ function getKeyValueAsString(object, keyRef) {
 
 module.exports = {
   arrayToMap,
+  arrayToPushMap,
   arrayToMapWithMultipleKeyRefs
 }
