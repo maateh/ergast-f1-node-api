@@ -10,10 +10,6 @@ const validateMandatoryQuery = (req, res, next) => {
     mandatoryFields.push('round')
   }
 
-  if (originalUrl.includes('/standings')) {
-    mandatoryFields.push('year')
-  }
-
   const queryKeys = Object.keys(query)
   const missing = mandatoryFields.some(field => !queryKeys.includes(field))
 
