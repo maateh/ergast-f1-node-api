@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose')
 
-const standingsSchema = require('./schemas/standingsSchema')
+const standingSchema = require('./schemas/standingSchema')
 
-const teamStandingsSchema = new Schema({
+const teamStandingSchema = new Schema({
   team: {
     ref: {
       type: String,
@@ -25,7 +25,7 @@ const teamStandingsSchema = new Schema({
       required: false // TODO: add drivers
     }
   }],
-  ...standingsSchema.obj,
+  ...standingSchema.obj,
 })
 
-module.exports = model('TeamStandings', teamStandingsSchema)
+module.exports = model('TeamStanding', teamStandingSchema)

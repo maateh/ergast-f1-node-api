@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose')
 
-const standingsSchema = new Schema({
+const standingSchema = new Schema({
   ergastId: {
     type: Number,
     required: false,
@@ -48,4 +48,4 @@ const standingsSchema = new Schema({
   }
 })
 
-module.exports = standingsSchema
+module.exports = standingSchema
