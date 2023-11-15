@@ -8,6 +8,7 @@ module.exports = {
       qualifying: '(/qualifying(/position/:qualifyingPosition)?)?',
       sprint: '(/sprint(/position/:sprintPosition)?(/grid/:sprintGrid)?(/points/:sprintPoints)?)?'
     },
+    standings: '(/position/:standingsPosition)?(/points/:standingsPoints)?(/wins/:standingsWins)?',
     timings: '(/lap/:timingLapNumber)?(/position/:timingPosition)?(/duration/:timingDuration)?',
     pitStops: '(/stop/:pitStop)?(/lap/:pitStopLap)?(/duration/:pitStopDuration)?'
   }
