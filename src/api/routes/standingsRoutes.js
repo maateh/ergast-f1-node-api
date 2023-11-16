@@ -15,14 +15,14 @@ const router = express.Router()
 
 // Get driver standings which match the specified filter
 router.get(
-  `/driver${drivers}${teams}${standings}`, // TODO: handle "/teams/:teamId" filter
+  `/driver(/:driverId)?${teams}${standings}`, // TODO: handle "/teams/:teamId" filter
   [responsePagination, filterParser],
   getDriverStandings
 )
 
 // Get team standings which match the specified filter
 router.get(
-  `/team${teams}${drivers}${standings}`, // TODO: handle "/drivers/:driverId" filter
+  `/team(/:teamId)?${drivers}${standings}`, // TODO: handle "/drivers/:driverId" filter
   [responsePagination, filterParser],
   getTeamStandings
 )
