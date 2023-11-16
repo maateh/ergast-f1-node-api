@@ -1,18 +1,14 @@
-// TODO: write service description
-
 // models
 const Standings = require('../../../models/Standings')
 
+// TODO: write service description
 const filterStandingsService = async (
   filter = {},
   pagination = { limit: 30, offset: 0 },
-  standingsTypes = {
-    driver: false,
-    team: false
-  }
+  standingsType
 ) => {
   const [aggregatedData] = await Standings.aggregate([
-    { $match: filter },
+    { $match: filter.primary },
     {
       $sort: {
         'season.year': 1,
@@ -25,6 +21,15 @@ const filterStandingsService = async (
         standings: { $first: '$$ROOT' }
       }
     },
+    { $unwind: `$standings.${standingsType}` },
+    { $match: parseSecondaryFilter(standingsType, filter.secondary) },
+    {
+      $group: {
+        _id: '$_id',
+        lastWeekend: { $first: '$standings.weekend._weekend' },
+        standings: { $push: `$standings.${standingsType}` }
+      }
+    },
     {
       $facet: {
         paginatedData: [
@@ -34,20 +39,12 @@ const filterStandingsService = async (
           {
             $lookup: {
               from: 'weekends',
-              localField: 'standings.weekend._weekend',
+              localField: 'lastWeekend',
               foreignField: '_id',
-              as: 'standings.weekend'
+              as: 'lastWeekend'
             }
           },
-          { $unwind: '$standings.weekend' },
-          {
-            $replaceRoot: {
-              newRoot: {
-                weekend: '$standings.weekend',
-                standings: getRequiredStandingsType(standingsTypes)
-              }
-            }
-          }
+          { $unwind: '$lastWeekend' }
         ],
         totalCount: [{
           $group: {
@@ -67,20 +64,20 @@ const filterStandingsService = async (
   ])
 
   return {
-    weekend: aggregatedData ? aggregatedData.weekend : null,
     standings: aggregatedData ? aggregatedData.standings : null,
     total: aggregatedData ? aggregatedData.total : 0
   }
 }
 
-function getRequiredStandingsType(standingsTypes) {
-  if (standingsTypes.driver) {
-    return '$standings.driverStandings'
-  }
-
-  if (standingsTypes.team) {
-    return '$standings.teamStandings'
-  }
+// TODO: write util function description
+function parseSecondaryFilter(standingsType, filter) {
+  return Object.entries(filter)
+    .reduce((parsedFilter, [key, value]) => {
+      return {
+        ...parsedFilter,
+        [`standings.${standingsType}.${key}`]: value
+      }
+    }, {})
 }
 
 module.exports = filterStandingsService
