@@ -21,6 +21,9 @@ const filterParser = (req, res, next) => {
     'sprintPosition',
     'sprintGrid',
     'sprintPoints',
+    'standingsPosition',
+    'standingsPoints',
+    'standingsWins',
     'timingLapNumber',
     'timingPosition',
     'timingDuration',
@@ -54,6 +57,9 @@ const filterParser = (req, res, next) => {
     sprintPosition,
     sprintGrid,
     sprintPoints,
+    standingsPosition,
+    standingsPoints,
+    standingsWins,
     timingLapNumber,
     timingPosition,
     timingDuration,
@@ -82,6 +88,15 @@ const filterParser = (req, res, next) => {
       race: req.originalUrl.includes('race') ? { $exists: true } : undefined,
       qualifying: req.originalUrl.includes('qualifying') ? { $exists: true } : undefined,
       sprint: req.originalUrl.includes('sprint') ? { $exists: true } : undefined
+    },
+    standings: {
+      'season.year': year,
+      'weekend.round': round,
+      'driver.ref': driverId,
+      'team.ref': teamId,
+      'position.order': standingsPosition,
+      points: standingsPoints,
+      wins: standingsWins
     },
     timings: {
       'season.year': year,
