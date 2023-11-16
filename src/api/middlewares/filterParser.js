@@ -90,13 +90,17 @@ const filterParser = (req, res, next) => {
       sprint: req.originalUrl.includes('sprint') ? { $exists: true } : undefined
     },
     standings: {
-      'season.year': year,
-      'weekend.round': round,
-      'driver.ref': driverId,
-      'team.ref': teamId,
-      'position.order': standingsPosition,
-      points: standingsPoints,
-      wins: standingsWins
+      primary: {
+        'season.year': year,
+        'weekend.round': round,
+      },
+      secondary: {
+        'driver.ref': driverId,
+        // TODO: 'teams.ref': teamId,
+        'position.order': standingsPosition,
+        points: standingsPoints ? { $gte: standingsPoints } : undefined,
+        wins: standingsWins ? { $gte: standingsWins } : undefined
+      }
     },
     timings: {
       'season.year': year,

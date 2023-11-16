@@ -1,9 +1,5 @@
 // services
-const filterService = require('../../services/filter/filterService')
-
-// models
-const DriverStanding = require('../../models/DriverStanding')
-const { simplifyDriverStanding } = require('../../models/DriverStanding')
+const filterStandingsService = require('../../services/filter/standings/filterStandingsService')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -12,11 +8,11 @@ const getDriverStandings = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
-    const { data: standings, total } = await filterService(DriverStanding, filter.standings, pagination, {
-      'season.year': 1,
-      'weekend.round': 1,
-      'position.order': 1
-    })
+    const { standings, total } = await filterStandingsService(
+      filter.standings,
+      pagination,
+      'driverStandings'
+    )
 
     if (!standings || !standings.length) {
       throw new DataNotFoundError('DriverStandings')
@@ -28,7 +24,7 @@ const getDriverStandings = async (req, res, next) => {
         ...pagination,
         total
       },
-      standings: standings.map(st => simplifyDriverStanding(st))
+      standings // TODO: simplify standings
     })
   } catch (err) {
     next(err)
