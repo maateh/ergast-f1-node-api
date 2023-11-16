@@ -94,9 +94,12 @@ const filterParser = (req, res, next) => {
         'season.year': year,
         'weekend.round': round,
       },
+      // TODO: needs to rework this filter a little bit after
+      // driverStandings will get the "teams" and teamStandings
+      // get the "drivers" fields
       secondary: {
         'driver.ref': driverId,
-        // TODO: 'teams.ref': teamId,
+        'team.ref': teamId,
         'position.order': standingsPosition,
         points: standingsPoints ? { $gte: standingsPoints } : undefined,
         wins: standingsWins ? { $gte: standingsWins } : undefined
