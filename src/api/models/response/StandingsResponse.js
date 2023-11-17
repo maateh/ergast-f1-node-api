@@ -4,11 +4,7 @@ const DriverResponse = require('./DriverResponse')
 const TeamResponse = require('./TeamResponse')
 
 class StandingsResponse {
-  constructor({
-    driverStandings,
-    teamStandings,
-    lastWeekend
-  }) {
+  constructor({ lastWeekend, driverStandings, teamStandings }) {
     this.lastWeekend = new WeekendResponse(lastWeekend)
 
     if (driverStandings && driverStandings.length) {
