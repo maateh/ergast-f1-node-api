@@ -1,5 +1,5 @@
 // models
-const Circuit = require('../../models/Circuit')
+const Circuit = require('../../models/mongoose/Circuit')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

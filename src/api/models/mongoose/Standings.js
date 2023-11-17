@@ -1,8 +1,9 @@
 const { model, Schema } = require('mongoose')
 
+// schemas
 const standingResultSchema = require('./schemas/standingResultSchema')
 
-const standingSchema = new Schema({
+const standingsSchema = new Schema({
   season: {
     year: {
       type: Number,
@@ -79,4 +80,4 @@ const standingSchema = new Schema({
   }]
 })
 
-module.exports = model('Standing', standingSchema)
+module.exports = model('Standings', standingsSchema)

@@ -1,5 +1,5 @@
 // models
-const Weekend = require('../../models/Weekend')
+const Weekend = require('../../models/mongoose/Weekend')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

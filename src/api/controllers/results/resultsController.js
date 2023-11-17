@@ -2,8 +2,8 @@
 const filterService = require('../../services/filter/filterService')
 
 // models
-const Result = require('../../models/Result')
-const { simplifyResult } = require('../../models/Result')
+const Result = require('../../models/mongoose/Result')
+const { simplifyResult } = require('../../models/mongoose/Result')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

@@ -1,15 +1,15 @@
 const db = require('../database/mysql')
 
 // models
-const Weekend = require('../../api/models/Weekend')
-const Season = require('../../api/models/Season')
-const Circuit = require('../../api/models/Circuit')
+const Weekend = require('../../api/models/mongoose/Weekend')
+const Season = require('../../api/models/mongoose/Season')
+const Circuit = require('../../api/models/mongoose/Circuit')
 
 // utils
 const { arrayToMap } = require('../utils/arrayToMap')
 
 // constants
-const { SESSIONS } = require('../../api/models/schemas/sessionSchema')
+const { SESSIONS } = require('../../api/models/mongoose/schemas/sessionSchema')
 
 const getAllWeekends = () => {
   const query = 'SELECT * FROM races'

@@ -2,8 +2,8 @@
 const filterWithRegroupService = require('../../services/filter/filterWithRegroupService')
 
 // models
-const Result = require('../../models/Result')
-const { simplifyCircuit } = require('../../models/Circuit')
+const Result = require('../../models/mongoose/Result')
+const { simplifyCircuit } = require('../../models/mongoose/Circuit')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

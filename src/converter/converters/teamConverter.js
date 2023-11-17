@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const Team = require('../../api/models/Team')
+const Team = require('../../api/models/mongoose/Team')
 
 const getAllConstructors = () => {
   const query = 'SELECT * FROM constructors'

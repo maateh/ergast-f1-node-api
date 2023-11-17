@@ -1,5 +1,5 @@
 // models
-const Season = require('../../models/Season')
+const Season = require('../../models/mongoose/Season')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

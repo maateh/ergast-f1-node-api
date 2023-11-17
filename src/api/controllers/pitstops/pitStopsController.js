@@ -2,10 +2,10 @@
 const filterService = require('../../services/filter/filterService')
 
 // models
-const PitStop = require('../../models/PitStop')
-const Weekend = require('../../models/Weekend')
-const { simplifyPitStop } = require('../../models/PitStop')
-const { simplifyWeekend } = require('../../models/Weekend')
+const PitStop = require('../../models/mongoose/PitStop')
+const Weekend = require('../../models/mongoose/Weekend')
+const { simplifyPitStop } = require('../../models/mongoose/PitStop')
+const { simplifyWeekend } = require('../../models/mongoose/Weekend')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

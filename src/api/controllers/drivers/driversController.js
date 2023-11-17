@@ -1,5 +1,5 @@
 // models
-const Driver = require('../../models/Driver')
+const Driver = require('../../models/mongoose/Driver')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

@@ -1,5 +1,5 @@
 // models
-const Standings = require('../../../models/Standings')
+const Standings = require('../../../models/mongoose/Standings')
 
 // TODO: write service description
 const filterStandingsService = async (

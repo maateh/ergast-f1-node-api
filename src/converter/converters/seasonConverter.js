@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const Season = require('../../api/models/Season')
+const Season = require('../../api/models/mongoose/Season')
 
 const getAllSeasons = () => {
   const query = 'SELECT * FROM seasons'

@@ -1,5 +1,5 @@
 // models
-const Team = require('../../models/Team')
+const Team = require('../../models/mongoose/Team')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

@@ -2,10 +2,10 @@
 const filterService = require('../../services/filter/filterService')
 
 // models
-const Timing = require('../../models/Timing')
-const Weekend = require('../../models/Weekend')
-const { simplifyTiming } = require('../../models/Timing')
-const { simplifyWeekend } = require('../../models/Weekend')
+const Timing = require('../../models/mongoose/Timing')
+const Weekend = require('../../models/mongoose/Weekend')
+const { simplifyTiming } = require('../../models/mongoose/Timing')
+const { simplifyWeekend } = require('../../models/mongoose/Weekend')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')

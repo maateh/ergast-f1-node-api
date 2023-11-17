@@ -1,10 +1,10 @@
 const db = require('../database/mysql')
 
 // models
-const PitStop = require('../../api/models/PitStop')
-const Weekend = require('../../api/models/Weekend')
-const Driver = require('../../api/models/Driver')
-const Team = require('../../api/models/Team')
+const PitStop = require('../../api/models/mongoose/PitStop')
+const Weekend = require('../../api/models/mongoose/Weekend')
+const Driver = require('../../api/models/mongoose/Driver')
+const Team = require('../../api/models/mongoose/Team')
 
 // utils
 const { arrayToMap } = require('../utils/arrayToMap')

@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const Result = require('../../api/models/Result')
+const Result = require('../../api/models/mongoose/Result')
 
 // utils
 const { arrayToMapWithMultipleKeyRefs } = require('../utils/arrayToMap')
