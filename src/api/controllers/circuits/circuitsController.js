@@ -1,8 +1,9 @@
 // models
-const Circuit = require('../../models/Circuit')
+const Circuit = require('../../models/mongoose/Circuit')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
+const CircuitResponse = require('../../models/response/CircuitResponse')
 
 const getCircuits = async (req, res, next) => {
   const { metadata, pagination } = res.locals
@@ -24,7 +25,7 @@ const getCircuits = async (req, res, next) => {
         ...pagination,
         total
       },
-      circuits: circuits.map(c => c.simplify())
+      circuits: CircuitResponse.parseList(circuits)
     })
   } catch (err) {
     next(err)
@@ -44,7 +45,7 @@ const getCircuit = async (req, res, next) => {
 
     res.json({
       metadata,
-      circuit: circuit.simplify()
+      circuit: new CircuitResponse(circuit)
     })
   } catch (err) {
     next(err)

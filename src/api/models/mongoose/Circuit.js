@@ -40,21 +40,7 @@ const circuitSchema = new Schema({
   wiki: {
     type: String,
     required: true
-  },
+  }
 })
 
-circuitSchema.methods.simplify = function() {
-  return simplify(this)
-}
-
-const simplify = circuit => {
-  return {
-    id: circuit.ref,
-    name: circuit.name,
-    location: circuit.location,
-    wiki: circuit.wiki
-  }
-}
-
 module.exports = model('Circuit', circuitSchema)
-module.exports.simplifyCircuit = simplify

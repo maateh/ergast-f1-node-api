@@ -1,5 +1,6 @@
 // models
-const Weekend = require('../../models/Weekend')
+const Weekend = require('../../models/mongoose/Weekend')
+const WeekendResponse = require('../../models/response/WeekendResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -26,7 +27,7 @@ const getWeekends = async (req, res, next) => {
         ...pagination,
         total
       },
-      weekends: weekends.map(w => w.simplify())
+      weekends: WeekendResponse.parseList(weekends)
     })
   } catch (err) {
     next(err)
@@ -49,7 +50,7 @@ const getWeekend = async (req, res, next) => {
 
     res.json({
       metadata,
-      weekend: weekend.simplify()
+      weekend: new WeekendResponse(weekend)
     })
   } catch (err) {
     next(err)

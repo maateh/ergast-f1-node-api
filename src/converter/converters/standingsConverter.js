@@ -1,10 +1,10 @@
 const db = require('../database/mysql')
 
 // models
-const Standings = require('../../api/models/Standings')
-const Weekend = require('../../api/models/Weekend')
-const Driver = require('../../api/models/Driver')
-const Team = require('../../api/models/Team')
+const Standings = require('../../api/models/mongoose/Standings')
+const Weekend = require('../../api/models/mongoose/Weekend')
+const Driver = require('../../api/models/mongoose/Driver')
+const Team = require('../../api/models/mongoose/Team')
 
 // utils
 const { arrayToMap, arrayToPushMap } = require('../utils/arrayToMap')
@@ -71,9 +71,14 @@ const conversion = () => {
             _weekend: weekend._id
           },
           driverStandings: currentDriverStandings.map(dst => {
+            const currentDriver = driversMap[dst.driverId]
+
             return {
               ergastId: dst.driverStandingsId,
-              driver: driversMap[dst.driverId],
+              driver: {
+                ref: currentDriver.ref,
+                _driver: currentDriver._id
+              },
               // TODO: teams: ,
               points: dst.points,
               position: {
@@ -84,9 +89,14 @@ const conversion = () => {
             }
           }),
           teamStandings: currentConstructorStandings?.map(cst => {
+            const currentTeam = teamsMap[cst.constructorId]
+
             return {
               ergastId: cst.constructorStandingsId,
-              team: teamsMap[cst.constructorId],
+              team: {
+                ref: currentTeam.ref,
+                _team: currentTeam._id
+              },
               // TODO: drivers: ,
               points: cst.points,
               position: {

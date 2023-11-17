@@ -2,8 +2,8 @@
 const filterWithRegroupService = require('../../services/filter/filterWithRegroupService')
 
 // models
-const Result = require('../../models/Result')
-const { simplifySeason } = require('../../models/Season')
+const Result = require('../../models/mongoose/Result')
+const SeasonResponse = require('../../models/response/SeasonResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -33,7 +33,7 @@ const getSeasonsFilteredByResults = async (req, res, next) => {
         ...pagination,
         total
       },
-      seasons: seasons.map(s => simplifySeason(s))
+      seasons: SeasonResponse.parseList(seasons)
     })
   } catch (err) {
     next(err)

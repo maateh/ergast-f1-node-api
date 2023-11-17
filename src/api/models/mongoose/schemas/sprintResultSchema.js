@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose')
 
-const raceResultSchema = new Schema({
+const sprintResultSchema = new Schema({
   grid: {
     type: Number,
     required: true
@@ -38,10 +38,6 @@ const raceResultSchema = new Schema({
     }
   },
   fastest: {
-    rank: {
-      type: Number,
-      required: false
-    },
     lap: {
       type: Number,
       required: false
@@ -53,24 +49,9 @@ const raceResultSchema = new Schema({
     ms: {
       type: Number,
       required: false
-    },
-    speed: {
-      type: Number,
-      required: false
     }
   },
   _id: false
 })
 
-raceResultSchema.methods.simplify = function() {
-  return {
-    grid: this.grid,
-    position: this.position,
-    points: this.points,
-    laps: this.laps,
-    duration: this.duration,
-    fastest: this.fastest
-  }
-}
-
-module.exports = raceResultSchema
+module.exports = sprintResultSchema

@@ -2,8 +2,8 @@
 const filterWithRegroupService = require('../../services/filter/filterWithRegroupService')
 
 // models
-const Result = require('../../models/Result')
-const { simplifyCircuit } = require('../../models/Circuit')
+const Result = require('../../models/mongoose/Result')
+const CircuitResponse = require('../../models/response/CircuitResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -34,7 +34,7 @@ const getCircuitsFilteredByResults = async (req, res, next) => {
         ...pagination,
         total
       },
-      circuits: circuits.map(c => simplifyCircuit(c))
+      circuits: CircuitResponse.parseList(circuits)
     })
   } catch (err) {
     next(err)

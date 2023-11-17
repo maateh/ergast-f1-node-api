@@ -2,10 +2,10 @@
 const filterService = require('../../services/filter/filterService')
 
 // models
-const Timing = require('../../models/Timing')
-const Weekend = require('../../models/Weekend')
-const { simplifyTiming } = require('../../models/Timing')
-const { simplifyWeekend } = require('../../models/Weekend')
+const Timing = require('../../models/mongoose/Timing')
+const Weekend = require('../../models/mongoose/Weekend')
+const WeekendResponse = require('../../models/response/WeekendResponse')
+const TimingResponse = require('../../models/response/TimingResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -44,8 +44,8 @@ const getTimings = async (req, res, next) => {
         ...pagination,
         total
       },
-      weekend: simplifyWeekend(weekend),
-      timings: timings.map(t => simplifyTiming(t))
+      weekend: new WeekendResponse(weekend),
+      timings: TimingResponse.parseList(timings)
     })
   } catch (err) {
     next(err)

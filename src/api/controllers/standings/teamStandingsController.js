@@ -1,6 +1,9 @@
 // services
 const filterStandingsService = require('../../services/filter/standings/filterStandingsService')
 
+// models
+const StandingsResponse = require('../../models/response/StandingsResponse')
+
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
 
@@ -24,7 +27,7 @@ const getTeamStandings = async (req, res, next) => {
         ...pagination,
         total
       },
-      standings // TODO: simplify standings
+      standings: StandingsResponse.parseList(standings)
     })
   } catch (err) {
     next(err)

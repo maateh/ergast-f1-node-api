@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const Circuit = require('../../api/models/Circuit')
+const Circuit = require('../../api/models/mongoose/Circuit')
 
 const getAllCircuits = () => {
   const query = 'SELECT * FROM circuits'

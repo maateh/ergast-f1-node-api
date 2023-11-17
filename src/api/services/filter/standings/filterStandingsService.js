@@ -1,5 +1,5 @@
 // models
-const Standings = require('../../../models/Standings')
+const Standings = require('../../../models/mongoose/Standings')
 
 // TODO: write service description
 const filterStandingsService = async (
@@ -27,7 +27,7 @@ const filterStandingsService = async (
       $group: {
         _id: '$_id',
         lastWeekend: { $first: '$standings.weekend._weekend' },
-        standings: { $push: `$standings.${standingsType}` }
+        [standingsType]: { $push: `$standings.${standingsType}` }
       }
     },
     {
@@ -44,7 +44,25 @@ const filterStandingsService = async (
               as: 'lastWeekend'
             }
           },
-          { $unwind: '$lastWeekend' }
+          { $unwind: '$lastWeekend' },
+          {
+            $lookup: {
+              from: 'seasons',
+              localField: 'lastWeekend.season._season',
+              foreignField: '_id',
+              as: 'lastWeekend.season'
+            }
+          },
+          { $unwind: '$lastWeekend.season' },
+          {
+            $lookup: {
+              from: 'circuits',
+              localField: 'lastWeekend.circuit._circuit',
+              foreignField: '_id',
+              as: 'lastWeekend.circuit'
+            }
+          },
+          { $unwind: '$lastWeekend.circuit' }
         ],
         totalCount: [{
           $group: {

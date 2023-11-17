@@ -1,5 +1,6 @@
 // models
-const Season = require('../../models/Season')
+const Season = require('../../models/mongoose/Season')
+const SeasonResponse = require('../../models/response/SeasonResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -25,7 +26,7 @@ const getSeasons = async (req, res, next) => {
         ...pagination,
         total
       },
-      seasons: seasons.map(s => s.simplify())
+      seasons: SeasonResponse.parseList(seasons)
     })
   } catch (err) {
     next(err)
@@ -45,7 +46,7 @@ const getSeason = async (req, res, next) => {
 
     res.json({
       metadata,
-      season: season.simplify()
+      season: new SeasonResponse(season)
     })
   } catch (err) {
     next(err)

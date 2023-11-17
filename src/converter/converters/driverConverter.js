@@ -1,7 +1,7 @@
 const db = require('../database/mysql')
 
 // models
-const Driver = require('../../api/models/Driver')
+const Driver = require('../../api/models/mongoose/Driver')
 
 const getAllDrivers = () => {
   const query = 'SELECT * FROM drivers'
