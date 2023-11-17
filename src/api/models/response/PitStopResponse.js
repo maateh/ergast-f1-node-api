@@ -2,7 +2,6 @@
 const DriverResponse = require('./DriverResponse')
 const TeamResponse = require('./TeamResponse')
 
-// TODO: grouping data based on laps
 class PitStopResponse {
   constructor({ stop, lap, timeOfDay, duration, driver, team }) {
     this.stop = stop
