@@ -54,15 +54,4 @@ const sprintResultSchema = new Schema({
   _id: false
 })
 
-sprintResultSchema.methods.simplify = function() {
-  return {
-    grid: this.grid,
-    position: this.position,
-    points: this.points,
-    laps: this.laps,
-    duration: this.duration,
-    fastest: this.fastest
-  }
-}
-
 module.exports = sprintResultSchema

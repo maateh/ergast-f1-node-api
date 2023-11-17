@@ -27,13 +27,4 @@ const qualifyingResultSchema = new Schema({
   _id: false
 })
 
-qualifyingResultSchema.methods.simplify = function() {
-  return {
-    position: this.position,
-    q1: this.q1,
-    q2: this.q2,
-    q3: this.q3
-  }
-}
-
 module.exports = qualifyingResultSchema
