@@ -12,16 +12,4 @@ const seasonSchema = new Schema({
   }
 })
 
-seasonSchema.methods.simplify = function() {
-  return simplify(this)
-}
-
-const simplify = season => {
-  return {
-    year: season.year,
-    wiki: season.wiki
-  }
-}
-
 module.exports = model('Season', seasonSchema)
-module.exports.simplifySeason = simplify
