@@ -3,7 +3,7 @@ const filterWithRegroupService = require('../../services/filter/filterWithRegrou
 
 // models
 const Result = require('../../models/mongoose/Result')
-const { simplifyWeekend } = require('../../models/mongoose/Weekend')
+const WeekendResponse = require('../../models/response/WeekendResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -37,7 +37,7 @@ const getWeekendsFilteredByResults = async (req, res, next) => {
         ...pagination,
         total
       },
-      weekends: weekends.map(w => simplifyWeekend(w))
+      weekends: WeekendResponse.parseList(weekends)
     })
   } catch (err) {
     next(err)

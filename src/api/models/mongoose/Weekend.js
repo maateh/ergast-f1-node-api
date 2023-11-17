@@ -3,10 +3,6 @@ const { Schema, model } = require('mongoose')
 // schemas
 const sessionSchema = require('./schemas/sessionSchema')
 
-// models
-const { simplifyCircuit } = require('./Circuit')
-const { simplifySeason } = require('./Season')
-
 const weekendSchema = new Schema({
   ergastId: {
     type: Number,
@@ -50,20 +46,4 @@ const weekendSchema = new Schema({
   }
 })
 
-weekendSchema.methods.simplify = function() {
-  return simplify(this)
-}
-
-const simplify = weekend => {
-  return {
-    season: simplifySeason(weekend.season._season || weekend.season),
-    round: weekend.round,
-    name: weekend.name,
-    circuit: simplifyCircuit(weekend.circuit._circuit || weekend.circuit),
-    sessions: weekend.sessions,
-    wiki: weekend.wiki
-  }
-}
-
 module.exports = model('Weekend', weekendSchema)
-module.exports.simplifyWeekend = simplify
