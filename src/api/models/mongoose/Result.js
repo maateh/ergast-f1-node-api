@@ -1,10 +1,5 @@
 const { Schema, model } = require('mongoose')
 
-// models
-const { simplifyWeekend } = require('./Weekend')
-const { simplifyDriver } = require('./Driver')
-const { simplifyTeam } = require('./Team')
-
 // schemas
 const raceResultSchema = require('./schemas/raceResultSchema')
 const qualifyingResultSchema = require('./schemas/qualifyingResultSchema')
@@ -74,20 +69,4 @@ const resultSchema = new Schema({
   sprint: sprintResultSchema
 })
 
-resultSchema.methods.simplify = function() {
-  return simplify(this)
-}
-
-const simplify = result => {
-  return {
-    race: result.race,
-    qualifying: result.qualifying,
-    sprint: result.sprint,
-    driver: simplifyDriver(result.driver),
-    team: simplifyTeam(result.team),
-    weekend: simplifyWeekend(result.weekend)
-  }
-}
-
 module.exports = model('Result', resultSchema)
-module.exports.simplifyResult = simplify

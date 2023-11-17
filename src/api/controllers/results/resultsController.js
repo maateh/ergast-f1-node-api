@@ -3,7 +3,7 @@ const filterService = require('../../services/filter/filterService')
 
 // models
 const Result = require('../../models/mongoose/Result')
-const { simplifyResult } = require('../../models/mongoose/Result')
+const ResultResponse = require('../../models/response/ResultResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -36,7 +36,7 @@ const getResults = async (req, res, next) => {
         ...pagination,
         total
       },
-      results: results.map(r => simplifyResult(r))
+      results: ResultResponse.parseList(results)
     })
   } catch (err) {
     next(err)
