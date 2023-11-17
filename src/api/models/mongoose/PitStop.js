@@ -1,9 +1,5 @@
 const { Schema, model } = require('mongoose')
 
-// models
-const { simplifyDriver } = require('./Driver')
-const { simplifyTeam } = require('./Team')
-
 const pitStopSchema = new Schema({
   season: {
     year: {
@@ -73,20 +69,4 @@ const pitStopSchema = new Schema({
   }
 })
 
-pitStopSchema.methods.simplify = function() {
-  return simplify(this)
-}
-
-function simplify(pitStop) {
-  return {
-    stop: pitStop.stop,
-    lap: pitStop.lap,
-    timeOfDay: pitStop.timeOfDay,
-    duration: pitStop.duration,
-    driver: simplifyDriver(pitStop.driver),
-    team: simplifyTeam(pitStop.team)
-  }
-}
-
 module.exports = model('PitStop', pitStopSchema)
-module.exports.simplifyPitStop = simplify

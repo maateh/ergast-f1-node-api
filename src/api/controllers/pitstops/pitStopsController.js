@@ -4,8 +4,8 @@ const filterService = require('../../services/filter/filterService')
 // models
 const PitStop = require('../../models/mongoose/PitStop')
 const Weekend = require('../../models/mongoose/Weekend')
-const { simplifyPitStop } = require('../../models/mongoose/PitStop')
-const { simplifyWeekend } = require('../../models/mongoose/Weekend')
+const WeekendResponse = require('../../models/response/WeekendResponse')
+const PitStopResponse = require('../../models/response/PitStopResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -46,8 +46,8 @@ const getPitStops = async (req, res, next) => {
         ...pagination,
         total
       },
-      weekend: simplifyWeekend(weekend),
-      pitStops: pitStops.map(ps => simplifyPitStop(ps))
+      weekend: new WeekendResponse(weekend),
+      pitStops: PitStopResponse.parseList(pitStops)
     })
   } catch (err) {
     next(err)
