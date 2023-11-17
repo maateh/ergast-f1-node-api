@@ -3,7 +3,7 @@ const filterWithRegroupService = require('../../services/filter/filterWithRegrou
 
 // models
 const Result = require('../../models/mongoose/Result')
-const { simplifyTeam } = require('../../models/mongoose/Team')
+const TeamResponse = require('../../models/response/TeamResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -34,7 +34,7 @@ const getTeamsFilteredByResults = async (req, res, next) => {
         ...pagination,
         total
       },
-      teams: teams.map(t => simplifyTeam(t))
+      teams: TeamResponse.parseList(teams)
     })
   } catch (err) {
     next(err)

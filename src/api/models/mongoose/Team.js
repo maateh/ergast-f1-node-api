@@ -25,18 +25,4 @@ const teamSchema = new Schema({
   }
 })
 
-teamSchema.methods.simplify = function() {
-  return simplify(this)
-}
-
-const simplify = team => {
-  return {
-    id: team.ref,
-    name: team.name,
-    nationality: team.nationality,
-    wiki: team.wiki
-  }
-}
-
 module.exports = model('Team', teamSchema)
-module.exports.simplifyTeam = simplify

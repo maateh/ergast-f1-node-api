@@ -1,5 +1,6 @@
 // models
 const Team = require('../../models/mongoose/Team')
+const TeamResponse = require('../../models/response/TeamResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -25,7 +26,7 @@ const getTeams = async (req, res, next) => {
         ...pagination,
         total
       },
-      teams: teams.map(t => t.simplify())
+      teams: TeamResponse.parseList(teams)
     })
   } catch (err) {
     next(err)
@@ -45,7 +46,7 @@ const getTeam = async (req, res, next) => {
 
     res.json({
       metadata,
-      team: team.simplify()
+      team: new TeamResponse(team)
     })
   } catch (err) {
     next(err)
