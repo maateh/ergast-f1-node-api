@@ -1,4 +1,4 @@
-class Driver {
+class DriverResponse {
   constructor(driver) {
     this.id = driver.ref
     this.number = driver.number
@@ -10,8 +10,8 @@ class Driver {
   }
 
   static parseList(drivers) {
-    return drivers.map(d => new Driver(d))
+    return drivers.map(d => new DriverResponse(d))
   }
 }
 
-module.exports = Driver
+module.exports = DriverResponse

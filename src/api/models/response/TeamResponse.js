@@ -1,4 +1,4 @@
-class Team {
+class TeamResponse {
   constructor(team) {
     this.id = team.ref
     this.name = team.name
@@ -7,8 +7,8 @@ class Team {
   }
 
   static parseList(teams) {
-    return teams.map(t => new Team(t))
+    return teams.map(t => new TeamResponse(t))
   }
 }
 
-module.exports = Team
+module.exports = TeamResponse

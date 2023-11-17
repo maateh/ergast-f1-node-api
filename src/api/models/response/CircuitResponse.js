@@ -1,4 +1,4 @@
-class Circuit {
+class CircuitResponse {
   constructor(circuit) {
     this.id = circuit.ref
     this.name = circuit.name
@@ -7,8 +7,8 @@ class Circuit {
   }
 
   static parseList(circuits) {
-    return circuits.map(c => new Circuit(c))
+    return circuits.map(c => new CircuitResponse(c))
   }
 }
 
-module.exports = Circuit
+module.exports = CircuitResponse
