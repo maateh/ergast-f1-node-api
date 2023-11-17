@@ -1,12 +1,20 @@
 class DriverResponse {
-  constructor(driver) {
-    this.id = driver.ref
-    this.number = driver.number
-    this.code = driver.code
-    this.name = driver.name
-    this.dateOfBirth = driver.dateOfBirth
-    this.nationality = driver.nationality
-    this.wiki = driver.wiki
+  constructor({
+    ref,
+    number,
+    code,
+    name,
+    dateOfBirth,
+    nationality,
+    wiki
+  }) {
+    this.id = ref
+    this.number = number
+    this.code = code
+    this.name = name
+    this.dateOfBirth = dateOfBirth
+    this.nationality = nationality
+    this.wiki = wiki
   }
 
   static parseList(drivers) {

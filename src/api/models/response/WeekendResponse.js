@@ -3,13 +3,13 @@ const CircuitResponse = require('./CircuitResponse')
 const SeasonResponse = require('./SeasonResponse')
 
 class WeekendResponse {
-  constructor(weekend) {
-    this.season = new SeasonResponse(weekend.season._season || weekend.season)
-    this.round = weekend.round
-    this.name = weekend.name
-    this.circuit = new CircuitResponse(weekend.circuit._circuit || weekend.circuit)
-    this.sessions = weekend.sessions
-    this.wiki = weekend.wiki
+  constructor({ season, round, name, circuit, sessions, wiki }) {
+    this.season = new SeasonResponse(season._season || season)
+    this.round = round
+    this.name = name
+    this.circuit = new CircuitResponse(circuit._circuit || circuit)
+    this.sessions = sessions
+    this.wiki = wiki
   }
 
   static parseList(weekends) {

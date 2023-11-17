@@ -1,9 +1,9 @@
 class CircuitResponse {
-  constructor(circuit) {
-    this.id = circuit.ref
-    this.name = circuit.name
-    this.location = circuit.location
-    this.wiki = circuit.wiki
+  constructor({ ref, name, location, wiki }) {
+    this.id = ref
+    this.name = name
+    this.location = location
+    this.wiki = wiki
   }
 
   static parseList(circuits) {

@@ -1,7 +1,7 @@
 class SeasonResponse {
-  constructor(season) {
-    this.year = season.year
-    this.wiki = season.wiki
+  constructor({ year, wiki }) {
+    this.year = year
+    this.wiki = wiki
   }
 
   static parseList(seasons) {

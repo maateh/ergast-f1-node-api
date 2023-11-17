@@ -1,9 +1,9 @@
 class TeamResponse {
-  constructor(team) {
-    this.id = team.ref
-    this.name = team.name
-    this.nationality = team.nationality
-    this.wiki = team.wiki
+  constructor({ ref, name, nationality, wiki }) {
+    this.id = ref
+    this.name = name
+    this.nationality = nationality
+    this.wiki = wiki
   }
 
   static parseList(teams) {
