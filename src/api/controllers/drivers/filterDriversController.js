@@ -3,7 +3,7 @@ const filterWithRegroupService = require('../../services/filter/filterWithRegrou
 
 // models
 const Result = require('../../models/mongoose/Result')
-const { simplifyDriver } = require('../../models/mongoose/Driver')
+const DriverResponse = require('../../models/response/DriverResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -37,7 +37,7 @@ const getDriversFilteredByResults = async (req, res, next) => {
         ...pagination,
         total
       },
-      drivers: drivers.map(d => simplifyDriver(d))
+      drivers: DriverResponse.parseList(drivers)
     })
   } catch (err) {
     next(err)

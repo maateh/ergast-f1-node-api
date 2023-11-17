@@ -1,5 +1,6 @@
 // models
 const Driver = require('../../models/mongoose/Driver')
+const DriverResponse = require('../../models/response/DriverResponse')
 
 // errors
 const DataNotFoundError = require('../../errors/DataNotFoundError')
@@ -25,7 +26,7 @@ const getDrivers = async (req, res, next) => {
         ...pagination,
         total
       },
-      drivers: drivers.map(d => d.simplify())
+      drivers: DriverResponse.parseList(drivers)
     })
   } catch (err) {
     next(err)
@@ -45,7 +46,7 @@ const getDriver = async (req, res, next) => {
 
     res.json({
       metadata,
-      driver: driver.simplify()
+      driver: new DriverResponse(driver)
     })
   } catch (err) {
     next(err)
