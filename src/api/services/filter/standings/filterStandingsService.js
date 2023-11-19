@@ -28,6 +28,15 @@ const filterStandingsService = async (
     { $unwind: `$standings.${options.standingsTypeRefKey}` },
     { $match: parseSecondaryFilter(options.standingsTypeRefKey, filter.secondary) },
     {
+      $lookup: {
+        from: options.infoTargetCollection,
+        localField: `standings.${options.standingsTypeRefKey}.${options.infoRefKey}._${options.infoRefKey}`,
+        foreignField: '_id',
+        as: `standings.${options.standingsTypeRefKey}.${options.infoRefKey}`
+      }
+    },
+    { $unwind: `$standings.${options.standingsTypeRefKey}.${options.infoRefKey}` },
+    {
       $group: {
         _id: '$_id',
         lastWeekend: { $first: '$standings.weekend._weekend' },
@@ -40,23 +49,6 @@ const filterStandingsService = async (
           { $sort: { _id: 1 } },
           { $skip: pagination.offset },
           { $limit: pagination.limit },
-          { $unwind: `$${options.standingsTypeRefKey}` },
-          {
-            $lookup: {
-              from: options.infoTargetCollection,
-              localField: `${options.standingsTypeRefKey}.${options.infoRefKey}._${options.infoRefKey}`,
-              foreignField: '_id',
-              as: `${options.standingsTypeRefKey}.${options.infoRefKey}`
-            }
-          },
-          { $unwind: `$${options.standingsTypeRefKey}.${options.infoRefKey}` },
-          {
-            $group: {
-              _id: '$_id',
-              lastWeekend: { $first: '$lastWeekend' },
-              [options.standingsTypeRefKey]: { $push: `$${options.standingsTypeRefKey}` }
-            }
-          },
           {
             $lookup: {
               from: 'weekends',
