@@ -12,9 +12,11 @@ const getDriverStandings = async (req, res, next) => {
 
   try {
     const { standings, total } = await filterStandingsService(
-      filter.standings,
-      pagination,
-      'driverStandings'
+      filter.standings, pagination, {
+        standingsTypeRefKey: 'driverStandings',
+        infoRefKey: 'driver',
+        infoTargetCollection: 'drivers'
+      }
     )
 
     if (!standings || !standings.length) {

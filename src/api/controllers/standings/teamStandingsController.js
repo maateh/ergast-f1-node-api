@@ -12,9 +12,11 @@ const getTeamStandings = async (req, res, next) => {
 
   try {
     const { standings, total } = await filterStandingsService(
-      filter.standings,
-      pagination,
-      'teamStandings'
+      filter.standings, pagination, {
+        standingsTypeRefKey: 'teamStandings',
+        infoRefKey: 'team',
+        infoTargetCollection: 'teams'
+      }
     )
 
     if (!standings || !standings.length) {

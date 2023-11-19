@@ -5,7 +5,11 @@ const Standings = require('../../../models/mongoose/Standings')
 const filterStandingsService = async (
   filter = {},
   pagination = { limit: 30, offset: 0 },
-  standingsType
+  options = {
+    standingsTypeRefKey: '',
+    infoRefKey: '',
+    infoTargetCollection: ''
+  }
 ) => {
   const [aggregatedData] = await Standings.aggregate([
     { $match: filter.primary },
@@ -21,13 +25,13 @@ const filterStandingsService = async (
         standings: { $first: '$$ROOT' }
       }
     },
-    { $unwind: `$standings.${standingsType}` },
-    { $match: parseSecondaryFilter(standingsType, filter.secondary) },
+    { $unwind: `$standings.${options.standingsTypeRefKey}` },
+    { $match: parseSecondaryFilter(options.standingsTypeRefKey, filter.secondary) },
     {
       $group: {
         _id: '$_id',
         lastWeekend: { $first: '$standings.weekend._weekend' },
-        [standingsType]: { $push: `$standings.${standingsType}` }
+        [options.standingsTypeRefKey]: { $push: `$standings.${options.standingsTypeRefKey}` }
       }
     },
     {
@@ -36,6 +40,23 @@ const filterStandingsService = async (
           { $sort: { _id: 1 } },
           { $skip: pagination.offset },
           { $limit: pagination.limit },
+          { $unwind: `$${options.standingsTypeRefKey}` },
+          {
+            $lookup: {
+              from: options.infoTargetCollection,
+              localField: `${options.standingsTypeRefKey}.${options.infoRefKey}._${options.infoRefKey}`,
+              foreignField: '_id',
+              as: `${options.standingsTypeRefKey}.${options.infoRefKey}`
+            }
+          },
+          { $unwind: `$${options.standingsTypeRefKey}.${options.infoRefKey}` },
+          {
+            $group: {
+              _id: '$_id',
+              lastWeekend: { $first: '$lastWeekend' },
+              [options.standingsTypeRefKey]: { $push: `$${options.standingsTypeRefKey}` }
+            }
+          },
           {
             $lookup: {
               from: 'weekends',

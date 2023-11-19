@@ -27,8 +27,7 @@ class StandingsResponse {
 
 class DriverStandingResponse {
   constructor(standing) {
-    this.driver = standing.driver // TODO: parse this
-    // this.driver = new Driver(standing.driver)
+    this.driver = new DriverResponse(standing.driver)
     // this.teams = standing.teams // TODO: add this later
     this.position = standing.position
     this.points = standing.points
@@ -38,8 +37,7 @@ class DriverStandingResponse {
 
 class TeamStandingResponse {
   constructor(standing) {
-    this.team = standing.team // TODO: parse this
-    // this.team = new Team(standing.team)
+    this.team = new TeamResponse(standing.team)
     // this.drivers = standing.drivers // TODO: add this later
     this.position = standing.position
     this.points = standing.points
