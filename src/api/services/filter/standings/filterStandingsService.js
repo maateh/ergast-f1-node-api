@@ -1,9 +1,27 @@
 // models
 const Standings = require('../../../models/mongoose/Standings')
 
-// TODO: write service description
+/**
+ * Retrieves filtered and paginated standings data based on specified criteria.
+ *
+ * @param {Object} filter - The filter criteria for the standings data.
+ *   @param {Object} primary - Primary filter params to identify the required standings in the years.
+ *   @param {Object} secondary - Secondary filter params to filter out the necessary standing results in a year.
+ * @param {Object} pagination - Pagination options, including 'limit' and 'offset'.
+ * @param {Object} options - Additional options to identify and handle of the given type of standings data:
+ *   @param {string} options.standingsTypeRefKey - The key referencing the type of standings data.
+ *   @param {string} options.infoRefKey - The key referencing additional information in the standings data.
+ *   @param {string} options.infoTargetCollection - The target collection for additional information lookup.
+ * @returns {Object} - An object containing paginated standings data and total count:
+ *   @property {Array} standings - Paginated standings data.
+ *   @property {number} total - Total count of standings data.
+ */
+
 const filterStandingsService = async (
-  filter = {},
+  filter = {
+    primary: {},
+    secondary: {}
+  },
   pagination = { limit: 30, offset: 0 },
   options = {
     standingsTypeRefKey: '',
@@ -100,7 +118,13 @@ const filterStandingsService = async (
   }
 }
 
-// TODO: write util function description
+/**
+ * Parses the given secondary filter based on the standings type.
+ *
+ * @param {string} standingsType - The type of standings data to be filtered.
+ * @param {Object} filter - The secondary filter criteria for the standings data.
+ * @returns {Object} - Gives back the same secondary filter with added a 'standings.' prefix for every key.
+ */
 function parseSecondaryFilter(standingsType, filter) {
   return Object.entries(filter)
     .reduce((parsedFilter, [key, value]) => {
