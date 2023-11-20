@@ -10,7 +10,16 @@ const Team = require('../../api/models/mongoose/Team')
 const { arrayToMap, arrayToPushMap } = require('../utils/arrayToMap')
 
 const getAllDriverStandings = () => {
-  const query = 'SELECT * FROM driverstandings ORDER BY raceId, position ASC'
+  const query = `
+    SELECT dst.driverStandingsId, dst.raceId, dst.points, dst.position, dst.positionText, dst.wins,
+      dr.driverId, co.constructorId, co.constructorRef, ra.year
+    FROM races ra
+    JOIN driverstandings dst ON dst.raceId = ra.raceId
+    JOIN drivers dr ON dst.driverId = dr.driverId
+    LEFT JOIN results re ON dst.raceId = re.raceId AND dst.driverId = re.driverId
+    LEFT JOIN constructors co ON re.constructorId = co.constructorId
+    ORDER BY dst.raceId, dst.position ASC
+  `
 
   console.info('Get driver standings data from the MySQL Database...')
   return db.execute(query)
@@ -21,7 +30,18 @@ const getAllDriverStandings = () => {
 }
 
 const getAllConstructorStandings = () => {
-  const query = 'SELECT * FROM constructorstandings ORDER BY raceId, position ASC'
+  const query = `
+    SELECT cs.constructorStandingsId, cs.raceId, cs.points, cs.position, cs.positionText, cs.wins,
+      co.constructorId, GROUP_CONCAT(dr.driverId) AS driverIds
+    FROM races ra
+      JOIN constructorstandings cs ON cs.raceId = ra.raceId
+      JOIN constructors co ON cs.constructorId = co.constructorId
+      LEFT JOIN results re ON cs.raceId = re.raceId AND co.constructorId = re.constructorId
+      LEFT JOIN drivers dr ON re.driverId = dr.driverId
+    GROUP BY cs.constructorStandingsId, cs.raceId, cs.points, cs.position, cs.positionText, cs.wins,
+      co.constructorRef, ra.year, ra.round
+      ORDER BY cs.raceId, cs.position ASC
+  `
 
   console.info('Get constructor standings data from the MySQL Database...')
   return db.execute(query)
@@ -38,7 +58,7 @@ const conversion = () => {
     getAllConstructorStandings(),
     Weekend.find().sort({
       'season.year': -1,
-      round: -1
+      round: 1
     }),
     Driver.find(),
     Team.find()
@@ -61,6 +81,8 @@ const conversion = () => {
           return standings
         }
 
+        const prevStandings = standings[standings.length - 1] || null
+
         const currentStandings = new Standings({
           season: {
             year: weekend.season.year,
@@ -72,6 +94,26 @@ const conversion = () => {
           },
           driverStandings: currentDriverStandings.map(dst => {
             const currentDriver = driversMap[dst.driverId]
+            const currentTeam = teamsMap[dst.constructorId]
+            let currentDriverTeams = []
+
+            const currentDriverPrevStanding = prevStandings?.driverStandings
+              .find(prevDst => {
+                return prevDst.driver.ref === currentDriver.ref &&
+                  prevStandings.season.year === dst.year
+              })
+
+            if (currentDriverPrevStanding) {
+              const prevTeams = currentDriverPrevStanding.teams || []
+              currentDriverTeams = prevTeams.find(t => t.ref === dst.constructorRef)
+                ? prevTeams
+                : (currentTeam ? [...prevTeams, currentTeam] : prevTeams)
+            } else {
+              currentDriverTeams.push({
+                ref: currentTeam.ref,
+                _team: currentTeam._id
+              })
+            }
 
             return {
               ergastId: dst.driverStandingsId,
@@ -79,7 +121,7 @@ const conversion = () => {
                 ref: currentDriver.ref,
                 _driver: currentDriver._id
               },
-              // TODO: teams: ,
+              teams: currentDriverTeams,
               points: dst.points,
               position: {
                 order: dst.position,
