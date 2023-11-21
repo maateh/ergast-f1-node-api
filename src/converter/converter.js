@@ -20,22 +20,22 @@ const standingsConverter = require('./converters/standingsConverter')
 
 const startConversion = async () => {
   try {
-    // await Promise.all([
-    //   circuitConverter(),
-    //   seasonConverter(),
-    //   driverConverter(),
-    //   teamConverter()
-    // ]).then(() => {
-    //   return weekendConverter()
-    // })
+    await Promise.all([
+      circuitConverter(),
+      seasonConverter(),
+      driverConverter(),
+      teamConverter()
+    ]).then(() => {
+      return weekendConverter()
+    })
 
-    // await raceResultConverter()
+    await raceResultConverter()
 
     await Promise.all([
-      // pitStopConverter(),
-      // timingsConverter(),
-      // qualifyingResultConverter(),
-      // sprintResultConverter(),
+      pitStopConverter(),
+      timingsConverter(),
+      qualifyingResultConverter(),
+      sprintResultConverter(),
       standingsConverter()
     ])
   } catch (err) {

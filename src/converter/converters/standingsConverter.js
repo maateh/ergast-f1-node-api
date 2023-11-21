@@ -18,7 +18,7 @@ const getAllDriverStandings = () => {
     JOIN drivers dr ON dst.driverId = dr.driverId
     LEFT JOIN results re ON dst.raceId = re.raceId AND dst.driverId = re.driverId
     LEFT JOIN constructors co ON re.constructorId = co.constructorId
-    ORDER BY dst.raceId, dst.position ASC
+    ORDER BY ra.year, dst.raceId, dst.position ASC
   `
 
   console.info('Get driver standings data from the MySQL Database...')
@@ -32,7 +32,7 @@ const getAllDriverStandings = () => {
 const getAllConstructorStandings = () => {
   const query = `
     SELECT cs.constructorStandingsId, cs.raceId, cs.points, cs.position, cs.positionText, cs.wins,
-      co.constructorId, GROUP_CONCAT(dr.driverId) AS driverIds
+      co.constructorId, ra.year, GROUP_CONCAT(dr.driverId) AS driverIds, GROUP_CONCAT(dr.driverRef) AS driverRefs
     FROM races ra
       JOIN constructorstandings cs ON cs.raceId = ra.raceId
       JOIN constructors co ON cs.constructorId = co.constructorId
@@ -40,7 +40,7 @@ const getAllConstructorStandings = () => {
       LEFT JOIN drivers dr ON re.driverId = dr.driverId
     GROUP BY cs.constructorStandingsId, cs.raceId, cs.points, cs.position, cs.positionText, cs.wins,
       co.constructorRef, ra.year, ra.round
-      ORDER BY cs.raceId, cs.position ASC
+      ORDER BY ra.year, cs.raceId, cs.position ASC
   `
 
   console.info('Get constructor standings data from the MySQL Database...')
@@ -74,14 +74,13 @@ const conversion = () => {
       return weekends.reduce((standings, weekend) => {
         const currentDriverStandings = driverStandingsMap[weekend.ergastId]
         const currentConstructorStandings = constructorStandingsMap[weekend.ergastId]
+        const prevStandings = standings[standings.length - 1] || null
 
         // Doesn't need to store standings on weekends
         // which haven't yet been held.
         if (!currentDriverStandings && !currentConstructorStandings) {
           return standings
         }
-
-        const prevStandings = standings[standings.length - 1] || null
 
         const currentStandings = new Standings({
           season: {
@@ -92,62 +91,8 @@ const conversion = () => {
             round: weekend.round,
             _weekend: weekend._id
           },
-          driverStandings: currentDriverStandings.map(dst => {
-            const currentDriver = driversMap[dst.driverId]
-            const currentTeam = teamsMap[dst.constructorId]
-            let currentDriverTeams = []
-
-            const currentDriverPrevStanding = prevStandings?.driverStandings
-              .find(prevDst => {
-                return prevDst.driver.ref === currentDriver.ref &&
-                  prevStandings.season.year === dst.year
-              })
-
-            if (currentDriverPrevStanding) {
-              const prevTeams = currentDriverPrevStanding.teams || []
-              currentDriverTeams = prevTeams.find(t => t.ref === dst.constructorRef)
-                ? prevTeams
-                : (currentTeam ? [...prevTeams, currentTeam] : prevTeams)
-            } else {
-              currentDriverTeams.push({
-                ref: currentTeam.ref,
-                _team: currentTeam._id
-              })
-            }
-
-            return {
-              ergastId: dst.driverStandingsId,
-              driver: {
-                ref: currentDriver.ref,
-                _driver: currentDriver._id
-              },
-              teams: currentDriverTeams,
-              points: dst.points,
-              position: {
-                order: dst.position,
-                info: dst.positionText
-              },
-              wins: dst.wins
-            }
-          }),
-          teamStandings: currentConstructorStandings?.map(cst => {
-            const currentTeam = teamsMap[cst.constructorId]
-
-            return {
-              ergastId: cst.constructorStandingsId,
-              team: {
-                ref: currentTeam.ref,
-                _team: currentTeam._id
-              },
-              // TODO: drivers: ,
-              points: cst.points,
-              position: {
-                order: cst.position,
-                info: cst.positionText
-              },
-              wins: cst.wins
-            }
-          }),
+          driverStandings: parseDriverStandings(currentDriverStandings, prevStandings, driversMap, teamsMap),
+          teamStandings: parseTeamStandings(currentConstructorStandings, prevStandings, teamsMap, driversMap),
         })
         standings.push(currentStandings)
         return standings
@@ -163,6 +108,92 @@ const conversion = () => {
     .catch(err => {
       console.error('Conversion error: ', err)
     })
+}
+
+function parseDriverStandings(currentDriverStandings, prevStandings, driversMap, teamsMap) {
+  return currentDriverStandings.map(dst => {
+    const currentDriver = driversMap[dst.driverId]
+    const currentTeam = teamsMap[dst.constructorId]
+    let currentDriverTeams = []
+
+    const currentDriverPrevStanding = prevStandings?.driverStandings
+      .find(prevDst => {
+        return prevDst.driver.ref === currentDriver.ref &&
+          prevStandings.season.year === dst.year
+      })
+
+    if (currentDriverPrevStanding) {
+      const prevTeams = currentDriverPrevStanding.teams || []
+      currentDriverTeams = prevTeams.find(t => t.ref === dst.constructorRef)
+        ? prevTeams
+        : (currentTeam ? [...prevTeams, currentTeam] : prevTeams)
+    } else {
+      currentDriverTeams.push({
+        ref: currentTeam.ref,
+        _team: currentTeam._id
+      })
+    }
+
+    return {
+      ergastId: dst.driverStandingsId,
+      driver: {
+        ref: currentDriver.ref,
+        _driver: currentDriver._id
+      },
+      teams: currentDriverTeams,
+      points: dst.points,
+      position: {
+        order: dst.position,
+        info: dst.positionText
+      },
+      wins: dst.wins
+    }
+  })
+}
+
+function parseTeamStandings(currentConstructorStandings, prevStandings, teamsMap, driversMap) {
+  return currentConstructorStandings?.map(cst => {
+    const currentTeam = teamsMap[cst.constructorId]
+    const currentDrivers = cst.driverIds?.split(',').map(id => driversMap[id]) || []
+    let currentTeamDrivers = []
+
+    const currentTeamPrevStanding = prevStandings?.teamStandings
+      .find(prevCst => {
+        return prevCst.team.ref === currentTeam.ref &&
+          prevStandings.season.year === cst.year
+      })
+
+    if (currentTeamPrevStanding) {
+      const prevDrivers = currentTeamPrevStanding.drivers || []
+      const prevDriverIds = new Set(prevDrivers.map(pd => pd.ref))
+      currentTeamDrivers = [
+        ...prevDrivers,
+        ...currentDrivers.filter(cd => !prevDriverIds.has(cd.ref))
+      ]
+    } else {
+      currentDrivers.forEach(cd => {
+        currentTeamDrivers.push({
+          ref: cd.ref,
+          _driver: cd._id
+        })
+      })
+    }
+
+    return {
+      ergastId: cst.constructorStandingsId,
+      team: {
+        ref: currentTeam.ref,
+        _team: currentTeam._id
+      },
+      drivers: currentTeamDrivers,
+      points: cst.points,
+      position: {
+        order: cst.position,
+        info: cst.positionText
+      },
+      wins: cst.wins
+    }
+  })
 }
 
 module.exports = conversion
