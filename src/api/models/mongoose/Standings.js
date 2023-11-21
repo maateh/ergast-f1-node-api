@@ -31,23 +31,24 @@ const standingsSchema = new Schema({
     driver: {
       ref: {
         type: String,
-        required: false
+        required: true
       },
       _driver: {
         type: Schema.Types.ObjectId,
         ref: 'Driver',
-        required: false
+        required: true
       }
     },
     teams: [{
+      _id: false,
       ref: {
         type: String,
-        required: false // TODO: add teams
+        required: true
       },
       _team: {
         type: Schema.Types.ObjectId,
         ref: 'Team',
-        required: false // TODO: add teams
+        required: true
       }
     }],
     ...standingResultSchema.obj
@@ -57,23 +58,24 @@ const standingsSchema = new Schema({
     team: {
       ref: {
         type: String,
-        required: false
+        required: true
       },
       _team: {
         type: Schema.Types.ObjectId,
         ref: 'Team',
-        required: false
+        required: true
       }
     },
     drivers: [{
+      _id: false,
       ref: {
         type: String,
-        required: false // TODO: add drivers
+        required: true
       },
       _driver: {
         type: Schema.Types.ObjectId,
         ref: 'Driver',
-        required: false // TODO: add drivers
+        required: true
       }
     }],
     ...standingResultSchema.obj
