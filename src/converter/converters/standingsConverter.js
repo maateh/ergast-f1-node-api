@@ -126,7 +126,10 @@ function parseDriverStandings(currentDriverStandings, prevStandings, driversMap,
       const prevTeams = currentDriverPrevStanding.teams || []
       currentDriverTeams = prevTeams.find(t => t.ref === dst.constructorRef)
         ? prevTeams
-        : (currentTeam ? [...prevTeams, currentTeam] : prevTeams)
+        : (currentTeam ? [...prevTeams, {
+            ref: currentTeam.ref,
+            _team: currentTeam._id
+          }] : prevTeams)
     } else {
       currentDriverTeams.push({
         ref: currentTeam.ref,
@@ -154,7 +157,13 @@ function parseDriverStandings(currentDriverStandings, prevStandings, driversMap,
 function parseTeamStandings(currentConstructorStandings, prevStandings, teamsMap, driversMap) {
   return currentConstructorStandings?.map(cst => {
     const currentTeam = teamsMap[cst.constructorId]
-    const currentDrivers = cst.driverIds?.split(',').map(id => driversMap[id]) || []
+    const currentDrivers = cst.driverIds?.split(',').map(id => {
+      const driver = driversMap[id]
+      return {
+        ref: driver.ref,
+        _driver: driver._id
+      }
+    }) || []
     let currentTeamDrivers = []
 
     const currentTeamPrevStanding = prevStandings?.teamStandings
@@ -172,10 +181,7 @@ function parseTeamStandings(currentConstructorStandings, prevStandings, teamsMap
       ]
     } else {
       currentDrivers.forEach(cd => {
-        currentTeamDrivers.push({
-          ref: cd.ref,
-          _driver: cd._id
-        })
+        currentTeamDrivers.push(cd)
       })
     }
 
