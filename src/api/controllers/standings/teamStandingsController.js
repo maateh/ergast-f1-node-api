@@ -11,7 +11,7 @@ const getTeamStandings = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
-    const { standings, total } = await filterStandingsService(filter.standings, pagination, 'team')
+    const { standings, total } = await filterStandingsService(filter.standings, pagination, 'teamStandings')
 
     if (!standings || !standings.length) {
       throw new DataNotFoundError('TeamStandings')

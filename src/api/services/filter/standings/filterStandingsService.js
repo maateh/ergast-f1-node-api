@@ -8,7 +8,7 @@ const Standings = require('../../../models/mongoose/Standings')
  *   @param {Object} primary - Primary filter params to identify the required standings in the years.
  *   @param {Object} secondary - Secondary filter params to filter out the necessary standing results in a year.
  * @param {Object} pagination - Pagination options, including 'limit' and 'offset'.
- * @param {Object} standingsType - Type of the required standings data (options: 'driver' || 'team')
+ * @param {Object} standingsType - Type of the required standings data (options: 'driverStandings' || 'teamStandings')
  * @returns {Object} - An object containing paginated standings data and total count:
  *   @property {Array} standings - Paginated standings data.
  *   @property {number} total - Total count of standings data.
@@ -65,6 +65,7 @@ const filterStandingsService = async (
             }
           },
           { $unwind: '$lastWeekend.circuit' },
+          ...conditionalLookups(standingsType)
         ],
         totalCount: [{
           $group: {
@@ -91,18 +92,15 @@ const filterStandingsService = async (
 
 // TODO: write description
 function filterRequiredStandings(standingsType, secondaryFilter) {
-  let standingsKey
   let infoTargetCollection
   let infoRefKey
 
   switch (standingsType) {
-    case 'driver':
-      standingsKey = 'driverStandings'
+    case 'driverStandings':
       infoRefKey = 'driver'
       infoTargetCollection = 'drivers'
       break
-    case 'team':
-      standingsKey = 'teamStandings'
+    case 'teamStandings':
       infoRefKey = 'team'
       infoTargetCollection = 'teams'
       break
@@ -111,42 +109,69 @@ function filterRequiredStandings(standingsType, secondaryFilter) {
   }
 
   return [
-    { $unwind: `$standings.${standingsKey}` },
-    { $match: parseSecondaryFilter(standingsKey, secondaryFilter) },
+    { $unwind: `$standings.${standingsType}` },
+    { $match: parseSecondaryFilter(standingsType, secondaryFilter) },
     {
       $lookup: {
         from: infoTargetCollection,
-        localField: `standings.${standingsKey}.${infoRefKey}._${infoRefKey}`,
+        localField: `standings.${standingsType}.${infoRefKey}._${infoRefKey}`,
         foreignField: '_id',
-        as: `standings.${standingsKey}.${infoRefKey}`
+        as: `standings.${standingsType}.${infoRefKey}`
       }
     },
-    { $unwind: `$standings.${standingsKey}.${infoRefKey}` },
+    { $unwind: `$standings.${standingsType}.${infoRefKey}` },
     {
       $group: {
         _id: '$_id',
         lastWeekend: { $first: '$standings.weekend._weekend' },
-        [standingsKey]: { $push: `$standings.${standingsKey}` }
+        [standingsType]: { $push: `$standings.${standingsType}` }
       }
-    },
+    }
   ]
 }
 
 /**
  * Parses the given secondary filter based on the standings type.
  *
- * @param {string} standingsKey - The key of the type of standings data to be filtered.
+ * @param {string} standingsType - The type of standings data to be filtered.
  * @param {Object} filter - The secondary filter criteria for the standings data.
  * @returns {Object} - Gives back the same secondary filter with added a 'standings.' prefix for every key.
  */
-function parseSecondaryFilter(standingsKey, filter) {
+function parseSecondaryFilter(standingsType, filter) {
   return Object.entries(filter)
     .reduce((parsedFilter, [key, value]) => {
       return {
         ...parsedFilter,
-        [`standings.${standingsKey}.${key}`]: value
+        [`standings.${standingsType}.${key}`]: value
       }
     }, {})
+}
+
+// TODO: write description
+function conditionalLookups(standingsType) {
+  // It's enough because we've already validated the standingsType
+  const typeIsDriver = standingsType === 'driverStandings'
+
+  const localField = `${standingsType}.${typeIsDriver ? 'teams' : 'drivers'}`
+
+  return [
+    { $unwind: `$${standingsType}` },
+    {
+      $lookup: {
+        from: typeIsDriver ? 'teams' : 'drivers',
+        localField: `${localField}._${typeIsDriver ? 'team' : 'driver'}`,
+        foreignField: '_id',
+        as: localField
+      }
+    },
+    {
+      $group: {
+        _id: '$_id',
+        lastWeekend: { $first: '$lastWeekend' },
+        [standingsType]: { $push: `$${standingsType}` }
+      }
+    }
+  ]
 }
 
 module.exports = filterStandingsService

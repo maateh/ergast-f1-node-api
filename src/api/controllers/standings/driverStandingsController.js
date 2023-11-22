@@ -11,7 +11,7 @@ const getDriverStandings = async (req, res, next) => {
   const { metadata, pagination, filter } = res.locals
 
   try {
-    const { standings, total } = await filterStandingsService(filter.standings, pagination, 'driver')
+    const { standings, total } = await filterStandingsService(filter.standings, pagination, 'driverStandings')
 
     if (!standings || !standings.length) {
       throw new DataNotFoundError('DriverStandings')

@@ -27,21 +27,21 @@ class StandingsResponse {
 
 class DriverStandingResponse {
   constructor(standing) {
-    this.driver = new DriverResponse(standing.driver)
-    // this.teams = TeamResponse.parseList(standing.teams)
     this.position = standing.position
     this.points = standing.points
     this.wins = standing.wins
+    this.driver = new DriverResponse(standing.driver)
+    this.teams = TeamResponse.parseList(standing.teams)
   }
 }
 
 class TeamStandingResponse {
   constructor(standing) {
-    this.team = new TeamResponse(standing.team)
-    // this.drivers = DriverResponse.parseList(standing.drivers)
     this.position = standing.position
     this.points = standing.points
     this.wins = standing.wins
+    this.team = new TeamResponse(standing.team)
+    this.drivers = DriverResponse.parseList(standing.drivers)
   }
 }
 
