@@ -90,7 +90,13 @@ const filterStandingsService = async (
   }
 }
 
-// TODO: write description
+/**
+ * Constructs the necessary aggregation pipeline stages to filter and format standings data based on the specified standings type and a secondary filter.
+ *
+ * @param {string} standingsType - Type of the required standings data (options: 'driverStandings' || 'teamStandings').
+ * @param {Object} secondaryFilter - Secondary filter criteria for the standings data.
+ * @returns {Array} - An array of aggregation pipeline stages to filter and format standings data.
+ */
 function filterRequiredStandings(standingsType, secondaryFilter) {
   let infoTargetCollection
   let infoRefKey
@@ -147,7 +153,12 @@ function parseSecondaryFilter(standingsType, filter) {
     }, {})
 }
 
-// TODO: write description
+/**
+ * Handles lookup stages in the standings aggregation pipeline based on the standings type.
+ *
+ * @param {string} standingsType - Type of the required standings data (options: 'driverStandings' || 'teamStandings').
+ * @returns {Array} - An array of aggregation pipeline stages for conditional lookups.
+ */
 function conditionalLookups(standingsType) {
   // It's enough because we've already validated the standingsType
   const typeIsDriver = standingsType === 'driverStandings'
