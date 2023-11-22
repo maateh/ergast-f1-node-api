@@ -94,9 +94,6 @@ const filterParser = (req, res, next) => {
         'season.year': year,
         'weekend.round': round,
       },
-      // TODO: needs to rework this filter a little bit after
-      // driverStandings will get the "teams" and teamStandings
-      // get the "drivers" fields
       secondary: {
         'driver.ref': driverId,
         'team.ref': teamId,
