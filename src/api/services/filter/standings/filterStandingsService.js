@@ -170,7 +170,8 @@ function conditionalLookups(standingsType) {
         lastWeekend: { $first: '$lastWeekend' },
         [standingsType]: { $push: `$${standingsType}` }
       }
-    }
+    },
+    { $sort: { _id: 1 } }
   ]
 }
 
