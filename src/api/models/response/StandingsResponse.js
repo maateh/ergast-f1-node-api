@@ -28,7 +28,7 @@ class StandingsResponse {
 class DriverStandingResponse {
   constructor(standing) {
     this.driver = new DriverResponse(standing.driver)
-    // this.teams = standing.teams // TODO: add this later
+    // this.teams = TeamResponse.parseList(standing.teams)
     this.position = standing.position
     this.points = standing.points
     this.wins = standing.wins
@@ -38,7 +38,7 @@ class DriverStandingResponse {
 class TeamStandingResponse {
   constructor(standing) {
     this.team = new TeamResponse(standing.team)
-    // this.drivers = standing.drivers // TODO: add this later
+    // this.drivers = DriverResponse.parseList(standing.drivers)
     this.position = standing.position
     this.points = standing.points
     this.wins = standing.wins

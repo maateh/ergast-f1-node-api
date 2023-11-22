@@ -8,10 +8,7 @@ const Standings = require('../../../models/mongoose/Standings')
  *   @param {Object} primary - Primary filter params to identify the required standings in the years.
  *   @param {Object} secondary - Secondary filter params to filter out the necessary standing results in a year.
  * @param {Object} pagination - Pagination options, including 'limit' and 'offset'.
- * @param {Object} options - Additional options to identify and handle of the given type of standings data:
- *   @param {string} options.standingsTypeRefKey - The key referencing the type of standings data.
- *   @param {string} options.infoRefKey - The key referencing additional information in the standings data.
- *   @param {string} options.infoTargetCollection - The target collection for additional information lookup.
+ * @param {Object} standingsType - Type of the required standings data (options: 'driver' || 'team')
  * @returns {Object} - An object containing paginated standings data and total count:
  *   @property {Array} standings - Paginated standings data.
  *   @property {number} total - Total count of standings data.
@@ -23,44 +20,18 @@ const filterStandingsService = async (
     secondary: {}
   },
   pagination = { limit: 30, offset: 0 },
-  options = {
-    standingsTypeRefKey: '',
-    infoRefKey: '',
-    infoTargetCollection: ''
-  }
+  standingsType
 ) => {
   const [aggregatedData] = await Standings.aggregate([
     { $match: filter.primary },
-    {
-      $sort: {
-        'season.year': 1,
-        'weekend.round': -1
-      }
-    },
+    { $sort: { 'season.year': 1, 'weekend.round': -1 } },
     {
       $group: {
         _id: '$season.year',
         standings: { $first: '$$ROOT' }
       }
     },
-    { $unwind: `$standings.${options.standingsTypeRefKey}` },
-    { $match: parseSecondaryFilter(options.standingsTypeRefKey, filter.secondary) },
-    {
-      $lookup: {
-        from: options.infoTargetCollection,
-        localField: `standings.${options.standingsTypeRefKey}.${options.infoRefKey}._${options.infoRefKey}`,
-        foreignField: '_id',
-        as: `standings.${options.standingsTypeRefKey}.${options.infoRefKey}`
-      }
-    },
-    { $unwind: `$standings.${options.standingsTypeRefKey}.${options.infoRefKey}` },
-    {
-      $group: {
-        _id: '$_id',
-        lastWeekend: { $first: '$standings.weekend._weekend' },
-        [options.standingsTypeRefKey]: { $push: `$standings.${options.standingsTypeRefKey}` }
-      }
-    },
+    ...filterRequiredStandings(standingsType, filter.secondary),
     {
       $facet: {
         paginatedData: [
@@ -93,7 +64,7 @@ const filterStandingsService = async (
               as: 'lastWeekend.circuit'
             }
           },
-          { $unwind: '$lastWeekend.circuit' }
+          { $unwind: '$lastWeekend.circuit' },
         ],
         totalCount: [{
           $group: {
@@ -118,19 +89,62 @@ const filterStandingsService = async (
   }
 }
 
+// TODO: write description
+function filterRequiredStandings(standingsType, secondaryFilter) {
+  let standingsKey
+  let infoTargetCollection
+  let infoRefKey
+
+  switch (standingsType) {
+    case 'driver':
+      standingsKey = 'driverStandings'
+      infoRefKey = 'driver'
+      infoTargetCollection = 'drivers'
+      break
+    case 'team':
+      standingsKey = 'teamStandings'
+      infoRefKey = 'team'
+      infoTargetCollection = 'teams'
+      break
+    default:
+      throw new Error(`Invalid standings type! (${standingsType})`)
+  }
+
+  return [
+    { $unwind: `$standings.${standingsKey}` },
+    { $match: parseSecondaryFilter(standingsKey, secondaryFilter) },
+    {
+      $lookup: {
+        from: infoTargetCollection,
+        localField: `standings.${standingsKey}.${infoRefKey}._${infoRefKey}`,
+        foreignField: '_id',
+        as: `standings.${standingsKey}.${infoRefKey}`
+      }
+    },
+    { $unwind: `$standings.${standingsKey}.${infoRefKey}` },
+    {
+      $group: {
+        _id: '$_id',
+        lastWeekend: { $first: '$standings.weekend._weekend' },
+        [standingsKey]: { $push: `$standings.${standingsKey}` }
+      }
+    },
+  ]
+}
+
 /**
  * Parses the given secondary filter based on the standings type.
  *
- * @param {string} standingsType - The type of standings data to be filtered.
+ * @param {string} standingsKey - The key of the type of standings data to be filtered.
  * @param {Object} filter - The secondary filter criteria for the standings data.
  * @returns {Object} - Gives back the same secondary filter with added a 'standings.' prefix for every key.
  */
-function parseSecondaryFilter(standingsType, filter) {
+function parseSecondaryFilter(standingsKey, filter) {
   return Object.entries(filter)
     .reduce((parsedFilter, [key, value]) => {
       return {
         ...parsedFilter,
-        [`standings.${standingsType}.${key}`]: value
+        [`standings.${standingsKey}.${key}`]: value
       }
     }, {})
 }
