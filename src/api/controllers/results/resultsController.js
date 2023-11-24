@@ -36,7 +36,7 @@ const getResults = async (req, res, next) => {
         ...pagination,
         total
       },
-      results: ResultResponse.parseList(results)
+      weekends: ResultResponse.parseList(results)
     })
   } catch (err) {
     next(err)
