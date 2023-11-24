@@ -45,7 +45,7 @@ const getTimings = async (req, res, next) => {
         total
       },
       weekend: new WeekendResponse(weekend),
-      timings: TimingResponse.parseList(timings)
+      laps: TimingResponse.parseList(timings)
     })
   } catch (err) {
     next(err)

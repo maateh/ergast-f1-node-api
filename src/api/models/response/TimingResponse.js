@@ -2,7 +2,6 @@
 const DriverResponse = require('./DriverResponse')
 const TeamResponse = require('./TeamResponse')
 
-// TODO: grouping data based on laps
 class TimingResponse {
   constructor({ lap, position, duration, driver, team }) {
     this.lap = lap
@@ -13,7 +12,19 @@ class TimingResponse {
   }
 
   static parseList(timings) {
-    return timings.map(t => new TimingResponse(t))
+    return timings.reduce((laps, timing) => {
+      const lapIndex = laps.length - 1
+      const prevLap = laps.length ? laps[lapIndex].lap : 0
+
+      const t = new TimingResponse(timing)
+      if (prevLap === timing.lap) {
+        laps[lapIndex].timings.push(t)
+      } else {
+        laps.push({ lap: timing.lap, timings: [t] })
+      }
+
+      return laps
+    }, [])
   }
 }
 
