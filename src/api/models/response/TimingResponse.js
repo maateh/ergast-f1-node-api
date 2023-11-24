@@ -4,7 +4,6 @@ const TeamResponse = require('./TeamResponse')
 
 class TimingResponse {
   constructor({ lap, position, duration, driver, team }) {
-    this.lap = lap
     this.position = position
     this.duration = duration
     this.driver = new DriverResponse(driver)

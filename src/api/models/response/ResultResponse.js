@@ -10,7 +10,6 @@ class ResultResponse {
     this.sprint = sprint
     this.driver = new DriverResponse(driver)
     this.team = new TeamResponse(team)
-    // this.weekend = new WeekendResponse(weekend)
   }
 
   static parseList(results) {
