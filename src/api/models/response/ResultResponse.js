@@ -4,7 +4,7 @@ const TeamResponse = require('./TeamResponse')
 const WeekendResponse = require('./WeekendResponse')
 
 class ResultResponse {
-  constructor({ race, qualifying, sprint, driver, team, weekend }) {
+  constructor({ race, qualifying, sprint, driver, team }) {
     this.race = race
     this.qualifying = qualifying
     this.sprint = sprint
