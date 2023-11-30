@@ -7,6 +7,7 @@ const express = require('express')
 const connectToMongoDb = require('./api/services/databaseConnection')
 
 // middlewares
+const requestLogger = require('./api/middlewares/requestLogger')
 const responseMetadata = require('./api/middlewares/responseMetadata')
 const handleUnmatchedRoutes = require('./api/middlewares/handleUnmatchedRoutes')
 const handleErrors = require('./api/middlewares/handleErrors')
@@ -27,6 +28,7 @@ const BASE_URL = process.env.BASE_URL
 const app = express()
 
 app.use(express.json())
+app.use(requestLogger)
 app.use(responseMetadata)
 
 app.use(`${BASE_URL}/seasons`, seasonsRoutes)
