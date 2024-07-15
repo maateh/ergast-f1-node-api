@@ -1,4 +1,10 @@
-# Ergast Formula 1 MySQL Database API (using NodeJS)
+> ## Formula 1 API (Node.js)
+> *- based on the [Ergast F1 API](https://github.com/jcnewell/ergast-f1-api)*
 
-This project is a rewrite of the [Ergast F1 API](https://github.com/jcnewell/ergast-f1-api) project which is written in PHP.
-This API will be written in JavaScript instead of PHP and will be using NodeJS as a runtime environment.
+> **The project has been archived.**
+---
+
+The original [Ergast F1 API](https://github.com/jcnewell/ergast-f1-api) has been deprecated and I wanted to create an alternative API for personal usage.
+
+It's built in Node.js and uses Express for routing and middlewares.
+Unfortunately, this project has never been completely finished because I stopped working [on my other project](https://github.com/maateh/f1-tracker) for which this API should have been required.
